@@ -1,0 +1,124 @@
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<AppUser> SignInManager
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+        <a asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="/img/logo3.png" alt="" style="width: 200px;">
+        </a>
+    </div>
+    <ul class="nav">
+        <li class="nav-item profile">
+            <div class="profile-desc">
+                <div class="profile-pic">
+                    <div class="profile-name">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <h5 class="mb-0 font-weight-normal">@User.Identity!.Name</h5>
+                        }
+                    </div>
+                </div>
+                <a href="#" class="text-muted" id="profile-dropdown" data-toggle="dropdown">
+                    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
+                    aria-labelledby="profile-dropdown">
+                    <a href="#" class="dropdown-item preview-item text-muted">
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-dark rounded-circle">
+                                <ion-icon class="text-danger" name="settings-outline"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <p class="preview-subject ellipsis mb-1 text-small text-white">
+                                Account settings
+                            </p>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item preview-item text-muted">
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-dark rounded-circle">
+                                <ion-icon class="text-info" name="lock-closed-outline"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <p class="preview-subject ellipsis mb-1 text-small text-white">
+                                Change Password
+                            </p>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item nav-category">
+            <span class="nav-link text-white">Navigation</span>
+        </li>
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                <span class="menu-icon">
+                    <ion-icon class=" text-info" name="stats-chart-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-icon">
+                    <ion-icon class="text-warning" name="person-outline"></ion-icon> </span>
+                <span class="menu-title text-white">Tenant</span>
+                <ion-icon name="caret-down-outline"></ion-icon>
+            </a>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-controller="Tenant" asp-action="Index">Tenants
+                            List</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-controller="Tenant" asp-action="AddTenant">Add
+                            New</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" asp-controller="Room" asp-action="index">
+                <span class="menu-icon">
+                    <ion-icon class="text-danger" name="storefront-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Room</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+                <span class="menu-icon">
+                    <ion-icon class="text-success" name="cash-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Payment</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" href="pages/charts/chartjs.html">
+                <span class="menu-icon">
+                    <ion-icon class="text-warning" name="construct-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Maintenance</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" href="pages/icons/mdi.html">
+                <span class="menu-icon">
+                    <ion-icon class="text-info" name="trending-up-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Expenses</span>
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -10,8 +10,6 @@ namespace MallMinder.ViewModels
 
         [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
-        [Required(ErrorMessage = "username is required")]
-        public string UserName { get; set; }
         [Required(ErrorMessage = "Email Address is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }

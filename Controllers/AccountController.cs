@@ -1,5 +1,6 @@
 using MallMinder.Models;
 using MallMinder.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,8 +22,9 @@ namespace MallMinder.Controllers
         {
             return View();
         }
-
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
         {
             if (ModelState.IsValid)
@@ -30,17 +32,42 @@ namespace MallMinder.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var user = await _userManager.FindByNameAsync(model.UserName);
+                    if (user != null)
+                    {
+                        var roles = await _userManager.GetRolesAsync(user);
+                        if (roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (roles.Contains("SystemAdmin"))
+                        {
+                            return RedirectToAction("Index", "System");
+                        }
+                        else if (roles.Contains("Tenant"))
+                        {
+                            return RedirectToAction("Index", "System");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt");
+                        return RedirectToAction("Login", "Account");
+                    }
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt");
-                    return RedirectToAction("Login", "Account");
+                    return View("Login", model);
                 }
             }
 
             // If ModelState is not valid, return the login view with validation errors
-            return View(model);
+            return View("Login", model);
         }
 
         [HttpPost]
@@ -56,7 +83,7 @@ namespace MallMinder.Controllers
                     PhoneNumber = model.PhoneNumber,
                     IsActive = model.IsActive,
                     AddedDate = model.AddedDate,
-                    UserName = model.UserName,
+                    UserName = model.Email,
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);

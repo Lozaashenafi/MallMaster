@@ -3,7 +3,6 @@
     ViewData["Title"] = "tenant Page";
     @* Layout = null; *@
 }
-
 <div class="row">
     <div class="card">
         <div class="card-body">
@@ -12,21 +11,21 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="text-light">Tenant Name</th>
-                            <th class="text-light">Room NO</th>
-                            <th class="text-light">Floor NO</th>
-                            <th class="text-light">Phone Number</th>
-                            <th class="text-light">Payment Status</th>
+                            <th class="text-white">Tenant Name</th>
+                            <th class="text-white">Room NO</th>
+                            <th class="text-white">Floor NO</th>
+                            <th class="text-white">Phone Number</th>
+                            <th class="text-white">Payment Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var user in Model)
                         {
                             <tr>
-                                <td>@user.FirstName</td>
-                                <td>012</td>
-                                <td>2</td>
-                                <td>0988776555</td>
+                                <td class="text-light">@user.FirstName</td>
+                                <td class="text-light">012</td>
+                                <td class="text-light">2</td>
+                                <td class="text-light">0988776555</td>
                                 <td>
                                     <div class="badge badge-outline-success">
                                         payed
