@@ -1,0 +1,44 @@
+@using MallMinder.ViewModels
+@model RegisterVM
+<form method="post" asp-controller="Auth" asp-action="Register" class="forms-sample " style="margin-top: 30px;">
+    <div class="form-group">
+        <label for="exampleInputUsername1">First Name</label>
+        <input asp-for="FirstName" type="text" class="form-control" id="first_name" placeholder="First Name">
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputUsername1">Last Name</label>
+        <input asp-for="LastName" type="text" class="form-control" id="last_name" placeholder="Last Name">
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputUsername1">User Name</label>
+        <input asp-for="UserName" type="text" class="form-control" id="user_name" placeholder="User Name">
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Email </label>
+        <input asp-for="Email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Phone Number</label>
+        <input asp-for="PhoneNumber" type="text" class="form-control" id="phone_number" placeholder="Phone Number">
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input asp-for="Password" type="password" class="form-control" id="exampleInputPassword1"
+            placeholder="Password">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputConfirmPassword1">Confirm Password</label>
+        <input asp-for="ConfirmPassword" type="password" class="form-control" id="exampleInputConfirmPassword1"
+            placeholder="Password">
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+    <button class="btn btn-dark">Cancel</button>
+</form>

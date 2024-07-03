@@ -1,0 +1,76 @@
+@model MallMinder.ViewModels.LoginVM
+@{
+    ViewData["Title"] = "sign in Page";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MallMinder</title>
+
+
+    <link rel="stylesheet" href="~/css/css/vendor.bundle.base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/css/materialdesignicons.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/jvectormap/jquery-jvectormap.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/css/flag-icon.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MallMinder.styles.css" asp-append-version="true" />
+
+</head>
+<body>
+    <!-- Section: Design Block -->
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper background-pic">
+            <div class="row w-100 m-0">
+                <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                    <div class="card col-lg-4 mx-auto">
+                        <div class="card-body px-5 py-5">
+                            <h3 class="card-title text-left mb-3">Login</h3>
+                            <form method="post" asp-controller="Account" asp-action="Login">
+                                <div class="text-danger" asp-validation-summary="ModelOnly"> </div>
+                                <div class="form-group">
+                                    <label>User Name *</label>
+                                    <input asp-for="UserName" class="form-control p_input" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password *</label>
+                                    <input asp-for="Password" type="password" class="form-control p_input" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group d-flex align-items-center justify-content-between">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        </label>
+                                    </div>
+                                    <a href="#" class="forgot-pass">Forgot password</a>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- content-wrapper ends -->
+            </div>
+            <!-- row ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.26.3/dist/apexcharts.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/vendor.bundle.base.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard.js" asp-append-version="true"></script>
+</body>
+<!-- Section: Design Block -->
