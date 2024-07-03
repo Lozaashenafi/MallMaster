@@ -43,7 +43,6 @@ namespace MallMinder.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
@@ -64,12 +63,13 @@ namespace MallMinder.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    // Assign "Tenant" role to the user
+                    await _userManager.AddToRoleAsync(user, "Tenant");
 
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);

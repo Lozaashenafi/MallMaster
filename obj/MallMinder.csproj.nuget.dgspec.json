@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMinder\\MallMinder.csproj": {}
+    "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\MallMinder.csproj": {}
   },
   "projects": {
-    "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMinder\\MallMinder.csproj": {
+    "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\MallMinder.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMinder\\MallMinder.csproj",
+        "projectUniqueName": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\MallMinder.csproj",
         "projectName": "MallMinder",
-        "projectPath": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMinder\\MallMinder.csproj",
+        "projectPath": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\MallMinder.csproj",
         "packagesPath": "C:\\Users\\loza\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMinder\\obj\\",
+        "outputPath": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\loza\\AppData\\Roaming\\NuGet\\NuGet.Config",
