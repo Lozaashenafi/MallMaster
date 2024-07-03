@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MallMinder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+99704fb0bb62df24c7dc4dc56c26a9ac156869ba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2409b3c864fcd27ee464b230084f4571a70201b9")]
 [assembly: System.Reflection.AssemblyProductAttribute("MallMinder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MallMinder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

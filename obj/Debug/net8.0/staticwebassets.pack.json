@@ -53,6 +53,18 @@
       "PackagePath": "staticwebassets\\img\\Login_bg.jpg"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\MallImg\\mall1a.jpg",
+      "PackagePath": "staticwebassets\\img\\MallImg\\mall1a.jpg"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\MallImg\\mall1b.jpg",
+      "PackagePath": "staticwebassets\\img\\MallImg\\mall1b.jpg"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\MallImg\\mall1c.jpg",
+      "PackagePath": "staticwebassets\\img\\MallImg\\mall1c.jpg"
+    },
+    {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\logo.png",
       "PackagePath": "staticwebassets\\img\\logo.png"
     },
