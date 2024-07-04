@@ -40,3 +40,16 @@ body {
 .background-pic {
   background-image: url("../img/Login_bg.jpg");
 }
+.eye {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+.eye-cont {
+  position: relative;
+}
+.eye-login {
+  position: absolute;
+  top: 34px;
+  right: 20px;
+}

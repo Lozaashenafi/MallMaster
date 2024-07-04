@@ -38,9 +38,10 @@
                                     <input asp-for="UserName" class="form-control p_input" />
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group  eye-cont">
                                     <label>Password *</label>
-                                    <input asp-for="Password" type="password" class="form-control p_input" />
+                                    <input asp-for="Password" type="password"  id="password" class="form-control p_input" />
+                                     <a id="togglePassword"><ion-icon class="eye-login" name="eye-outline"></ion-icon></a>
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div class="form-group d-flex align-items-center justify-content-between">

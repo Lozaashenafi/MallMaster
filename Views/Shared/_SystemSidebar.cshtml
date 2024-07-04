@@ -84,9 +84,17 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" asp-controller="Mall" asp-action="Index">Malls List</a>
                     </li>
+
                 </ul>
             </div>
         </li>
-
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" asp-controller="MallManager" asp-action="Index">
+                <span class="menu-icon">
+                    <ion-icon class="text-warning" name="person-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Mall Manager</span>
+            </a>
+        </li>
     </ul>
 </nav>
