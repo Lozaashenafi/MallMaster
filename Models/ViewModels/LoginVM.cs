@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace MallMinder.ViewModels
+namespace MallMinder.Models.ViewModels
 {
     public class LoginVM
     {

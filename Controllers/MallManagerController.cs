@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MallMinder.Models;
 using MallMinder.Data;
-using MallMinder.ViewModels;
+using MallMinder.Models.ViewModels;
 
 namespace MallMinder.Controllers
 {
@@ -30,7 +30,16 @@ namespace MallMinder.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = model.Email, Email = model.Email };
+                var user = new AppUser
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    IsActive = model.IsActive,
+                    AddedDate = model.AddedDate,
+                    UserName = model.Email,
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
@@ -38,14 +47,16 @@ namespace MallMinder.Controllers
                     await _userManager.AddToRoleAsync(user, "admin"); // Assign 'admin' role to the user
 
                     // Link user to the mall (assuming MallId is passed from the form)
-                    var mallManager = new MallManagerVM
+                    var mallManager = new MallManagers
                     {
-                        UserId = user.Id,
+                        OwnerId = user.Id,
                         MallId = model.MallId
                     };
 
                     _context.MallManagers.Add(mallManager);
                     await _context.SaveChangesAsync();
+                    // Add success message to TempData
+                    TempData["SuccessMessage"] = "Manager added successfully.";
 
                     return RedirectToAction("Index");
                 }

@@ -2,8 +2,7 @@
 <div class="col-md-7 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Horizontal Form</h4>
-            <p class="card-description"> Horizontal form layout </p>
+            <h4 class="card-title mb-4">Add New Mall</h4>
             <form class="forms-sample" method="post" asp-controller="Mall" asp-action="AddMall">
                 <div class="text-danger" asp-validation-summary="ModelOnly"> </div>
                 <div class="form-group row">
@@ -33,7 +32,6 @@
                     <div class="col-sm-9">
                         <input asp-for="TotalRooms" type="number" class="form-control" id="TotalRooms"
                             placeholder="Total Rooms">
-
                     </div>
                 </div>
                 <div class="form-group row">
@@ -41,7 +39,6 @@
                     <div class="col-sm-9">
                         <input asp-for="TotalFloors" type="number" class="form-control" id="TotalFloors"
                             placeholder="Total Floor">
-
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Submit</button>

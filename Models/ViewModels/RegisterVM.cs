@@ -1,10 +1,9 @@
 using System;
-
 using System.ComponentModel.DataAnnotations;
 
-namespace MallMinder.ViewModels
+namespace MallMinder.Models.ViewModels
 {
-    public class MallManagerVM
+    public class RegisterVM
     {
         [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
@@ -25,13 +24,10 @@ namespace MallMinder.ViewModels
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        public DateTime AddedDate { get; set; }
+        public DateTime AddedDate { get; set; } // AddedDate property of type DateTime
 
-        // AddedDate property of type DateTime
-        public int MallId { get; set; }
-        public String UserId { get; set; }
         // Constructor to set default values
-        public MallManagerVM()
+        public RegisterVM()
         {
             IsActive = true; // Set default value for IsActive
             AddedDate = DateTime.Now; // Initialize AddedDate with current date and time
@@ -39,7 +35,5 @@ namespace MallMinder.ViewModels
 
         // Property for IsActive
         public bool IsActive { get; set; }
-
     }
-
 }
