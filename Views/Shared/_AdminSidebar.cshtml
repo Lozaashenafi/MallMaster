@@ -68,8 +68,8 @@
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <ion-icon class="text-warning" name="person-outline"></ion-icon> </span>
-                <span class="menu-title text-white">Tenant</span>
-                <ion-icon name="caret-down-outline"></ion-icon>
+                <span class="menu-title text-white mr-2">Tenant</span>
+                <ion-icon class="text-white" name="caret-down-outline"></ion-icon>
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
@@ -108,7 +108,14 @@
             </div>
         </li>
 
-
+        <li class="nav-item menu-items nav_active">
+            <a class="nav-link" asp-controller="Rent" asp-action="Index">
+                <span class="menu-icon">
+                    <ion-icon class="text-info" name="create-outline"></ion-icon></ion-icon>
+                </span>
+                <span class="menu-title text-white">Rent</span>
+            </a>
+        </li>
         <li class="nav-item menu-items nav_active">
             <a class="nav-link" href="pages/tables/basic-table.html">
                 <span class="menu-icon">

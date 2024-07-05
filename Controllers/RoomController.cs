@@ -3,7 +3,6 @@ using MallMinder.Models;
 using MallMinder.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 namespace MallMinder.Controllers
 {
     public class RoomController : Controller
@@ -16,6 +15,7 @@ namespace MallMinder.Controllers
             _userManager = userManager;
             _context = context;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -28,23 +28,28 @@ namespace MallMinder.Controllers
             if (currentUser != null)
             {
                 // Find mall IDs owned by the current user
-                var mallIds = _context.MallManagers
+                var mallId = _context.MallManagers
                     .Where(m => m.OwnerId == currentUser.Id) // Adjust this according to your application's ownership logic
                     .Select(m => m.Id)
-                    .ToList();
-
+                    .FirstOrDefault();
+                ViewBag.MallId = mallId;
                 // Fetch floors associated with these mall IDs
-                var floors = _context.Floor
-                    .Where(f => mallIds.Contains(f.MallId))
-                    .ToList();
+
+
+                // var model = new RoomPageViewModel
+                // {
+                //     Floors = floors,
+                //     Room = new RoomVM() // Assuming RoomVM needs initialization
+                // };
 
                 // Pass floors to the view
-                return View(floors);
+                return View();
             }
 
             // Handle case where user is not found or has no associated malls
             return NotFound();
         }
+
         [HttpPost]
         public IActionResult AddRoom(RoomVM roomVM)
         {
@@ -67,8 +72,11 @@ namespace MallMinder.Controllers
                 // Add room to DbContext and save changes
                 _context.Room.Add(room);
                 _context.SaveChanges();
+                // Add success message to TempData
+                TempData["SuccessMessage"] = "Room added successfully.";
 
-                return RedirectToAction("Index", "Room"); // Replace with appropriate redirect
+
+                return RedirectToAction("AddRoom", "Room");
             }
 
             // If model state is not valid, return to the view with validation errors

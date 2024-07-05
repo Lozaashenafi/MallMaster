@@ -1,20 +1,33 @@
-@model List<MallMinder.Models.Floor>
-
+@using MallMinder.Data;
+@using MallMinder.Models;
+@using MallMinder.Models.ViewModels;
+@inject AppDbContext _context
+@model MallMinder.Models.ViewModels.RoomVM
 @{
     ViewData["Title"] = "Room Page";
+}
+@{
+    int mallId = ViewBag.MallId;
+    var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
 }
 <div class="card">
     <div class="card-body">
         <h4 class="card-title">Horizontal Two column</h4>
         <form class="form-sample">
             <p class="card-description"> Personal info </p>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert text-success mt-3 text-center fs-5 text" role="alert">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Floor Number</label>
                         <div class="col-sm-9">
                             <select class="form-control">
-                                @foreach (var floor in Model)
+                                @foreach (var floor in floors)
                                 {
                                     <option>@floor.FloorNumber</option>
                                 }
@@ -26,7 +39,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Room Number</label>
                         <div class="col-sm-9">
-                            <input type="Number" class="form-control">
+                            <input asp-for="RoomNumber" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -36,7 +49,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Care</label>
                         <div class="col-sm-9">
-                            <input type="Number" class="form-control">
+                            <input asp-for="Care" type="Number" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -48,7 +61,7 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Description</label>
                         <div class="col-sm-9">
-                            <textarea rows="4" class="form-control" id="Description"
+                            <textarea asp-for="Description" rows="4" class="form-control" id="Description"
                                 placeholder="Description"></textarea>
                         </div>
                     </div>
@@ -59,7 +72,7 @@
                         <div class="col-sm-4">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" name="membershipRadios"
+                                    <input asp-for="Status" type="radio" class="form-check-input" id="membershipRadios1"
                                         id="membershipRadios1" value="" checked=""> Free <i
                                         class="input-helper"></i></label>
                             </div>
@@ -67,14 +80,14 @@
                         <div class="col-sm-5">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" name="membershipRadios"
-                                        id="membershipRadios2" value="option2"> occupied <i
-                                        class="input-helper"></i></label>
+                                    <input asp-for="Status" type="radio" class="form-check-input" id="membershipRadios2"
+                                        value="option2"> occupied <i class="input-helper"></i></label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <button type="Submit" class="btn btn-primary btn-fw">Create Room</button>
         </form>
     </div>
 </div>
