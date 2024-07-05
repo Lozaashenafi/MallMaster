@@ -84,11 +84,10 @@
                     </div>
                 </div>
             </form>
-
             @* Display success message if it exists *@
             @if (TempData["SuccessMessage"] != null)
             {
-                <div class="alert alert-success mt-3" role="alert">
+                <div class="alert text-success mt-3 text-center fs-5 text" role="alert">
                     @TempData["SuccessMessage"]
                 </div>
             }

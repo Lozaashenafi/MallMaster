@@ -79,3 +79,17 @@ toggleConfirmPassword.addEventListener("click", () => {
     confirmEyeIcon.setAttribute("name", "eye-off-outline");
   }
 });
+// room list
+
+$(document).ready(function () {
+  // Collapse all submenus initially
+  $(".submenu-container").hide();
+
+  // Toggle collapse on parent item click
+  $(".toggle-submenu").on("click", function (e) {
+    e.preventDefault();
+
+    // Toggle the collapse for the corresponding submenu
+    $(this).next(".submenu-container").slideToggle();
+  });
+});

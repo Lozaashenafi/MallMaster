@@ -9,6 +9,8 @@ namespace MallMinder.Data
     {
         public DbSet<Mall> Mall { get; set; } // Define DbSet for Mall entity
         public DbSet<MallManagers> MallManagers { get; set; } // Define DbSet for Mall entity
+        public DbSet<Floor> Floor { get; set; }
+        public DbSet<Room> Room { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

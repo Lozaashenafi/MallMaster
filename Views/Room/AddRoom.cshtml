@@ -1,0 +1,80 @@
+@model List<MallMinder.Models.Floor>
+
+@{
+    ViewData["Title"] = "Room Page";
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Horizontal Two column</h4>
+        <form class="form-sample">
+            <p class="card-description"> Personal info </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Floor Number</label>
+                        <div class="col-sm-9">
+                            <select class="form-control">
+                                @foreach (var floor in Model)
+                                {
+                                    <option>@floor.FloorNumber</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Room Number</label>
+                        <div class="col-sm-9">
+                            <input type="Number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Care</label>
+                        <div class="col-sm-9">
+                            <input type="Number" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Description</label>
+                        <div class="col-sm-9">
+                            <textarea rows="4" class="form-control" id="Description"
+                                placeholder="Description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Status</label>
+                        <div class="col-sm-4">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="membershipRadios"
+                                        id="membershipRadios1" value="" checked=""> Free <i
+                                        class="input-helper"></i></label>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" name="membershipRadios"
+                                        id="membershipRadios2" value="option2"> occupied <i
+                                        class="input-helper"></i></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

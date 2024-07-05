@@ -89,13 +89,26 @@
             </div>
         </li>
         <li class="nav-item menu-items nav_active">
-            <a class="nav-link" asp-controller="Room" asp-action="index">
+            <a class="nav-link toggle-submenu" href="#">
                 <span class="menu-icon">
                     <ion-icon class="text-danger" name="storefront-outline"></ion-icon>
                 </span>
-                <span class="menu-title text-white">Room</span>
+                <span class="menu-title text-white mr-2">Room</span>
+                <ion-icon class="text-white" name="caret-down-outline"></ion-icon>
             </a>
+            <div class="submenu-container" id="room-submenu">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-controller="Room" asp-action="AddRoom">Add Room</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" asp-controller="Room" asp-action="Index">Room List</a>
+                    </li>
+                </ul>
+            </div>
         </li>
+
+
         <li class="nav-item menu-items nav_active">
             <a class="nav-link" href="pages/tables/basic-table.html">
                 <span class="menu-icon">

@@ -34,10 +34,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/MallManager/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFsbE1hbmFnZXJcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Mall/AddMall.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFsbFxBZGRNYWxsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -46,8 +42,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFsbFxpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Room/AddRoom.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVxBZGRSb29tLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Room/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVxpbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Room/MallManager/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVxNYWxsTWFuYWdlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Shared/Error.cshtml]
