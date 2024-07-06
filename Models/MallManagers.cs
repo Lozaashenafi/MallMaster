@@ -9,7 +9,7 @@ namespace MallMinder.Models
     {
         public int Id { get; set; }
         public int MallId { get; set; }
-        public String OwnerId { get; set; }
+        public String? OwnerId { get; set; }
 
     }
 }

@@ -93,3 +93,20 @@ $(document).ready(function () {
     $(this).next(".submenu-container").slideToggle();
   });
 });
+
+// search
+$(document).ready(function () {
+  $("#searchButton").click(function () {
+    var searchText = $("#searchInput").val().toLowerCase();
+
+    $("table tbody tr").each(function () {
+      var roomNumber = $(this).find("td:first").text().toLowerCase();
+
+      if (roomNumber.includes(searchText)) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  });
+});

@@ -16,10 +16,34 @@ namespace MallMinder.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
-            return View();
+            var userId = _userManager.GetUserId(User);
+
+            var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+            if (mall == null)
+            {
+                return NotFound(); // Handle if user does not own any mall
+            }
+
+            var mallId = mall.Id;
+            ViewBag.MallId = mallId;
+
+            // Fetch all rooms data associated with the mall
+            var roomsQuery = _context.Room
+                .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId));
+
+            // Apply search filter if search string is provided
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                roomsQuery = roomsQuery.Where(r => r.RoomNumber.ToString().Contains(searchString));
+            }
+
+            var rooms = roomsQuery.ToList();
+
+            return View(rooms);
         }
+
         public IActionResult AddRoom()
         {
             // Get the current user
@@ -34,15 +58,6 @@ namespace MallMinder.Controllers
                     .FirstOrDefault();
                 ViewBag.MallId = mallId;
                 // Fetch floors associated with these mall IDs
-
-
-                // var model = new RoomPageViewModel
-                // {
-                //     Floors = floors,
-                //     Room = new RoomVM() // Assuming RoomVM needs initialization
-                // };
-
-                // Pass floors to the view
                 return View();
             }
 

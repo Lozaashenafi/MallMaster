@@ -12,12 +12,12 @@
 }
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Horizontal Two column</h4>
-        <form class="form-sample">
-            <p class="card-description"> Personal info </p>
+        <h4 class="card-title">Add Rooms</h4>
+        <form class="form-sample" asp-action="AddRoom" method="post">
+            <p class="card-description"> Room info </p>
             @if (TempData["SuccessMessage"] != null)
             {
-                <div class="alert text-success mt-3 text-center fs-5 text" role="alert">
+                <div id="successMessage" class="alert text-success  text-center fs-5" role="alert">
                     @TempData["SuccessMessage"]
                 </div>
             }
@@ -26,13 +26,14 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Floor Number</label>
                         <div class="col-sm-9">
-                            <select class="form-control">
+                            <select asp-for="FloorId" class="form-control">
                                 @foreach (var floor in floors)
                                 {
-                                    <option>@floor.FloorNumber</option>
+                                    <option value="@floor.Id">@floor.FloorNumber</option>
                                 }
                             </select>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -73,15 +74,18 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input asp-for="Status" type="radio" class="form-check-input" id="membershipRadios1"
-                                        id="membershipRadios1" value="" checked=""> Free <i
-                                        class="input-helper"></i></label>
+                                        value="Free" checked> Free
+                                    <i class="input-helper"></i>
+                                </label>
                             </div>
                         </div>
                         <div class="col-sm-5">
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input asp-for="Status" type="radio" class="form-check-input" id="membershipRadios2"
-                                        value="option2"> occupied <i class="input-helper"></i></label>
+                                        value="Occupied"> Occupied
+                                    <i class="input-helper"></i>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -91,3 +95,21 @@
         </form>
     </div>
 </div>
+@section Scripts {
+    <script>
+        // Remove success message after 2 minutes or when new data is input
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#successMessage').fadeOut('slow', function () {
+                    $(this).remove();
+                });
+            }, 900); // 2 minutes
+        });
+
+        // Optionally, you can also remove the message when new data is input
+        // Example: when the form is submitted
+        $('form').submit(function () {
+            $('#successMessage').remove();
+        });
+    </script>
+}

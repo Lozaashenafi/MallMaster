@@ -1,10 +1,17 @@
+@using MallMinder.Data
+@using MallMinder.Models;
+@model List<MallMinder.Models.Room>
+@inject AppDbContext _context
 @{
     ViewData["Title"] = "room Page";
     @* Layout = null; *@
 }
+@{
+    int mallId = ViewBag.MallId;
+    var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
+}
 <div class="row">
-    <div class="col-lg-8 grid-margin stretch-card">
-
+    <div class="col-lg-9 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Rooms Table</h4>
@@ -13,30 +20,21 @@
                 <div class="table-responsive">
                     <div class="row">
                         <div class="col-sm-7 form-group row">
-                            <label class="col-sm-3 col-form-label">Search</label>
-                            <div class="col-sm-4">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="membershipRadios"
-                                            id="membershipRadios1" value="" checked="">Floor<i
-                                            class="input-helper"></i></label>
-                                </div>
-                            </div>
-                            <div class="col-sm-5">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="membershipRadios"
-                                            id="membershipRadios2" value="option2">Room <i
-                                            class="input-helper"></i></label>
-                                </div>
-                            </div>
+                            <label class="col-sm-3 col-form-label">floor</label>
+                            <select class=" col-sm-3 form-control">
+                                @foreach (var floor in floors)
+                                {
+                                    <option value="@floor.Id">@floor.FloorNumber</option>
+                                }
+                            </select>
                         </div>
                         <div class="col-sm-5 form-group">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Recipient's username"
-                                    aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" placeholder="Search Room No" id="searchInput"
+                                    aria-label="Search Room No" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-sm btn-primary" type="button">Search</button>
+                                    <button class="btn btn-sm btn-primary" type="button"
+                                        id="searchButton">Search</button>
                                 </div>
                             </div>
                         </div>
@@ -53,73 +51,43 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>1st</td>
-                                <td>3 care</td>
-                                <td>
-                                    <div class=" form-check form-switch" style="margin-left: 30px;">
-                                        <input class="form-check-input  text-warning" type="checkbox" id="mySwitch"
-                                            value="yes" checked>
-                                    </div>
-                                </td>
-                                <td><label class="badge badge-danger">Pending</label></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>1st</td>
-                                <td>4 care</td>
-                                <td>
-                                    <div class=" form-check form-switch" style="margin-left: 30px;">
-                                        <input class="form-check-input  text-warning" type="checkbox" id="mySwitch"
-                                            value="yes" checked>
-                                    </div>
-                                </td>
-                                <td><label class="badge badge-warning">In progress</label></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>4th</td>
-                                <td>7 care</td>
-                                <td>
-                                    <div class=" form-check form-switch" style="margin-left: 30px;">
-                                        <input class="form-check-input  text-warning" type="checkbox" id="mySwitch"
-                                            value="yes" checked>
-                                    </div>
-                                </td>
-                                <td><label class="badge badge-info">Fixed</label></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>2nd</td>
-                                <td>4 care</td>
-                                <td>
-                                    <div class=" form-check form-switch" style="margin-left: 30px;">
-                                        <input class="form-check-input  text-warning" type="checkbox" id="mySwitch"
-                                            value="yes" checked>
-                                    </div>
-                                </td>
-                                <td><label class="badge badge-success">Completed</label></td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>1st</td>
-                                <td>20</td>
-                                <td>
-                                    <div class=" form-check form-switch" style="margin-left: 30px;">
-                                        <input class="form-check-input  text-warning" type="checkbox" id="mySwitch"
-                                            value="yes" checked>
-                                    </div>
-                                </td>
-                                <td><label class="badge badge-warning">In progress</label></td>
-                            </tr>
+                            @foreach (var room in Model)
+                            {
+                                var floor = _context.Floor.FirstOrDefault(f => f.Id == room.FloorId);
+                                <tr>
+                                    <td>@room.RoomNumber</td>
+                                    <td>@(floor != null ? floor.FloorNumber : "")</td>
+                                    <td>@room.Care</td>
+                                    <td>
+                                        <div class="form-check form-switch" style="margin-left: 30px;">
+                                            <input class="form-check-input text-warning" type="checkbox"
+                                                id="priceCheckbox-@room.Id" @(room.PricePercareFlag ? "checked" : "")>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (room.Status == "Free")
+                                        {
+                                            <label class="badge badge-danger">@room.Status</label>
+                                        }
+                                        else if (room.Status == "Occupied")
+                                        {
+                                            <label class="badge badge-success">@room.Status</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="badge badge-info">@room.Status</label>
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-4 card">
+    <div class="col-lg-3 card">
         <div class="card-body">
             <h4 class="card-title custom-margin-bottom-40">Add Room Price</h4>
 
@@ -135,20 +103,16 @@
 
                     <button class="badge badge-info select_button " id="increase-btn">+</button>
                 </div>
-                <div class="dropdown custom-margin-bottom-20 ">
-                    <button class="btn btn-outline-primary dropdown-toggle" type="button"
-                        id="dropdownMenuOutlineButton1" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> Floor Number </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOutlineButton1">
-                        <h6 class="dropdown-header">1st</h6>
-                        <a class="dropdown-item" href="#">2nd</a>
-                        <a class="dropdown-item" href="#">3rd</a>
-                        <a class="dropdown-item" href="#">4th</a>
-                        <a class="dropdown-item" href="#">5th</a>
-                        <a class="dropdown-item" href="#">6th</a>
-                    </div>
-                </div>
                 <div>
+                    <p class="text-info">Floor Number</p>
+                </div>
+                <select class="form-control">
+                    @foreach (var floor in floors)
+                    {
+                        <option value="@floor.Id">@floor.FloorNumber</option>
+                    }
+                </select>
+                <div class="mt-2">
                     <p class="text-danger">Price</p>
                 </div>
                 <div class="">
