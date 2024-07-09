@@ -29,14 +29,15 @@
                             </select>
                         </div>
                         <div class="col-sm-5 form-group">
-                            <div class="input-group">
+                            <form method="get" class="input-group" asp-action="Index" asp-controller="Room">
                                 <input type="text" class="form-control" placeholder="Search Room No" id="searchInput"
                                     aria-label="Search Room No" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-sm btn-primary" type="button"
+                                    <button class="btn btn-sm btn-primary" type="submit"
                                         id="searchButton">Search</button>
                                 </div>
-                            </div>
+                            </form>
+
                         </div>
                     </div>
 

@@ -44,6 +44,7 @@ namespace MallMinder.Controllers
             return View(rooms);
         }
 
+
         public IActionResult AddRoom()
         {
             // Get the current user

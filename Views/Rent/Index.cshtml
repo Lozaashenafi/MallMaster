@@ -1,13 +1,28 @@
+@using MallMinder.Data
+@using MallMinder.Models
+@inject AppDbContext _context
+
+@{
+    int mallId = ViewBag.MallId;
+    var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
+    var Rooms = _context.Room
+    .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
+    .Where(r => r.Status == "free").ToList();
+
+    var roomTypes = _context.RentType.ToList();
+}
+
+
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Horizontal Two column</h4>
+            <h4 class="card-title">Rent</h4>
             <form class="form-sample">
-                <p class="card-description"> Personal info </p>
+                <p class="card-description"> info </p>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">First Name</label>
+                            <label class="col-sm-3 col-form-label">User Name</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control">
                             </div>
@@ -15,9 +30,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Last Name</label>
+                            <label class="col-sm-3 col-form-label">Payment Duration</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control">
+                                <input type="number" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -25,116 +40,164 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Gender</label>
+                            <label class="col-sm-3 col-form-label">Free Room</label>
                             <div class="col-sm-9">
                                 <select class="form-control">
-                                    <option>Male</option>
-                                    <option>Female</option>
+                                    @foreach (var room in Rooms)
+                                    {
+                                        var floor = _context.Floor.FirstOrDefault(f => f.Id == room.FloorId);
+
+                                        if (floor != null)
+                                        {
+                                            <option value="@room.Id">@room.RoomNumber - @floor.FloorNumber</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@room.Id">@room.RoomNumber - Floor Not Found</option>
+                                        }
+                                    }
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Date of Birth</label>
+                            <label class="col-sm-3 col-form-label">Rental Date</label>
                             <div class="col-sm-9">
                                 <input class="form-control" placeholder="dd/mm/yyyy">
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <p class="card-description">Choose Rental type </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
+                                    checked=""> Shops and Stores <i class="input-helper"></i></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
+                                    checked=""> Food and Drink <i class="input-helper"></i></label>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Category</label>
+
                             <div class="col-sm-9">
                                 <select class="form-control">
-                                    <option>Category1</option>
-                                    <option>Category2</option>
-                                    <option>Category3</option>
-                                    <option>Category4</option>
+                                    @foreach (var roomType in roomTypes)
+                                    {
+                                        if (roomType.Tag == "Shops and Stores")
+                                        {
+                                            <option value="@roomType.Id">@roomType.Type</option>
+                                        }
+                                    }
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Membership</label>
-                            <div class="col-sm-4">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="membershipRadios"
-                                            id="membershipRadios1" value="" checked=""> Free <i
-                                            class="input-helper"></i></label>
-                                </div>
-                            </div>
-                            <div class="col-sm-5">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input type="radio" class="form-check-input" name="membershipRadios"
-                                            id="membershipRadios2" value="option2"> Professional <i
-                                            class="input-helper"></i></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p class="card-description"> Address </p>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Address 1</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">State</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Address 2</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Postcode</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">City</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Country</label>
+
                             <div class="col-sm-9">
                                 <select class="form-control">
-                                    <option>America</option>
-                                    <option>Italy</option>
-                                    <option>Russia</option>
-                                    <option>Britain</option>
+                                    @foreach (var roomType in roomTypes)
+                                    {
+                                        if (roomType.Tag == "Food and Drink")
+                                        {
+                                            <option value="@roomType.Id">@roomType.Type</option>
+                                        }
+                                    }
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
+                                    checked=""> Services<i class="input-helper"></i></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
+                                    checked=""> Entertainment<i class="input-helper"></i></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+
+                            <div class="col-sm-9">
+                                <select class="form-control">
+                                    @foreach (var roomType in roomTypes)
+                                    {
+                                        if (roomType.Tag == "Services")
+                                        {
+                                            <option value="@roomType.Id">@roomType.Type</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+
+                            <div class="col-sm-9">
+                                <select class="form-control">
+                                    @foreach (var roomType in roomTypes)
+                                    {
+                                        if (roomType.Tag == "Entertainment")
+                                        {
+                                            <option value="@roomType.Id">@roomType.Type</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
+                                    checked=""> Other<i class="input-helper"></i></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+
+                            <div class="col-sm-9">
+                                <input type="" class="form-control" id="" placeholder="other">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-primary btn-rounded btn-fw">Submit</button>
+                                <button type="button" class="btn btn-rounded btn-outline-light btn-fw">Cancel</button>
                             </div>
                         </div>
                     </div>
