@@ -29,6 +29,26 @@
       "PackagePath": "staticwebassets\\css\\css\\vendor.bundle.base.css"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\css\\custom_dt_html5.css",
+      "PackagePath": "staticwebassets\\css\\custom_dt_html5.css"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\css\\custom_dt_multiple_tables.css",
+      "PackagePath": "staticwebassets\\css\\custom_dt_multiple_tables.css"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\css\\datatables.css",
+      "PackagePath": "staticwebassets\\css\\datatables.css"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\css\\demo.css",
+      "PackagePath": "staticwebassets\\css\\demo.css"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\css\\dt-global_style.css",
+      "PackagePath": "staticwebassets\\css\\dt-global_style.css"
+    },
+    {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\css\\jvectormap\\jquery-jvectormap-world-mill-en.js",
       "PackagePath": "staticwebassets\\css\\jvectormap\\jquery-jvectormap-world-mill-en.js"
     },
@@ -77,12 +97,44 @@
       "PackagePath": "staticwebassets\\img\\logo3.png"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\buttons.html5.min.js",
+      "PackagePath": "staticwebassets\\js\\buttons.html5.min.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\buttons.print.min.js",
+      "PackagePath": "staticwebassets\\js\\buttons.print.min.js"
+    },
+    {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\dashboard.js",
       "PackagePath": "staticwebassets\\js\\dashboard.js"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\dataTables.buttons.min.js",
+      "PackagePath": "staticwebassets\\js\\dataTables.buttons.min.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\datatables.js",
+      "PackagePath": "staticwebassets\\js\\datatables.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\jszip.min.js",
+      "PackagePath": "staticwebassets\\js\\jszip.min.js"
+    },
+    {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\tables-datatables-advanced.js",
+      "PackagePath": "staticwebassets\\js\\tables-datatables-advanced.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\tables-datatables-basic.js",
+      "PackagePath": "staticwebassets\\js\\tables-datatables-basic.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\tables-datatables-extensions.js",
+      "PackagePath": "staticwebassets\\js\\tables-datatables-extensions.js"
     },
     {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\vendor.bundle.base.js",

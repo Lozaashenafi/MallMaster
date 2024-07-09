@@ -2,6 +2,9 @@
 @using MallMinder.Models;
 @model List<MallMinder.Models.Room>
 @inject AppDbContext _context
+<link rel="stylesheet" type="text/css" href="/css/datatables.css">
+<link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
+<link rel="stylesheet" type="text/css" href="/css/demo.css">
 @{
     ViewData["Title"] = "room Page";
     @* Layout = null; *@
@@ -18,30 +21,9 @@
                 @* <p class="card-description"> Add class <code>.table</code> *@
                 </p>
                 <div class="table-responsive">
-                    <div class="row">
-                        <div class="col-sm-7 form-group row">
-                            <label class="col-sm-3 col-form-label">floor</label>
-                            <select class=" col-sm-3 form-control">
-                                @foreach (var floor in floors)
-                                {
-                                    <option value="@floor.Id">@floor.FloorNumber</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-sm-5 form-group">
-                            <form method="get" class="input-group" asp-action="Index" asp-controller="Room">
-                                <input type="text" class="form-control" placeholder="Search Room No" id="searchInput"
-                                    aria-label="Search Room No" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-sm btn-primary" type="submit"
-                                        id="searchButton">Search</button>
-                                </div>
-                            </form>
 
-                        </div>
-                    </div>
 
-                    <table class="table">
+                    <table id="dt-table" class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Room No</th>
@@ -83,6 +65,16 @@
                                 </tr>
                             }
                         </tbody>
+                        <tfoot>
+                            <tr>
+
+                                <th>Room No</th>
+                                <th> Floor </th>
+                                <th> Care </th>
+                                <th> </th>
+                                <th> Status </th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -125,3 +117,57 @@
         </div>
     </div>
 </div>
+@section scripts {
+    <script src="/js/datatables.js"></script>
+    <script src="/js/dataTables.buttons.min.js"></script>
+    <script src="/js/jszip.min.js"></script>
+    <script src="/js/buttons.html5.min.js"></script>
+    <script src="/js/buttons.print.min.js"></script>
+    <script src="/js/custom_miscellaneous.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            var table = $('#dt-table').DataTable({
+                dom: "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>" +
+                    "<'table-responsive'tr>" +
+                    "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                buttons: [
+                    { extend: 'excel', className: 'btn btn-outline-light' },
+                    { extend: 'print', className: 'btn btn-outline-light' }
+                ],
+                oLanguage: {
+                    oPaginate: {
+                        sPrevious: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        sNext: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    sInfo: "Showing page _PAGE_ of _PAGES_",
+                    sSearch: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    sSearchPlaceholder: "Search...",
+                    sLengthMenu: "Results : _MENU_"
+                },
+                stripeClasses: [],
+                lengthMenu: [7, 10, 20, 50],
+                pageLength: 7,
+                columnDefs: [
+                    { targets: [3], searchable: false } // Disable search on the 4th column (Price Per Care)
+                ]
+            });
+
+            // Add search inputs for all columns except "Price Per Care"
+            $('#dt-table tfoot th').not(':eq(3)').each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+            });
+
+            // Apply individual column search functionality
+            table.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+        });
+    </script>
+}

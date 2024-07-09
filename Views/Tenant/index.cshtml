@@ -1,41 +1,98 @@
 @model List<AppUser>
 @{
-    ViewData["Title"] = "tenant Page";
-    @* Layout = null; *@
+    ViewData["Title"] = "Tenant Page";
 }
-<div class="row">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title text-warning">Tenant List</h4>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="text-white">Tenant Name</th>
-                            <th class="text-white">Room NO</th>
-                            <th class="text-white">Floor NO</th>
-                            <th class="text-white">Phone Number</th>
-                            <th class="text-white">Payment Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in Model)
-                        {
-                            <tr>
-                                <td class="text-light">@user.FirstName</td>
-                                <td class="text-light">012</td>
-                                <td class="text-light">2</td>
-                                <td class="text-light">0988776555</td>
-                                <td>
-                                    <div class="badge badge-outline-success">
-                                        payed
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+
+<link rel="stylesheet" type="text/css" href="/css/datatables.css">
+<link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
+<link rel="stylesheet" type="text/css" href="/css/demo.css">
+
+<div class="card">
+    <table id="dt-table" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Tenant Name</th>
+                <th>Room No</th>
+                <th>Floor No</th>
+                <th>Phone Number</th>
+                <th>Payment Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td class="text-light">@user.FirstName</td>
+                    <td class="text-light">012</td>
+                    <td class="text-light">2</td>
+                    <td class="text-light">0988776555</td>
+                    <td>
+                        <div class="badge badge-outline-warning">
+                            Paid
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Tenant Name</th>
+                <th>Room No</th>
+                <th>Floor No</th>
+                <th>Phone Number</th>
+                <th>Payment Status</th>
+            </tr>
+        </tfoot>
+    </table>
 </div>
+
+@section scripts {
+    <script src="/js/datatables.js"></script>
+    <script src="/js/dataTables.buttons.min.js"></script>
+    <script src="/js/jszip.min.js"></script>
+    <script src="/js/buttons.html5.min.js"></script>
+    <script src="/js/buttons.print.min.js"></script>
+    <script src="/js/custom_miscellaneous.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dt-table tfoot th').each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+            });
+
+            var table = $('#dt-table').DataTable({
+                dom: "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>" +
+                    "<'table-responsive'tr>" +
+                    "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                buttons: [
+
+
+                    { extend: 'excel', className: 'btn btn-outline-light ' },
+                    { extend: 'print', className: 'btn btn-outline-light ' }
+                ],
+                oLanguage: {
+                    oPaginate: {
+                        sPrevious: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        sNext: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    sInfo: "Showing page _PAGE_ of _PAGES_",
+                    sSearch: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    sSearchPlaceholder: "Search...",
+                    sLengthMenu: "Results : _MENU_"
+                },
+                stripeClasses: [],
+                lengthMenu: [7, 10, 20, 50],
+                pageLength: 7
+            });
+
+            table.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+            });
+        });
+    </script>
+}

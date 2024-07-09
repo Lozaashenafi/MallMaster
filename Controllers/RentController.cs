@@ -40,5 +40,33 @@ namespace MallMinder.Controllers
             // Handle case where user is not found or has no associated malls
             return NotFound();
         }
+        [HttpPost]
+        public IActionResult Index(Rent rent)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Set the AddedDate to current datetime
+                    rent.AddedDate = DateTime.Now;
+
+                    // Add Rent object to DbContext and save changes
+                    _context.Rent.Add(rent);
+                    _context.SaveChanges();
+
+                    // Redirect to a success page or another action
+                    return RedirectToAction("Index", "Tenant");
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception if save fails
+                    ModelState.AddModelError("", "Unable to save changes. Try again later.");
+                    // Log the exception (ex) here if needed
+                }
+            }
+
+            // If ModelState is not valid or save fails, return to the current view with the Rent object
+            return View(rent);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace MallMinder.Data
         public DbSet<Floor> Floor { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<RentType> RentType { get; set; }
+        public DbSet<Rent> Rent { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -16,7 +16,7 @@ namespace MallMinder.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string searchString)
+        public IActionResult Index()
         {
             var userId = _userManager.GetUserId(User);
 
@@ -30,16 +30,16 @@ namespace MallMinder.Controllers
             ViewBag.MallId = mallId;
 
             // Fetch all rooms data associated with the mall
-            var roomsQuery = _context.Room
+            var rooms = _context.Room
                 .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId));
 
             // Apply search filter if search string is provided
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                roomsQuery = roomsQuery.Where(r => r.RoomNumber.ToString().Contains(searchString));
-            }
+            // if (searchString != null && searchString != 0)
+            // {
+            //     roomsQuery = roomsQuery.Where(r => r.RoomNumber == searchString);
+            // }
 
-            var rooms = roomsQuery.ToList();
+            // var rooms = roomsQuery.ToList();
 
             return View(rooms);
         }

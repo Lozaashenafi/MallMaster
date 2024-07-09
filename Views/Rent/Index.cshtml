@@ -1,5 +1,7 @@
 @using MallMinder.Data
 @using MallMinder.Models
+@using MallMinder.Models.ViewModels
+@model MallMinder.Models.ViewModels.RentVM
 @inject AppDbContext _context
 
 @{
@@ -8,31 +10,28 @@
     var Rooms = _context.Room
     .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
     .Where(r => r.Status == "free").ToList();
-
     var roomTypes = _context.RentType.ToList();
 }
-
 
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Rent</h4>
-            <form class="form-sample">
-                <p class="card-description"> info </p>
+            <form class="form-sample" method="Post" asp-action="Index" asp-asp-controller="Rent">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">User Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control">
+                                <input asp-for="TenantUserName" type="text" class="form-control">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Payment Duration</label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control">
+                            <label class="col-sm-4 col-form-label">Payment Duration</label>
+                            <div class="col-sm-7">
+                                <input asp-for="PaymentDuration" type="number" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -42,7 +41,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Free Room</label>
                             <div class="col-sm-9">
-                                <select class="form-control">
+                                <select asp-for="RoomId" class="form-control" id="freeRoomDropdown">
                                     @foreach (var room in Rooms)
                                     {
                                         var floor = _context.Floor.FirstOrDefault(f => f.Id == room.FloorId);
@@ -64,7 +63,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Rental Date</label>
                             <div class="col-sm-9">
-                                <input class="form-control" placeholder="dd/mm/yyyy">
+                                <input asp-for="RentalDate" class="form-control" placeholder="dd/mm/yyyy">
                             </div>
                         </div>
                     </div>
@@ -75,24 +74,26 @@
                     <div class="col-md-6">
                         <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
-                                    checked=""> Shops and Stores <i class="input-helper"></i></label>
+                                <input asp-for="StatusTag" type="radio" class="form-check-input rental-type-radio"
+                                    name="rentalType" data-dropdown="#shopsStoresDropdown" checked> Shops and Stores <i
+                                    class="input-helper"></i></label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
-                                    checked=""> Food and Drink <i class="input-helper"></i></label>
+                                <input asp-for="StatusTag" type="radio" class="form-check-input rental-type-radio"
+                                    name="rentalType" data-dropdown="#foodDrinkDropdown"> Food and Drink <i
+                                    class="input-helper"></i></label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-
+                            <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <select class="form-control">
+                                <select class="form-control rental-type-dropdown" id="shopsStoresDropdown" disabled>
                                     @foreach (var roomType in roomTypes)
                                     {
                                         if (roomType.Tag == "Shops and Stores")
@@ -106,9 +107,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-
+                            <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <select class="form-control">
+                                <select class="form-control rental-type-dropdown" id="foodDrinkDropdown" disabled>
                                     @foreach (var roomType in roomTypes)
                                     {
                                         if (roomType.Tag == "Food and Drink")
@@ -125,24 +126,25 @@
                     <div class="col-md-6">
                         <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
-                                    checked=""> Services<i class="input-helper"></i></label>
+                                <input asp-for="StatusTag" type="radio" class="form-check-input rental-type-radio"
+                                    data-dropdown="#servicesDropdown"> Services<i class="input-helper"></i></label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-check form-check-primary">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
-                                    checked=""> Entertainment<i class="input-helper"></i></label>
+                                <input asp-for="StatusTag" type="radio" class="form-check-input rental-type-radio"
+                                    data-dropdown="#entertainmentDropdown"> Entertainment<i
+                                    class="input-helper"></i></label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
-
+                            <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <select class="form-control">
+                                <select class="form-control rental-type-dropdown" id="servicesDropdown" disabled>
                                     @foreach (var roomType in roomTypes)
                                     {
                                         if (roomType.Tag == "Services")
@@ -156,9 +158,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-
+                            <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <select class="form-control">
+                                <select class="form-control rental-type-dropdown" id="entertainmentDropdown" disabled>
                                     @foreach (var roomType in roomTypes)
                                     {
                                         if (roomType.Tag == "Entertainment")
@@ -174,27 +176,25 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-check form-check-primary">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="ExampleRadio1" id="ExampleRadio1"
-                                    checked=""> Other<i class="input-helper"></i></label>
+                            <label asp-for="StatusTag" class="form-check-label">
+                                <input type="radio" class="form-check-input rental-type-radio" name="rentalType"
+                                    data-dropdown="#otherDropdown"> Other<i class="input-helper"></i></label>
                         </div>
                     </div>
-                    <div class="col-md-6">
 
-                    </div>
                 </div>
                 <div class="row">
+
                     <div class="col-md-6">
                         <div class="form-group row">
-
+                            <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <input type="" class="form-control" id="" placeholder="other">
+                                <input type="text" class="form-control" id="otherRentType" placeholder="Other">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-
                             <div class="col-sm-9">
                                 <button type="button" class="btn btn-primary btn-rounded btn-fw">Submit</button>
                                 <button type="button" class="btn btn-rounded btn-outline-light btn-fw">Cancel</button>
@@ -206,3 +206,25 @@
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Function to toggle dropdowns based on selected radio button
+            $('.rental-type-radio').change(function () {
+                var dropdownId = $(this).data('dropdown');
+                $('.rental-type-dropdown').prop('disabled', true);
+                $(dropdownId).prop('disabled', false);
+            });
+        });
+    </script>
+
+    <style>
+        /* Style for disabled dropdowns */
+        .rental-type-dropdown:disabled {
+            opacity: 1;
+            background-color: #2a3038;
+
+        }
+    </style>
+}
