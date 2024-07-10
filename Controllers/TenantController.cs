@@ -6,6 +6,7 @@ using MallMinder.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MallMinder.Models.ViewModels;
 
 namespace MallMinder.Controllers
 {
@@ -27,21 +28,58 @@ namespace MallMinder.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Ensure the role 'Tenant' exists
-            var tenantRole = await _roleManager.FindByNameAsync("Tenant");
-            if (tenantRole == null)
+            // Fetch all Rent records along with related entities
+            var rents = await _context.Rent.ToListAsync();
+
+
+
+
+            // Prepare a list of TenantVM to store the data to be displayed in the view
+            List<TenantVM> tenantVMs = new List<TenantVM>();
+
+            foreach (var rent in rents)
             {
-                // Handle role not found
-                return NotFound();
+                // Fetch Tenant (AppUser) using TenantId
+                var tenant = await _userManager.FindByIdAsync(rent.TenantId);
+
+
+                // Fetch Room Number using RoomId
+                var roomNumber = await _context.Room
+                    .Where(r => r.Id == rent.RoomId)
+                    .Select(r => r.RoomNumber)
+                    .FirstOrDefaultAsync();
+
+                var type = await _context.RentType.Where(r => r.Id == rent.TypeId).FirstOrDefaultAsync();
+                // Fetch Floor Id using RoomId
+                var floorId = await _context.Room
+                    .Where(r => r.Id == rent.RoomId)
+                    .Select(r => r.FloorId)
+                    .FirstOrDefaultAsync();
+
+                // Fetch Floor using FloorId
+                var floor = await _context.Floor
+                    .FirstOrDefaultAsync(f => f.Id == floorId);
+
+                // Assuming Floor has a FloorNumber property
+                var floorNumber = floor != null ? floor.FloorNumber : null;
+
+                if (tenant != null)
+                {
+                    // Map data to TenantVM
+                    var tenantVM = new TenantVM
+                    {
+                        TenantFirstName = tenant.FirstName, // Assuming AppUser (Tenant) has a FirstName 
+                        RoomNumber = roomNumber, // Assuming Room has a RoomNumber property
+                        FloorNumber = floorNumber,
+                        TenantPhone = tenant.PhoneNumber,
+                        RentType = type.Type
+                    };
+
+                    tenantVMs.Add(tenantVM);
+                }
             }
 
-            // Fetch all users
-            var users = await _userManager.Users.ToListAsync();
-
-            // Filter users who are in the 'Tenant' role
-            var usersInRole = users.Where(u => _userManager.IsInRoleAsync(u, "Tenant").Result).ToList();
-
-            return View(usersInRole);
+            return View(tenantVMs);
         }
 
         public IActionResult AddTenant()

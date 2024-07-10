@@ -31,40 +31,12 @@ namespace MallMinder.Controllers
 
             // Fetch all rooms data associated with the mall
             var rooms = _context.Room
-                .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId));
-
-            // Apply search filter if search string is provided
-            // if (searchString != null && searchString != 0)
-            // {
-            //     roomsQuery = roomsQuery.Where(r => r.RoomNumber == searchString);
-            // }
-
-            // var rooms = roomsQuery.ToList();
+                .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
+                .ToList(); // Execute the query and convert to List<Room>
 
             return View(rooms);
         }
 
-
-        public IActionResult AddRoom()
-        {
-            // Get the current user
-            var currentUser = _userManager.GetUserAsync(User).Result;
-
-            if (currentUser != null)
-            {
-                // Find mall IDs owned by the current user
-                var mallId = _context.MallManagers
-                    .Where(m => m.OwnerId == currentUser.Id) // Adjust this according to your application's ownership logic
-                    .Select(m => m.Id)
-                    .FirstOrDefault();
-                ViewBag.MallId = mallId;
-                // Fetch floors associated with these mall IDs
-                return View();
-            }
-
-            // Handle case where user is not found or has no associated malls
-            return NotFound();
-        }
 
         [HttpPost]
         public IActionResult AddRoom(RoomVM roomVM)
