@@ -1,6 +1,7 @@
 @using MallMinder.Data
 @using MallMinder.Models;
-@model List<MallMinder.Models.Room>
+@* @model List<MallMinder.Models.Room> *@
+@model MallMinder.Models.ViewModels.PricePerCareVM
 @inject AppDbContext _context
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
@@ -11,6 +12,10 @@
 }
 @{
     int mallId = ViewBag.MallId;
+    @* var rooms = ViewBag.rooms; *@
+    var rooms = _context.Room
+    .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
+    .ToList();
     var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
 }
 <div class="row">
@@ -34,7 +39,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var room in Model)
+                            @foreach (var room in rooms)
                             {
                                 var floor = _context.Floor.FirstOrDefault(f => f.Id == room.FloorId);
                                 <tr>
@@ -80,8 +85,53 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 card">
-        <div class="card-body">
+    <div class="col-lg-3 ">
+        <div style="margin-bottom: 20px;" class="card card-body">
+            <h6>Current Price Per Care</h6>
+            <div class=" card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="d-flex align-items-center align-self-start">
+                                <h3 class="mb-0">$17.34</h3>
+                                @* <p class="text-success ml-2 mb-0 font-weight-medium">
+                                +11%
+                                </p> *@
+                            </div>
+                        </div>
+                        @* <div class="col-3">
+                        <div class="icon icon-box-success">
+                        <span class="mdi mdi-arrow-top-right icon-item"></span>
+                        </div>
+                        </div> *@
+                    </div>
+                    <h6 class="text-muted font-weight-normal text-info">
+                        Current Price
+                    </h6>
+                </div>
+            </div>
+            <form method="post" asp-action="Index" asp-action="Room">
+                <div>
+                    <p class="text-info">Floor Number</p>
+                </div>
+                <select class="form-control" asp-for="FloorNumber">
+                    <option value="null">floor</option>
+                    @foreach (var floor in floors)
+                    {
+                        <option value="@floor.Id">@floor.FloorNumber</option>
+                    }
+                </select>
+                <div class="mt-2">
+                    <p class="text-info">New Price</p>
+                </div>
+                <div class="">
+                    <input asp-for="Price" class="select_input form-control " type="Number" id="number-input" value="0"
+                        placeholder="Price">
+                </div>
+                <button type="submit" class="btn btn-inverse-info btn-fw mt-4">Save Change</button>
+            </form>
+        </div>
+        <div class="card card-body">
             <h4 class="card-title custom-margin-bottom-40">Add Room Price</h4>
 
             <div class="dropdown custom-margin-bottom-20 ">
@@ -117,6 +167,7 @@
         </div>
     </div>
 </div>
+
 @section scripts {
     <script src="/js/datatables.js"></script>
     <script src="/js/dataTables.buttons.min.js"></script>

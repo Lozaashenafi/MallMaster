@@ -26,18 +26,51 @@ namespace MallMinder.Controllers
                 return NotFound(); // Handle if user does not own any mall
             }
 
-            var mallId = mall.Id;
+            int mallId = mall.Id;
             ViewBag.MallId = mallId;
 
-            // Fetch all rooms data associated with the mall
-            var rooms = _context.Room
-                .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
-                .ToList(); // Execute the query and convert to List<Room>
-
-            return View(rooms);
+            return View();
         }
+        [HttpPost]
+        public IActionResult AddFloorPrice(PricePerCareVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = _userManager.GetUserId(User);
 
+                var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+                if (mall == null)
+                {
+                    return NotFound(); // Handle if user does not own any mall
+                }
 
+                int mallId = mall.Id;
+                // Create PricePerCare object
+                var pricePerCare = new PricePerCare
+                {
+                    FloorId = model.FloorNumber,
+                    Price = model.Price,
+                    MallId = mallId,
+                    CreatedBy = userId,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                };
+
+                // Add PricePerCare object to DbContext and save changes
+                _context.PricePerCare.Add(pricePerCare);
+                _context.SaveChanges();
+
+                // Redirect to a success action or view
+                return RedirectToAction("Index", "Home"); // Redirect to home page or another appropriate action
+            }
+
+            // If ModelState is not valid, return to the current view with the FloorPriceVM object
+            return View(model);
+        }
+        public IActionResult AddRoom()
+        {
+            return View();
+        }
         [HttpPost]
         public IActionResult AddRoom(RoomVM roomVM)
         {

@@ -7,9 +7,10 @@
     ViewData["Title"] = "Room Page";
 }
 @{
-    int mallId = ViewBag.MallId;
+    int mallId = ViewBag.MallId ?? 0; // Default to 0 if ViewBag.MallId is null
     var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
 }
+
 <div class="card">
     <div class="card-body">
         <h4 class="card-title">Add Rooms</h4>

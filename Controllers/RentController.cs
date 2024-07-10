@@ -51,69 +51,59 @@ namespace MallMinder.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+
+                var currentUser = _userManager.GetUserAsync(User).Result;
+
+                // Fetch TenantId from AppUser based on TenantUserName
+                var tenantUser = _context.Users.FirstOrDefault(u => u.UserName == rentVM.TenantUserName);
+                if (tenantUser == null)
                 {
-                    var currentUser = _userManager.GetUserAsync(User).Result;
+                    ModelState.AddModelError("", "Tenant user not found.");
+                    return View(rentVM);
+                }
 
-                    // Fetch TenantId from AppUser based on TenantUserName
-                    var tenantUser = _context.Users.FirstOrDefault(u => u.UserName == rentVM.TenantUserName);
-                    if (tenantUser == null)
+                // Fetch room
+                var room = _context.Room.FirstOrDefault(r => r.Id == rentVM.RoomId);
+                if (room == null)
+                {
+                    ModelState.AddModelError("", "Room not found.");
+                    return View(rentVM);
+                }
+
+                int typeId = rentVM.TypeId ?? 0; // Default to 0 if TypeId is null
+                if (!string.IsNullOrEmpty(rentVM.Other))
+                {
+                    var otherType = new RentType
                     {
-                        ModelState.AddModelError("", "Tenant user not found.");
-                        return View(rentVM);
-                    }
-
-                    // Fetch room
-                    var room = _context.Room.FirstOrDefault(r => r.Id == rentVM.RoomId);
-                    if (room == null)
-                    {
-                        ModelState.AddModelError("", "Room not found.");
-                        return View(rentVM);
-                    }
-
-                    int typeId = rentVM.TypeId ?? 0; // Default to 0 if TypeId is null
-                    if (!string.IsNullOrEmpty(rentVM.Other))
-                    {
-                        var otherType = new RentType
-                        {
-                            Tag = "Other",
-                            Type = rentVM.Other
-                        };
-
-                        _context.RentType.Add(otherType);
-                        _context.SaveChanges();
-                        typeId = otherType.Id;
-                    }
-
-                    // Create Rent object
-                    var rent = new Rent
-                    {
-                        RoomId = rentVM.RoomId,
-                        TenantId = tenantUser.Id,
-                        RentalDate = rentVM.RentalDate,
-                        PaymentDuration = rentVM.PaymentDuration, // Default to 0 if PaymentDuration is null
-                        AddedDate = DateTime.Now,
-                        TypeId = typeId, // Assign RentType Id
-                        CreatedBy = currentUser.Id
+                        Tag = "Other",
+                        Type = rentVM.Other
                     };
 
-                    // Add Rent object to DbContext and save changes
-                    _context.Rent.Add(rent);
+                    _context.RentType.Add(otherType);
                     _context.SaveChanges();
-
-                    // Update Room status to 'Occupied'
-                    room.Status = "Occupied";
-                    _context.SaveChanges();
-
-
-                    return RedirectToAction("Index", "Tenant");
+                    typeId = otherType.Id;
                 }
-                catch (Exception ex)
+
+                // Create Rent object
+                var rent = new Rent
                 {
-                    // Handle exception if save fails
-                    ModelState.AddModelError("", "Unable to save changes. Please try again later.");
-                    // Log the exception (ex) here if needed
-                }
+                    RoomId = rentVM.RoomId,
+                    TenantId = tenantUser.Id,
+                    RentalDate = rentVM.RentalDate,
+                    PaymentDuration = rentVM.PaymentDuration, // Default to 0 if PaymentDuration is null
+                    AddedDate = DateTime.Now,
+                    TypeId = typeId, // Assign RentType Id
+                    CreatedBy = currentUser.Id
+                };
+
+                // Add Rent object to DbContext and save changes
+                _context.Rent.Add(rent);
+                _context.SaveChanges();
+
+                // Update Room status to 'Occupied'
+                room.Status = "Occupied";
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Tenant");
             }
 
             // If ModelState is not valid or save fails, return to the current view with the RentVM object

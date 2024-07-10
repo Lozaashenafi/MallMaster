@@ -5,7 +5,7 @@
 @inject AppDbContext _context
 
 @{
-    int mallId = ViewBag.MallId;
+    int mallId = ViewBag.MallId ?? 0;
     var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
     var Rooms = _context.Room
     .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
@@ -68,7 +68,6 @@
                         </div>
                     </div>
                 </div>
-                <p class="card-description">Choose Rental type </p>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-check form-check-primary">
