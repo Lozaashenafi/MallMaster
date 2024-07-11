@@ -16,5 +16,8 @@ namespace MallMinder.Models
 
         [Required]
         public int MallId { get; set; }
+
+
+        public virtual Mall Mall { get; set; }
     }
 }

@@ -20,5 +20,6 @@ namespace MallMinder.Models
         public bool PricePercareFlag { get; set; }
         public bool RoomDeactivateFlag { get; set; }
 
+        public virtual Floor Floor { get; set; }
     }
 }

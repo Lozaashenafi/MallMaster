@@ -45,6 +45,7 @@ namespace MallMinder.Controllers
                 }
 
                 int mallId = mall.Id;
+                ViewBag.MallId = mallId;
                 // Create PricePerCare object
                 var pricePerCare = new PricePerCare
                 {
@@ -69,6 +70,18 @@ namespace MallMinder.Controllers
         }
         public IActionResult AddRoom()
         {
+            var userId = _userManager.GetUserId(User);
+
+            var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+            if (mall == null)
+            {
+                return NotFound(); // Handle if user does not own any mall
+            }
+
+            int mallId = mall.Id;
+            ViewBag.MallId = mallId;
+
+
             return View();
         }
         [HttpPost]

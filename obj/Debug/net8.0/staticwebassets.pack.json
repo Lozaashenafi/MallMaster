@@ -369,6 +369,30 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\custom-select2.js",
+      "PackagePath": "staticwebassets\\plugins\\select2\\custom-select2.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\select2-spinner.gif",
+      "PackagePath": "staticwebassets\\plugins\\select2\\select2-spinner.gif"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\select2.min.css",
+      "PackagePath": "staticwebassets\\plugins\\select2\\select2.min.css"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\select2.min.js",
+      "PackagePath": "staticwebassets\\plugins\\select2\\select2.min.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\select2.png",
+      "PackagePath": "staticwebassets\\plugins\\select2\\select2.png"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\select2x2.png",
+      "PackagePath": "staticwebassets\\plugins\\select2\\select2x2.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MallMinder.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

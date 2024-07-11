@@ -4,14 +4,7 @@
 @model MallMinder.Models.ViewModels.RentVM
 @inject AppDbContext _context
 
-@{
-    int mallId = ViewBag.MallId ?? 0;
-    var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
-    var Rooms = _context.Room
-    .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
-    .Where(r => r.Status == "free").ToList();
-    var roomTypes = _context.RentType.ToList();
-}
+<link href="/plugins/select2/select2.min.css" rel="stylesheet" />
 
 <div class="col-12 grid-margin">
     <div class="card">
@@ -41,20 +34,9 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Free Room</label>
                             <div class="col-sm-9">
-                                <select asp-for="RoomId" class="form-control" id="freeRoomDropdown">
-                                    @foreach (var room in Rooms)
-                                    {
-                                        var floor = _context.Floor.FirstOrDefault(f => f.Id == room.FloorId);
-
-                                        if (floor != null)
-                                        {
-                                            <option value="@room.Id">@room.RoomNumber - @floor.FloorNumber</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@room.Id">@room.RoomNumber - Floor Not Found</option>
-                                        }
-                                    }
+                                <select asp-for="RoomId" class="form-control selection CustomSelect"
+                                    id="freeRoomDropdown" asp-items="ViewBag.Rooms">
+                                    <option value="@null"> Select Room</option>
                                 </select>
                             </div>
                         </div>
@@ -63,7 +45,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Rental Date</label>
                             <div class="col-sm-9">
-                                <input asp-for="RentalDate" class="form-control" placeholder="dd/mm/yyyy">
+                                <input type="date" asp-for="RentalDate" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -82,12 +64,9 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <select asp-for="TypeId" class="form-control rental-type-dropdown"
-                                    id="shopsStoresDropdown">
-                                    @foreach (var roomType in roomTypes)
-                                    {
-                                        <option value="@roomType.Id">@roomType.Type</option>
-                                    }
+                                <select asp-for="TypeId" class="form-control rental-type-dropdown selection"
+                                    id="shopsStoresDropdown" asp-items="ViewBag.rentTypes">
+                                    <option value="@null"> Select Rent Type</option>
                                 </select>
                             </div>
                         </div>
@@ -101,10 +80,8 @@
                             <label class="col-sm-3 col-form-label" for="">Other</label>
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
-
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label"></label>
@@ -127,3 +104,11 @@
         </div>
     </div>
 </div>
+@section scripts {
+
+    <script src="/plugins/select2/select2.min.js"></script>
+    <script>
+        $(".selection").select2();
+    </script>
+
+}

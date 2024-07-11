@@ -3,6 +3,8 @@ using MallMinder.Models;
 using MallMinder.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -30,14 +32,17 @@ namespace MallMinder.Controllers
                     .Select(m => m.Id)
                     .FirstOrDefault();
 
-                ViewBag.MallId = mallId;
+                var rooms = _context.Room.Include(x => x.Floor).Where(r => r.Floor.MallId == mallId && r.Status == "free").Select(r => new
+                {
+                    Id = r.Id,
+                    textVal = r.RoomNumber + "-" + r.Floor.FloorNumber
+                }).ToList();
 
-                var rooms = _context.Room
-                    .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
-                    .Where(r => r.Status == "Free")
-                    .ToList(); // Materialize the rooms query
-
+                ViewBag.floors = new SelectList(_context.Floor.Where(f => f.MallId == mallId).ToList(), "Id", "FloorNumber");
+                ViewBag.Rooms = new SelectList(rooms, "Id", "textVal");
+                ViewBag.rentTypes = new SelectList(_context.RentType.ToList(), "Id", "Type");
                 var model = new RentVM();
+
                 // Initialize other properties as needed
                 return View(model);
             }

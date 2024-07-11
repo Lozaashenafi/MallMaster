@@ -114,9 +114,12 @@
                             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                                 @if (SignInManager.IsSignedIn(User))
                                 {
+                                    string email = @User.Identity!.Name;
+                                    string[] parts = email.Split('@');
+                                    string username = parts[0];
                                     <div class="navbar-profile">
                                         <p class="mb-0 d-none d-sm-block navbar-profile-name">
-                                            @User.Identity!.Name
+                                            @username
                                         </p>
                                         <ion-icon class="d-none d-sm-block" name="caret-down-outline"></ion-icon>
                                     </div>
@@ -137,7 +140,7 @@
                                     </div>
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item preview-item" asp-action="Logout" asp-controller="Account" >
+                                <a class="dropdown-item preview-item" asp-action="Logout" asp-controller="Account">
                                     <div class="preview-thumbnail">
                                         <div class="preview-icon bg-dark rounded-circle">
                                             <ion-icon class=" text-danger" name="log-out-outline"></ion-icon>

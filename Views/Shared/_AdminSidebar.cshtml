@@ -15,7 +15,10 @@
                     <div class="profile-name">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <h5 class="mb-0 font-weight-normal">@User.Identity!.Name</h5>
+                            string email = @User.Identity!.Name;
+                            string[] parts = email.Split('@');
+                            string username = parts[0];
+                            <h5 class="mb-0 font-weight-normal">@username</h5>
                         }
                     </div>
                 </div>
@@ -121,7 +124,7 @@
             </a>
         </li>
         <li class="nav-item menu-items nav_active">
-            <a class="nav-link" href="pages/charts/chartjs.html">
+            <a class="nav-link" asp-controller="Maintenance" asp-action="Index">
                 <span class="menu-icon">
                     <ion-icon class="text-warning" name="construct-outline"></ion-icon>
                 </span>

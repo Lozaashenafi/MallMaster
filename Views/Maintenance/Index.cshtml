@@ -1,0 +1,145 @@
+@using MallMinder.Data
+@using MallMinder.Models
+@using MallMinder.Models.ViewModels
+@using Microsoft.AspNetCore.Identity
+@inject AppDbContext _context
+@{
+    ViewData["Title"] = "Maintenance";
+    // Assuming you have a shared layout for your application
+}
+<link href="/plugins/select2/select2.min.css" rel="stylesheet" />
+
+<div class="col-12 grid-margin">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Maintenance Request</h4>
+            <form class="form-sample">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="col-sm-3 col-form-label" for="">Tenant</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="col-sm-6 col-form-label" for="">Maintenance Type</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="freeRoomDropdown" name="freeRoomDropdown">
+                                    @* @foreach (var rent in ViewBag.rents)
+                                    {
+                                    <option value="@rent.Id"> @rent.RoomId - @rent.TenantId</option>
+                                    } *@
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <select class="form-control" asp-items="ViewBag.maintenanceType" id="freeRoomDropdown"
+                                    name="freeRoomDropdown">
+
+                                    <option value="@null">maintenance Type</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="col-sm-3 col-form-label" for="">Other</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary btn-rounded btn-fw">Approved</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="otherRentType" placeholder="Other">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Maintenance completion</h4>
+            <form class="form-sample" method="Post" asp-action="Index" asp-controller="Rent">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="col-sm-6 col-form-label" for="">On Maintenance</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-check-primary">
+                            <label class="col-sm-6 col-form-label" for="">Cost</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="freeRoomDropdown" name="freeRoomDropdown">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" id="" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-3">
+                                <button type="submit" class="btn btn-primary btn-rounded btn-fw">complet</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="/plugins/select2/select2.min.js"></script>
+    <script>
+        $(".selection").select2();
+    </script>
+
+}

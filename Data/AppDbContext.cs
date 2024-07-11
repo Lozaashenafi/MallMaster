@@ -15,6 +15,8 @@ namespace MallMinder.Data
         public DbSet<RentType> RentType { get; set; }
         public DbSet<Rent> Rent { get; set; }
         public DbSet<PricePerCare> PricePerCare { get; set; }
+        public DbSet<MaintenanceStatusType> MaintenanceStatusType { get; set; }
+        public DbSet<MaintenanceType> MaintenanceType { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
