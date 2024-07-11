@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+
 using MallMinder.Data;
 using MallMinder.Models;
+using MallMinder.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace MallMinder.Controllers
@@ -32,20 +30,50 @@ namespace MallMinder.Controllers
                     .Where(m => m.OwnerId == currentUser.Id)
                     .Select(m => m.Id)
                     .FirstOrDefault();
-                var rooms = _context.Room
+
+                // Step 1: Fetch Occupied Rooms in the Current Mall
+                var occupiedRooms = _context.Room
                     .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
                     .Where(r => r.Status == "Occupied")
-                    .ToList(); // Materialize the rooms query
-                var roomIds = rooms.Select(r => r.Id).ToList(); // Materialize room IDs
-                var rents = _context.Rent
-                    .Where(rent => roomIds.Contains(rent.RoomId))
                     .ToList();
-                var maintenanceStatusType =
+
+                // Step 2: Fetch Room IDs
+                var roomIds = occupiedRooms.Select(r => r.Id).ToList();
+                // Step 3: Fetch Rent Details including Tenant Information
+                var rents = _context.Rent
+                .Include(r => r.Room)     // Include room details
+                .Where(r => roomIds.Contains(r.RoomId))
+                .Select(r => new
+                {
+                    RentId = r.Id,
+                    RoomNumber = "Room  - " + " " + r.Room.RoomNumber,
+                })
+                .ToList();
+                // 'rents' now contains a list of objects with RentId, RoomNumber, and TenantName
+
                 ViewBag.maintenanceType = new SelectList(_context.MaintenanceType.ToList(), "Id", "Type");
-                ViewBag.rents = rents;
+                ViewBag.rents = new SelectList(rents, "RentId", "RoomNumber");
+
             }
             return View();
         }
+        [HttpPost]
+        // public async Task<IActionResult> Index(MaintenanceRequestVM model)
+        // {
+        //     if (ModelState.IsValid)
+        //     {
+
+        //         var maintenance = new Maintenance
+        //         {
+        //             RentId = model.RentId,
+        //             MaintenanceTypeId = model.MaintenanceTypeId,
+        //             RequestedDate = model.RequestedDate,
+        //         };
+
+        //     }
+
+        // }
+
 
     }
 }

@@ -12,17 +12,16 @@ namespace MallMinder.Models
     public class Maintenance
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string MaintenanceTypeId { get; set; }
+        public int MaintenanceTypeId { get; set; }
 
-        public string TenantId { get; set; }
-        [ForeignKey("TenantId")]
-        public virtual AppUser tenantId { get; set; }
+        public int RentId { get; set; }
+
         public DateTime RequestedDate { get; set; }
-        public string Description { get; set; }
-        public int Cost { get; set; }
+        public DateTime? CompletedDate { get; set; }
+        public string? Description { get; set; }
+        public int? Cost { get; set; }
 
-
+        public virtual Rent Rent { get; set; }
         public virtual MaintenanceType MaintenanceType { get; set; }
 
     }

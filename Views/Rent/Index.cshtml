@@ -4,7 +4,8 @@
 @model MallMinder.Models.ViewModels.RentVM
 @inject AppDbContext _context
 
-<link href="/plugins/select2/select2.min.css" rel="stylesheet" />
+<link href="/plugins/select2-2/select2.min_2.css" rel="stylesheet" />
+<link href="/plugins/select2-2/select2.min.css" rel="stylesheet" />
 
 <div class="col-12 grid-margin">
     <div class="card">
@@ -52,17 +53,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-check form-check-primary">
-                            <label class="col-sm-3 col-form-label" for="">Rent Type</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label"></label>
+                            <label class="col-sm-3 col-form-label">Rent Type</label>
                             <div class="col-sm-9">
                                 <select asp-for="TypeId" class="form-control rental-type-dropdown selection"
                                     id="shopsStoresDropdown" asp-items="ViewBag.rentTypes">
@@ -72,13 +64,6 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-check form-check-primary">
-                            <label class="col-sm-3 col-form-label" for="">Other</label>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -106,7 +91,8 @@
 </div>
 @section scripts {
 
-    <script src="/plugins/select2/select2.min.js"></script>
+    <script src="/plugins/select2-2/select2.min_2.js"></script>
+    <script src="/plugins/select2-2/select2.min.js"></script>
     <script>
         $(".selection").select2();
     </script>

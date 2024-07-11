@@ -28,14 +28,21 @@ namespace MallMinder.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var currentUser = await _userManager.GetUserAsync(User);  // Assuming async usage
+            var mallId = _context.MallManagers
+                .Where(m => m.OwnerId == currentUser.Id)
+                .Select(m => m.Id)
+                .FirstOrDefault();
+
             // Fetch all Rent records along with related entities
-            var rents = await _context.Rent.ToListAsync();
-
-
-
-
+            var rents = await _context.Rent
+                .Include(r => r.Room)
+                    .ThenInclude(room => room.Floor)  // Include Floor related to Room
+                .Where(r => r.Room.Floor.MallId == mallId)
+                .ToListAsync();
             // Prepare a list of TenantVM to store the data to be displayed in the view
             List<TenantVM> tenantVMs = new List<TenantVM>();
+
 
             foreach (var rent in rents)
             {

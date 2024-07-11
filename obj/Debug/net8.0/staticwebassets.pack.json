@@ -369,6 +369,22 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2-2\\select2.min.css",
+      "PackagePath": "staticwebassets\\plugins\\select2-2\\select2.min.css"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2-2\\select2.min.js",
+      "PackagePath": "staticwebassets\\plugins\\select2-2\\select2.min.js"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2-2\\select2.min_2.css",
+      "PackagePath": "staticwebassets\\plugins\\select2-2\\select2.min_2.css"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2-2\\select2.min_2.js",
+      "PackagePath": "staticwebassets\\plugins\\select2-2\\select2.min_2.js"
+    },
+    {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\custom-select2.js",
       "PackagePath": "staticwebassets\\plugins\\select2\\custom-select2.js"
     },
