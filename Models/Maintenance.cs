@@ -14,7 +14,7 @@ namespace MallMinder.Models
         public int Id { get; set; }
         public int MaintenanceTypeId { get; set; }
 
-        public int RentId { get; set; }
+        public int? RentId { get; set; }
 
         public DateTime RequestedDate { get; set; }
         public DateTime? CompletedDate { get; set; }

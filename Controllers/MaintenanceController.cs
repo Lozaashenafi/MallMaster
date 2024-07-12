@@ -55,25 +55,87 @@ namespace MallMinder.Controllers
                 ViewBag.rents = new SelectList(rents, "RentId", "RoomNumber");
 
             }
-            return View();
+            var viewModel = new MaintenanceCombinedVM
+            {
+                RequestVM = new MaintenanceRequestVM(),
+                CompletVM = new MaintenanceCompletVM()
+            };
+            return View(viewModel);
         }
         [HttpPost]
-        // public async Task<IActionResult> Index(MaintenanceRequestVM model)
+        public async Task<IActionResult> Index(MaintenanceRequestVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Retrieve the current user asynchronously
+                var currentUser = await _userManager.GetUserAsync(User);
+
+                if (currentUser != null)
+                {
+                    int typeId = model.MaintenanceTypeId ?? 0;
+
+                    if (!string.IsNullOrEmpty(model.Other))
+                    {
+                        var otherType = new MaintenanceType
+                        {
+                            Type = model.Other
+                        };
+                        _context.MaintenanceType.Add(otherType);
+                        _context.SaveChanges();
+                        typeId = otherType.Id;
+                    }
+
+                    var maintenance = new Maintenance
+                    {
+                        RentId = model.RentId,
+                        MaintenanceTypeId = typeId,
+                        RequestedDate = model.RequestedDate,
+                    };
+
+                    _context.Maintenance.Add(maintenance);
+                    _context.SaveChanges();
+
+                    var maintenanceStatus = new MaintenanceStatus
+                    {
+                        MaintenanceId = maintenance.Id,
+                        StatusId = 2,
+                        Date = maintenance.RequestedDate,
+                        // createdBy = currentUser.Id, // Ensure currentUser.Id is a string
+                    };
+
+                    var statusesToUpdate = _context.MaintenanceStatus.Where(m => m.MaintenanceId == maintenance.Id);
+
+                    // Loop through each record and set IsActive to false
+                    foreach (var status in statusesToUpdate)
+                    {
+                        status.IsActive = false;
+                    }
+
+                    // Save changes to the database
+                    _context.SaveChanges();
+
+                    // Add new maintenance status
+                    _context.MaintenanceStatus.Add(maintenanceStatus);
+                    _context.SaveChanges();
+                }
+
+                TempData["SuccessMessage"] = "Approved";
+            }
+
+            return RedirectToAction("Index", "Maintenance");
+        }
+        // [HttpPost]
+        // public async Task<ActionResult> Complite(MaintenanceCompletVM model)
         // {
         //     if (ModelState.IsValid)
         //     {
+        //         var currentUser = await _userManager.GetUserAsync(User);
 
-        //         var maintenance = new Maintenance
+        //         if (currentUser != null)
         //         {
-        //             RentId = model.RentId,
-        //             MaintenanceTypeId = model.MaintenanceTypeId,
-        //             RequestedDate = model.RequestedDate,
-        //         };
 
+        //         }
         //     }
-
         // }
-
-
     }
 }

@@ -2,7 +2,7 @@
 @using MallMinder.Models
 @using MallMinder.Models.ViewModels
 @using Microsoft.AspNetCore.Identity
-@model MallMinder.Models.ViewModels.MaintenanceRequestVM
+@model MallMinder.Models.ViewModels.MaintenanceCombinedVM
 @inject AppDbContext _context
 @{
     ViewData["Title"] = "Maintenance";
@@ -21,8 +21,9 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Tenant</label>
                             <div class="col-sm-9">
-                                <select asp-for="RentId" class="selection select2 form-control mb-3 custom-select"
-                                    style="width: 100%;" id="freeRoomDropdown" asp-items="ViewBag.rents">
+                                <select asp-for="RequestVM.RentId"
+                                    class="selection select2 form-control mb-3 custom-select" style="width: 100%;"
+                                    id="freeRoomDropdown" asp-items="ViewBag.rents">
                                     <option value="@null">Room</option>
                                 </select>
                             </div>
@@ -32,7 +33,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Maintenance Type</label>
                             <div class="col-sm-8">
-                                <select asp-for="MaintenanceTypeId"
+                                <select asp-for="RequestVM.MaintenanceTypeId"
                                     class="selection select2 form-control mb-3 custom-select" style="width:  "
                                     asp-items="ViewBag.maintenanceType" id="freeRoomDropdown">
                                     <option value="@null">maintenance Type</option>
@@ -46,9 +47,10 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
-                                <input asp-for="RequestedDate" type="date" class="form-control" data-val="true"
-                                    data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                <input asp-for="RequestVM.RequestedDate" type="date" class="form-control"
+                                    data-val="true" data-val-required="The RentalDate field is required."
+                                    id="RentalDate" value="0001-01-01"><input name="__Invariant" type="hidden"
+                                    value="RentalDate">
                             </div>
                         </div>
                     </div>
@@ -56,7 +58,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label"></label>
                             <div class="col-sm-8">
-                                <input asp-for="Other" type="text" class="form-control" id="otherRentType"
+                                <input asp-for="RequestVM.Other" type="text" class="form-control" id="otherRentType"
                                     placeholder="Other">
                             </div>
                         </div>
@@ -64,11 +66,18 @@
                 </div>
                 <div class="row">
                     <div class="form-group row">
-                        <div class="col-md-10"></div>
+                        <div class="col-md-10"> @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div id="successMessage" class="alert text-success  text-center fs-5" role="alert">
+                                    @TempData["SuccessMessage"]
+                                </div>
+                            }
+                        </div>
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-primary btn-rounded btn-fw">Approved</button>
                         </div>
                     </div>
+
                 </div>
             </form>
         </div>
@@ -76,50 +85,60 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Maintenance completion</h4>
-            <form class="form-sample" method="Post" asp-action="Index" asp-controller="Rent">
+            <form class="form-sample" method="Post" asp-action="Index" asp-controller="Maintenance">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-check form-check-primary">
-                            <label class="col-sm-6 col-form-label" for="">On Maintenance</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-check form-check-primary">
-                            <label class="col-sm-6 col-form-label" for="">Cost</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label"></label>
+                            <label class="col-sm-3 col-form-label">On Maintenance</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="freeRoomDropdown" name="freeRoomDropdown">
-
+                                <select asp-for="CompletVM.MaintenanceId"
+                                    class="selection select2 form-control mb-3 custom-select" style="width: 100%;"
+                                    id="freeRoomDropdown">
+                                    @* <option value="@null">Room</option> *@
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group row">
-                            <label class="col-sm-3 col-form-label"></label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control" id="" placeholder="">
+                            <label class="col-sm-4 col-form-label">Cost</label>
+                            <div class="col-sm-8">
+                                <input asp-for="CompletVM.Cost" type="text" class="form-control" id="otherRentType"
+                                    placeholder="Other">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="form-group row">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-3">
-                                <button type="submit" class="btn btn-primary btn-rounded btn-fw">complet</button>
+                            <label class="col-sm-3 col-form-label">Date</label>
+                            <div class="col-sm-9">
+                                <input asp-for="CompletVM.CompletedDate" type="date" class="form-control"
+                                    data-val="true" data-val-required="The RentalDate field is required."
+                                    id="RentalDate" value="0001-01-01"><input name="__Invariant" type="hidden"
+                                    value="RentalDate">
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-5">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group row">
+                        <div class="col-md-10"> @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div id="successMessage" class="alert text-success  text-center fs-5" role="alert">
+                                    @TempData["SuccessMessage"]
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary btn-rounded btn-fw">Complited</button>
+                        </div>
+                    </div>
+
                 </div>
             </form>
         </div>
@@ -133,5 +152,20 @@
     <script>
         $(".selection").select2();
     </script>
+    <script>
+        // Remove success message after 2 minutes or when new data is input
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#successMessage').fadeOut('slow', function () {
+                    $(this).remove();
+                });
+            }, 900); // 2 minutes
+        });
 
+        // Optionally, you can also remove the message when new data is input
+        // Example: when the form is submitted
+        $('form').submit(function () {
+            $('#successMessage').remove();
+        });
+    </script>
 }
