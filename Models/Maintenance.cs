@@ -15,6 +15,7 @@ namespace MallMinder.Models
         public int MaintenanceTypeId { get; set; }
 
         public int? RentId { get; set; }
+        public int? MallId { get; set; }
 
         public DateTime RequestedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
@@ -22,6 +23,7 @@ namespace MallMinder.Models
         public int? Cost { get; set; }
 
         public virtual Rent Rent { get; set; }
+        public virtual Mall Mall { get; set; }
         public virtual MaintenanceType MaintenanceType { get; set; }
 
     }

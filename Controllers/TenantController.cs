@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MallMinder.Data;
 using MallMinder.Models;
+using MallMinder.Models.ViewModels; // Make sure to include your view model namespace
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MallMinder.Models.ViewModels;
 
 namespace MallMinder.Controllers
 {
@@ -28,65 +28,41 @@ namespace MallMinder.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var currentUser = await _userManager.GetUserAsync(User);  // Assuming async usage
-            var mallId = _context.MallManagers
-                .Where(m => m.OwnerId == currentUser.Id)
-                .Select(m => m.Id)
-                .FirstOrDefault();
-
-            // Fetch all Rent records along with related entities
-            var rents = await _context.Rent
-                .Include(r => r.Room)
-                    .ThenInclude(room => room.Floor)  // Include Floor related to Room
-                .Where(r => r.Room.Floor.MallId == mallId)
-                .ToListAsync();
-            // Prepare a list of TenantVM to store the data to be displayed in the view
-            List<TenantVM> tenantVMs = new List<TenantVM>();
-
-
-            foreach (var rent in rents)
+            try
             {
-                // Fetch Tenant (AppUser) using TenantId
-                var tenant = await _userManager.FindByIdAsync(rent.TenantId);
-
-
-                // Fetch Room Number using RoomId
-                var roomNumber = await _context.Room
-                    .Where(r => r.Id == rent.RoomId)
-                    .Select(r => r.RoomNumber)
-                    .FirstOrDefaultAsync();
-
-                var type = await _context.RentType.Where(r => r.Id == rent.TypeId).FirstOrDefaultAsync();
-                // Fetch Floor Id using RoomId
-                var floorId = await _context.Room
-                    .Where(r => r.Id == rent.RoomId)
-                    .Select(r => r.FloorId)
-                    .FirstOrDefaultAsync();
-
-                // Fetch Floor using FloorId
-                var floor = await _context.Floor
-                    .FirstOrDefaultAsync(f => f.Id == floorId);
-
-                // Assuming Floor has a FloorNumber property
-                var floorNumber = floor != null ? floor.FloorNumber : null;
-
-                if (tenant != null)
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser == null)
                 {
-                    // Map data to TenantVM
-                    var tenantVM = new TenantVM
-                    {
-                        TenantFirstName = tenant.FirstName, // Assuming AppUser (Tenant) has a FirstName 
-                        RoomNumber = roomNumber, // Assuming Room has a RoomNumber property
-                        FloorNumber = floorNumber,
-                        TenantPhone = tenant.PhoneNumber,
-                        RentType = type.Type
-                    };
-
-                    tenantVMs.Add(tenantVM);
+                    return RedirectToAction("Login", "Account"); // Redirect to login if user is not authenticated
                 }
-            }
 
-            return View(tenantVMs);
+                var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault(); // Assuming async usage
+
+                var users = await _userManager.Users.ToListAsync();
+
+                // Filter users who are in the 'Tenant' role and belong to the current mall
+                var tenantUsers = users.Where(u => _userManager.IsInRoleAsync(u, "Tenant").Result && u.InMall == mallId).ToList();
+
+                // Map to TenantVM
+                var tenantVMs = tenantUsers.Select(u => new TenantVM
+                {
+                    Id = u.Id,
+                    TenantFirstName = u.FirstName,
+                    TenantPhone = u.PhoneNumber
+                }).ToList();
+
+                // Return the view with the TenantVM list
+                return View(tenantVMs);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception as per your application's error handling strategy
+                // Log the exception or redirect to an error page
+                return RedirectToAction("Index", "Home"); // Example redirect to home page
+            }
         }
 
         public IActionResult AddTenant()

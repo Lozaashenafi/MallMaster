@@ -20,13 +20,13 @@ namespace MallMinder.Controllers
         {
             var userId = _userManager.GetUserId(User);
 
-            var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
-            if (mall == null)
+            var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+            if (manager == null)
             {
                 return NotFound(); // Handle if user does not own any mall
             }
 
-            int mallId = mall.Id;
+            int mallId = manager.MallId;
             ViewBag.MallId = mallId;
 
             return View();
@@ -72,13 +72,13 @@ namespace MallMinder.Controllers
         {
             var userId = _userManager.GetUserId(User);
 
-            var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
-            if (mall == null)
+            var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+            if (manager == null)
             {
                 return NotFound(); // Handle if user does not own any mall
             }
 
-            int mallId = mall.Id;
+            int mallId = manager.MallId;
             ViewBag.MallId = mallId;
 
 

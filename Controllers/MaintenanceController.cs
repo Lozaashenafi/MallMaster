@@ -28,7 +28,7 @@ namespace MallMinder.Controllers
             {
                 var mallId = _context.MallManagers
                     .Where(m => m.OwnerId == currentUser.Id)
-                    .Select(m => m.Id)
+                    .Select(m => m.MallId)
                     .FirstOrDefault();
 
                 // Step 1: Fetch Occupied Rooms in the Current Mall
@@ -72,6 +72,10 @@ namespace MallMinder.Controllers
 
                 if (currentUser != null)
                 {
+                    var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault();
                     int typeId = model.MaintenanceTypeId ?? 0;
 
                     if (!string.IsNullOrEmpty(model.Other))
@@ -84,12 +88,18 @@ namespace MallMinder.Controllers
                         _context.SaveChanges();
                         typeId = otherType.Id;
                     }
+                    int Mall = 0;
+                    if (model.RentId == 0)
+                    {
+                        Mall = mallId;
+                    }
 
                     var maintenance = new Maintenance
                     {
                         RentId = model.RentId,
                         MaintenanceTypeId = typeId,
                         RequestedDate = model.RequestedDate,
+                        MallId = Mall,
                     };
 
                     _context.Maintenance.Add(maintenance);
@@ -124,18 +134,44 @@ namespace MallMinder.Controllers
 
             return RedirectToAction("Index", "Maintenance");
         }
-        // [HttpPost]
-        // public async Task<ActionResult> Complite(MaintenanceCompletVM model)
-        // {
-        //     if (ModelState.IsValid)
-        //     {
-        //         var currentUser = await _userManager.GetUserAsync(User);
+        /*
+        [HttpPost]
+        public async Task<ActionResult> Complite(MaintenanceCompletVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
 
-        //         if (currentUser != null)
-        //         {
+                if (currentUser != null)
+                {
+                  
+                    var mallId = _context.MallManagers
+                                        .Where(m => m.OwnerId == currentUser.Id)
+                                        .Select(m => m.MallId)
+                                        .FirstOrDefault();
+                    var maintenance = _context.Maintenance.Where(x=> x.MallId!=null?x.MallId ==mallId:x.RentId==)
+                    // Step 1: Fetch Occupied Rooms in the Current Mall
+                    var occupiedRooms = _context.Room
+                        .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId) && r.Status == "Occupied")
+                        .ToList();
+                    // Step 2: Fetch Room IDs
+                    var roomIds = occupiedRooms.Select(r => r.Id).ToList();
+                    // Step 3: Fetch Rent Details including Tenant Information
+                    var rents = _context.Rent     // Include room details
+                    .Where(r => roomIds.Contains(r.RoomId))
+                    .Select(r => new
+                    {
+                        RentId = r.Id,
+                    })
+                    .ToList();
+                    var rentIds = rents.Select(r => r.RentId).ToList();
+                    var maintenance = _context.Maintenance
+                        .Where(m => rentIds.Contains(m.RentId))
+                        .ToList();
 
-        //         }
-        //     }
+                }
+            }
+            */
         // }
     }
 }

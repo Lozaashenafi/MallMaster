@@ -1,4 +1,5 @@
 
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace MallMinder.Models
@@ -8,7 +9,10 @@ namespace MallMinder.Models
 
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public int? InMall { get; set; }
         public bool? IsActive { get; set; }
         public DateTime? AddedDate { get; set; } = DateTime.Now;
+        [ForeignKey("InMall")]
+        public virtual Mall Mall { get; set; }
     }
 }

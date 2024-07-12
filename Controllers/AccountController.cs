@@ -1,3 +1,5 @@
+using System;
+using MallMinder.Data;
 using MallMinder.Models;
 using MallMinder.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -10,12 +12,14 @@ namespace MallMinder.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly AppDbContext _context;
         private readonly ILogger<AccountController> _logger;
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger<AccountController> logger)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger<AccountController> logger, AppDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Login()
@@ -75,6 +79,11 @@ namespace MallMinder.Controllers
         {
             if (ModelState.IsValid)
             {
+                var currentUser = await _userManager.GetUserAsync(User);
+                var mallId = _context.MallManagers
+               .Where(m => m.OwnerId == currentUser.Id)
+               .Select(m => m.MallId)
+               .FirstOrDefault();
                 var user = new AppUser
                 {
                     FirstName = model.FirstName,
@@ -84,6 +93,7 @@ namespace MallMinder.Controllers
                     IsActive = model.IsActive,
                     AddedDate = model.AddedDate,
                     UserName = model.Email,
+                    InMall = mallId,
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);

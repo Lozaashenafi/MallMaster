@@ -7,6 +7,7 @@ namespace MallMinder.Models
     {
         public int Id { get; set; }
         public int RoomId { get; set; }
+        public int? MallId { get; set; }
         public string TenantId { get; set; }
         public string CreatedBy { get; set; }
         public int? TypeId { get; set; }
@@ -26,5 +27,7 @@ namespace MallMinder.Models
 
         [ForeignKey("TypeId")]
         public virtual RentType RentType { get; set; }
+        [ForeignKey("MallId")]
+        public virtual Mall Mall { get; set; }
     }
 }

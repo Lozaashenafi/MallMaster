@@ -29,7 +29,7 @@ namespace MallMinder.Controllers
             {
                 var mallId = _context.MallManagers
                     .Where(m => m.OwnerId == currentUser.Id) // Adjust this according to your application's ownership logic
-                    .Select(m => m.Id)
+                    .Select(m => m.MallId)
                     .FirstOrDefault();
 
                 var rooms = _context.Room.Include(x => x.Floor).Where(r => r.Floor.MallId == mallId && r.Status == "free").Select(r => new

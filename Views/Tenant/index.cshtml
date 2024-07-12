@@ -1,8 +1,8 @@
 @model List<MallMinder.Models.ViewModels.TenantVM>
+
 @{
     ViewData["Title"] = "Tenant Page";
 }
-
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
@@ -20,18 +20,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var tenantVM in Model)
-            {
+           @foreach (var item in Model)
+        {
                 <tr>
-                    <td>@tenantVM.TenantFirstName</td>
-                    <td>@tenantVM.RoomNumber</td>
-                    <td>@tenantVM.FloorNumber</td>
-                    <td>@tenantVM.TenantPhone</td>
-                    <td>@tenantVM.RentType</td>
+                    <td>@item.TenantFirstName</td>
+                    <td></td>
+                    <td></td>
+                    <td>@item.TenantPhone</td>
+                    <td></td>
                     <td>
-                        <div class="badge badge-outline-warning">
-                            Paid
-                        </div>
+                        <a type="button" class="btn btn-outline-info btn-icon-text"> Rent
+                            <ion-icon class="text-info" name="create-outline"></ion-icon>
+                        </a>
                     </td>
                 </tr>
             }
