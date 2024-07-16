@@ -1,7 +1,6 @@
 @using MallMinder.Data
 @using MallMinder.Models;
-@* @model List<MallMinder.Models.Room> *@
-@model MallMinder.Models.ViewModels.PricePerCareVM
+@model MallMinder.Models.ViewModels.PriceVM
 @inject AppDbContext _context
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
@@ -66,17 +65,15 @@
                                             <label class="badge badge-info">@room.Status</label>
                                         }
                                     </td>
-
                                 </tr>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
-
                                 <th>Room No</th>
                                 <th> Floor </th>
                                 <th> Care </th>
-                                <th> </th>
+                                <th></th>
                                 <th> Status </th>
                             </tr>
                         </tfoot>
@@ -94,28 +91,20 @@
                         <div class="col-9">
                             <div class="d-flex align-items-center align-self-start">
                                 <h3 class="mb-0">$17.34</h3>
-                                @* <p class="text-success ml-2 mb-0 font-weight-medium">
-                                +11%
-                                </p> *@
                             </div>
                         </div>
-                        @* <div class="col-3">
-                        <div class="icon icon-box-success">
-                        <span class="mdi mdi-arrow-top-right icon-item"></span>
-                        </div>
-                        </div> *@
                     </div>
                     <h6 class="text-muted font-weight-normal text-info">
                         Current Price
                     </h6>
                 </div>
             </div>
-            <form method="post" asp-action="Index" asp-action="Room">
+            <form method="post" asp-action="AddFloorPrice" asp-action="Room">
                 <div>
                     <p class="text-info">Floor Number</p>
                 </div>
                 <select class="form-control" asp-for="FloorNumber">
-                    <option value="null">floor</option>
+                    <option value="0">floor</option>
                     @foreach (var floor in floors)
                     {
                         <option value="@floor.Id">@floor.FloorNumber</option>
@@ -125,46 +114,34 @@
                     <p class="text-info">New Price</p>
                 </div>
                 <div class="">
-                    <input asp-for="Price" class="select_input form-control " type="Number" id="number-input" value="0"
-                        placeholder="Price">
+                    <input asp-for="PricePerCare" class="select_input form-control " type="Number" id="number-input"
+                        id="number-input" value="0" placeholder="Price">
                 </div>
                 <button type="submit" class="btn btn-inverse-info btn-fw mt-4">Save Change</button>
             </form>
         </div>
-        <div class="card card-body">
+        <form method="post" asp-action="AddFloorPrice" asp-action="Room" class="card card-body">
             <h4 class="card-title custom-margin-bottom-40">Add Room Price</h4>
-
             <div class="dropdown custom-margin-bottom-20 ">
                 <div>
                     <p class="text-info">Room Number</p>
                 </div>
                 <div class="number-selector mb-4 mr-sm-2">
-
                     <button id="decrease-btn" class="badge badge-info select_button">-</button>
-                    <input class="select_input form-control " type="number" id="number-input" value="0"
-                        placeholder="Room No">
-
-                    <button class="badge badge-info select_button " id="increase-btn">+</button>
+                    <input asp-for="RoomNumber" class="select_input form-control" type="number" id="number-input"
+                        value="0" placeholder="Room No">
+                    <button id="increase-btn" class="badge badge-info select_button">+</button>
                 </div>
-                <div>
-                    <p class="text-info">Floor Number</p>
-                </div>
-                <select class="form-control">
-                    @foreach (var floor in floors)
-                    {
-                        <option value="@floor.Id">@floor.FloorNumber</option>
-                    }
-                </select>
                 <div class="mt-2">
                     <p class="text-danger">Price</p>
                 </div>
                 <div class="">
-                    <input class="select_input form-control " type="text" id="number-input" value="0"
+                    <input asp-for="RoomPrice" class="select_input form-control " type="text" id="number-input"
                         placeholder="Price">
                 </div>
-                <div class="mt-4"><label class="badge badge-danger">Submit</label></div>
+                <div class="mt-4"><button type="submit" class="badge badge-danger">Submit</button></div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -218,6 +195,27 @@
                         that.search(this.value).draw();
                     }
                 });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const decreaseBtn = document.getElementById('decrease-btn');
+            const increaseBtn = document.getElementById('increase-btn');
+            const numberInput = document.getElementById('number-input');
+            decreaseBtn.addEventListener('click', function () {
+                // Get the current value of the input field
+                let currentValue = parseInt(numberInput.value);
+                // Decrease the value by 1 if greater than 0
+                if (currentValue > 0) {
+                    numberInput.value = currentValue - 1;
+                }
+            });
+            increaseBtn.addEventListener('click', function () {
+                // Get the current value of the input field
+                let currentValue = parseInt(numberInput.value);
+                // Increase the value by 1
+                numberInput.value = currentValue + 1;
             });
         });
     </script>

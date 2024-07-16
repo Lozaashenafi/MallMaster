@@ -9,7 +9,8 @@ namespace MallMinder.Models.ViewModels
     {
         public string Id { get; set; }
         public int? RentId { get; set; }
-        public string TenantFirstName { get; set; }
+        public string TenantName { get; set; }
+        public string? TenantId { get; set; }
         public int? RoomNumber { get; set; }
         public string? FloorNumber { get; set; }
         public string TenantPhone { get; set; }

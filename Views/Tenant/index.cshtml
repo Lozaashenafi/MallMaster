@@ -1,3 +1,4 @@
+@using Microsoft.EntityFrameworkCore
 @model List<MallMinder.Models.ViewModels.TenantVM>
 
 @{
@@ -7,29 +8,37 @@
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
 
+
 <div class="card">
     <table id="dt-table" class="table table-hover">
         <thead>
             <tr>
+                <th>#NO</th>
                 <th>Tenant Name</th>
-                <th>Room No</th>
-                <th>Floor No</th>
                 <th>Phone Number</th>
                 <th>Rent Type</th>
+                <th>Floor No</th>
+                <th>Room No</th>
                 <th>Payment Status</th>
             </tr>
         </thead>
         <tbody>
-           @foreach (var item in Model)
-        {
+            @{
+                var i = 0;
+            }
+            @foreach (var item in Model)
+            {
+                i++;
                 <tr>
-                    <td>@item.TenantFirstName</td>
-                    <td></td>
-                    <td></td>
+                    <td>@i</td>
+                    <td>@item.TenantName</td>
                     <td>@item.TenantPhone</td>
-                    <td></td>
+                    <td>@item.RentType</td>
+                    <td>@item.FloorNumber</td>
+                    <td>@item.RoomNumber</td>
                     <td>
-                        <a type="button" class="btn btn-outline-info btn-icon-text"> Rent
+                        <a asp-controller="Rent" asp-action="Index" asp-route-id="@item.Id"
+                            asp-route-name="@item.TenantName" type="button" class="btn btn-outline-info btn-icon-text">Rent
                             <ion-icon class="text-info" name="create-outline"></ion-icon>
                         </a>
                     </td>
@@ -38,11 +47,12 @@
         </tbody>
         <tfoot>
             <tr>
+                <th>#NO</th>
                 <th>Tenant Name</th>
-                <th>Room No</th>
-                <th>Floor No</th>
                 <th>Phone Number</th>
                 <th>Rent Type</th>
+                <th>Floor No</th>
+                <th>Room No</th>
                 <th>Payment Status</th>
             </tr>
         </tfoot>

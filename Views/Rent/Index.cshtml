@@ -6,7 +6,10 @@
 
 <link href="/plugins/select2-2/select2.min_2.css" rel="stylesheet" />
 <link href="/plugins/select2-2/select2.min.css" rel="stylesheet" />
-
+@{
+    string TenantId = ViewBag.TenantId;
+    string TenantName = ViewBag.TenantName;
+}
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
@@ -17,7 +20,8 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">User Name</label>
                             <div class="col-sm-9">
-                                <input asp-for="TenantUserName" type="text" class="form-control">
+                                <h4>@TenantName</h4>
+                                <input asp-for="TenantId" type="hidden">
                             </div>
                         </div>
                     </div>

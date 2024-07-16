@@ -21,8 +21,12 @@ namespace MallMinder.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string id, string name)
         {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name))
+            {
+                return BadRequest(); // Handle invalid parameters
+            }
             var currentUser = _userManager.GetUserAsync(User).Result;
 
             if (currentUser != null)
@@ -42,7 +46,8 @@ namespace MallMinder.Controllers
                 ViewBag.Rooms = new SelectList(rooms, "Id", "textVal");
                 ViewBag.rentTypes = new SelectList(_context.RentType.ToList(), "Id", "Type");
                 var model = new RentVM();
-
+                ViewBag.TenantId = id;
+                ViewBag.TenantName = name;
                 // Initialize other properties as needed
                 return View(model);
             }
@@ -60,12 +65,12 @@ namespace MallMinder.Controllers
                 var currentUser = _userManager.GetUserAsync(User).Result;
 
                 // Fetch TenantId from AppUser based on TenantUserName
-                var tenantUser = _context.Users.FirstOrDefault(u => u.UserName == rentVM.TenantUserName);
-                if (tenantUser == null)
-                {
-                    ModelState.AddModelError("", "Tenant user not found.");
-                    return View(rentVM);
-                }
+                // var tenantUser = _context.Users.FirstOrDefault(u => u.UserName == rentVM.TenantUserName);
+                // if (tenantUser == null)
+                // {
+                //     ModelState.AddModelError("", "Tenant user not found.");
+                //     return View(rentVM);
+                // }
 
                 // Fetch room
                 var room = _context.Room.FirstOrDefault(r => r.Id == rentVM.RoomId);
@@ -93,7 +98,7 @@ namespace MallMinder.Controllers
                 var rent = new Rent
                 {
                     RoomId = rentVM.RoomId,
-                    TenantId = tenantUser.Id,
+                    TenantId = rentVM.TenantId,
                     RentalDate = rentVM.RentalDate,
                     PaymentDuration = rentVM.PaymentDuration, // Default to 0 if PaymentDuration is null
                     AddedDate = DateTime.Now,

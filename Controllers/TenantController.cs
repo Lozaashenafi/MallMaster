@@ -5,8 +5,6 @@ using MallMinder.Data;
 using MallMinder.Models;
 using MallMinder.Models.ViewModels; // Make sure to include your view model namespace
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MallMinder.Controllers
 {
@@ -25,7 +23,6 @@ namespace MallMinder.Controllers
             _roleManager = roleManager;
             _context = context;
         }
-
         public async Task<IActionResult> Index()
         {
             try
@@ -44,18 +41,25 @@ namespace MallMinder.Controllers
                 var users = await _userManager.Users.ToListAsync();
 
                 // Filter users who are in the 'Tenant' role and belong to the current mall
-                var tenantUsers = users.Where(u => _userManager.IsInRoleAsync(u, "Tenant").Result && u.InMall == mallId).ToList();
+                var tenants = users.Where(u => _userManager.IsInRoleAsync(u, "Tenant").Result && u.InMall == mallId && u.IsActive == true).ToList();
 
-                // Map to TenantVM
-                var tenantVMs = tenantUsers.Select(u => new TenantVM
+                List<TenantVM> tenantlist = new List<TenantVM>();
+                foreach (var tenant in tenants)
                 {
-                    Id = u.Id,
-                    TenantFirstName = u.FirstName,
-                    TenantPhone = u.PhoneNumber
-                }).ToList();
+                    var tenantVM = new TenantVM();
+                    var tenatrent = _context.Rent.Include(x => x.Room).ThenInclude(x => x.Floor).Include(x => x.RentType).Where(r => r.TenantId == tenant.Id).FirstOrDefault();
+
+                    tenantVM.Id = tenant.Id;
+                    tenantVM.TenantName = tenant.FirstName + " " + tenant.LastName;
+                    tenantVM.TenantPhone = tenant.PhoneNumber;
+                    tenantVM.RoomNumber = tenatrent?.Room?.RoomNumber;
+                    tenantVM.FloorNumber = tenatrent?.Room?.Floor?.FloorNumber;
+                    tenantVM.RentType = tenatrent?.RentType?.Type;
+                    tenantlist.Add(tenantVM);
+                };
 
                 // Return the view with the TenantVM list
-                return View(tenantVMs);
+                return View(tenantlist);
             }
             catch (Exception ex)
             {

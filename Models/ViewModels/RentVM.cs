@@ -6,7 +6,7 @@ namespace MallMinder.Models.ViewModels
     public class RentVM
     {
         [Required(ErrorMessage = "User Name is required")]
-        public string TenantUserName { get; set; }
+        public string TenantId { get; set; }
 
         [Required(ErrorMessage = "Room is required")]
         public int RoomId { get; set; }
