@@ -58,7 +58,7 @@ namespace MallMinder.Controllers
                         .ThenInclude(m => m.Rent)
                         .ThenInclude(m => m.Room)
                         .Include(m => m.Maintenance.MaintenanceType)
-                        .Where(m => m.Maintenance.MallId == mallId && m.MaintenanceStatusType.Id == 2)
+                        .Where(m => m.Maintenance.MallId == mallId && m.IsActive == true && m.StatusId == 2)
                         .Select(m => new
                         {
                             MaintenanceId = m.Maintenance.Id,
@@ -85,7 +85,7 @@ namespace MallMinder.Controllers
                     .Select(m => m.MallId)
                     .FirstOrDefault();
 
-                    if (model.RentId != 0 && model.MaintenanceTypeId != 0)
+                    if ((model.RentId != 0 && model.RentId != null) && (model.MaintenanceTypeId != 0 && model.MaintenanceTypeId != null))
                     {
                         int typeId = model.MaintenanceTypeId ?? 0;
                         if (!string.IsNullOrEmpty(model.Other))
@@ -126,6 +126,7 @@ namespace MallMinder.Controllers
                         // Add new maintenance status
                         _context.MaintenanceStatuss.Add(maintenanceStatus);
                         _context.SaveChanges();
+                        TempData["SuccessMessage"] = "Approved";
                     }
                     if (model.Cost != 0 && model.MaintenanceId != 0)
                     {
@@ -153,11 +154,15 @@ namespace MallMinder.Controllers
                             _context.MaintenanceStatuss.Add(newStatus);
                             _context.SaveChanges();
                         }
-
+                        TempData["SuccessMessage"] = "Complited";
 
                     }
                 }
-                TempData["SuccessMessage"] = "Approved";
+
+
+
+
+
             }
             return RedirectToAction("Index", "Maintenance");
         }

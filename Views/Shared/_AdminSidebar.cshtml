@@ -107,14 +107,14 @@
                 <span class="menu-title text-white">Room List</span>
             </a>
         </li>
-        <li class="nav-item menu-items nav_active">
-            <a class="nav-link" asp-controller="Rent" asp-action="Index">
-                <span class="menu-icon">
-                    <ion-icon class="text-info" name="create-outline"></ion-icon>
-                </span>
-                <span class="menu-title text-white">Rent</span>
-            </a>
-        </li>
+        @* <li class="nav-item menu-items nav_active">
+        <a class="nav-link" asp-controller="Rent" asp-action="Index">
+        <span class="menu-icon">
+        <ion-icon class="text-info" name="create-outline"></ion-icon>
+        </span>
+        <span class="menu-title text-white">Rent</span>
+        </a>
+        </li> *@
         <li class="nav-item menu-items nav_active">
             <a class="nav-link" href="pages/tables/basic-table.html">
                 <span class="menu-icon">
@@ -132,7 +132,7 @@
             </a>
         </li>
         <li class="nav-item menu-items nav_active">
-            <a class="nav-link" href="pages/icons/mdi.html">
+            <a class="nav-link" asp-controller="Expense" asp-action="Index">
                 <span class="menu-icon">
                     <ion-icon class="text-info" name="trending-up-outline"></ion-icon>
                 </span>
