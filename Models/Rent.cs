@@ -14,13 +14,14 @@ namespace MallMinder.Models
         public int PaymentDuration { get; set; }
         public DateTime RentalDate { get; set; }
         public DateTime AddedDate { get; set; }
+        public bool IsActive { get; set; } = true;
 
         // Navigation properties
         [ForeignKey("RoomId")]
         public virtual Room Room { get; set; }
 
         [ForeignKey("TenantId")]
-        public virtual AppUser Tenant { get; set; }
+        public virtual AppUser AppUser { get; set; }
 
         [ForeignKey("CreatedBy")]
         public virtual AppUser CreatedByUser { get; set; }

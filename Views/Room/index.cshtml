@@ -12,10 +12,10 @@
 @{
     int mallId = ViewBag.MallId;
     @* var rooms = ViewBag.rooms; *@
-    var rooms = _context.Room
-    .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
+    var rooms = _context.Rooms
+    .Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId))
     .ToList();
-    var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
+    var floors = _context.Floors.Where(f => f.MallId == mallId).ToList();
 }
 <div class="row">
     <div class="col-lg-9 grid-margin stretch-card">
@@ -40,7 +40,7 @@
                         <tbody>
                             @foreach (var room in rooms)
                             {
-                                var floor = _context.Floor.FirstOrDefault(f => f.Id == room.FloorId);
+                                var floor = _context.Floors.FirstOrDefault(f => f.Id == room.FloorId);
                                 <tr>
                                     <td>@room.RoomNumber</td>
                                     <td>@(floor != null ? floor.FloorNumber : "")</td>

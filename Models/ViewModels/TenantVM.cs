@@ -7,7 +7,6 @@ namespace MallMinder.Models.ViewModels
 {
     public class TenantVM
     {
-        public string Id { get; set; }
         public int? RentId { get; set; }
         public string TenantName { get; set; }
         public string? TenantId { get; set; }

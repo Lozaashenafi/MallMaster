@@ -2,7 +2,7 @@
 @using MallMinder.Models
 @using MallMinder.Models.ViewModels
 @using Microsoft.AspNetCore.Identity
-@model MallMinder.Models.ViewModels.MaintenanceCombinedVM
+@model MallMinder.Models.ViewModels.MaintenanceVM
 @inject AppDbContext _context
 @{
     ViewData["Title"] = "Maintenance";
@@ -21,10 +21,9 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Tenant</label>
                             <div class="col-sm-9">
-                                <select asp-for="RequestVM.RentId"
-                                    class="selection select2 form-control mb-3 custom-select" style="width: 100%;"
-                                    id="freeRoomDropdown" asp-items="ViewBag.rents">
-                                    <option value="@null">Room</option>
+                                <select asp-for="RentId" class="selection select2 form-control mb-3 custom-select"
+                                    style="width: 100%;" id="freeRoomDropdown" asp-items="ViewBag.rents">
+                                    <option value="0">Room</option>
                                 </select>
                             </div>
                         </div>
@@ -33,10 +32,10 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Maintenance Type</label>
                             <div class="col-sm-8">
-                                <select asp-for="RequestVM.MaintenanceTypeId"
+                                <select asp-for="MaintenanceTypeId"
                                     class="selection select2 form-control mb-3 custom-select" style="width:  "
                                     asp-items="ViewBag.maintenanceType" id="freeRoomDropdown">
-                                    <option value="@null">maintenance Type</option>
+                                    <option value="0">maintenance Type</option>
                                 </select>
                             </div>
                         </div>
@@ -47,10 +46,9 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
-                                <input asp-for="RequestVM.RequestedDate" type="date" class="form-control"
-                                    data-val="true" data-val-required="The RentalDate field is required."
-                                    id="RentalDate" value="0001-01-01"><input name="__Invariant" type="hidden"
-                                    value="RentalDate">
+                                <input asp-for="RequestedDate" type="date" class="form-control" data-val="true"
+                                    data-val-required="The RentalDate field is required." id="RentalDate"
+                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
                             </div>
                         </div>
                     </div>
@@ -58,14 +56,14 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label"></label>
                             <div class="col-sm-8">
-                                <input asp-for="RequestVM.Other" type="text" class="form-control" id="otherRentType"
+                                <input asp-for="Other" type="text" class="form-control" id="otherRentType"
                                     placeholder="Other">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group row">
+                    @* <div class="form-group row">
                         <div class="col-md-10"> @if (TempData["SuccessMessage"] != null)
                             {
                                 <div id="successMessage" class="alert text-success  text-center fs-5" role="alert">
@@ -76,7 +74,7 @@
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-primary btn-rounded btn-fw">Approved</button>
                         </div>
-                    </div>
+                    </div> *@
 
                 </div>
             </form>
@@ -91,10 +89,10 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">On Maintenance</label>
                             <div class="col-sm-9">
-                                <select asp-for="CompletVM.MaintenanceId"
+                                <select asp-for="MaintenanceId"
                                     class="selection select2 form-control mb-3 custom-select" style="width: 100%;"
-                                    id="freeRoomDropdown">
-                                    @* <option value="@null">Room</option> *@
+                                    id="freeRoomDropdown" asp-items="ViewBag.maintenanceData">
+                                    <option value="0">maintenance</option>
                                 </select>
                             </div>
                         </div>
@@ -103,7 +101,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Cost</label>
                             <div class="col-sm-8">
-                                <input asp-for="CompletVM.Cost" type="text" class="form-control" id="otherRentType"
+                                <input asp-for="Cost" type="text" class="form-control" id="otherRentType"
                                     placeholder="Other">
                             </div>
                         </div>
@@ -114,10 +112,9 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
-                                <input asp-for="CompletVM.CompletedDate" type="date" class="form-control"
-                                    data-val="true" data-val-required="The RentalDate field is required."
-                                    id="RentalDate" value="0001-01-01"><input name="__Invariant" type="hidden"
-                                    value="RentalDate">
+                                <input asp-for="CompletedDate" type="date" class="form-control" data-val="true"
+                                    data-val-required="The RentalDate field is required." id="RentalDate"
+                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
                             </div>
                         </div>
                     </div>

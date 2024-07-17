@@ -10,7 +10,7 @@ namespace MallMinder.Models
     public class RoomPrice
     {
         public int Id { get; set; }
-        public float Price { get; set; }
+        public double? Price { get; set; }
         public int RoomId { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }

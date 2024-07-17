@@ -7,7 +7,7 @@
 <link href="/plugins/select2-2/select2.min_2.css" rel="stylesheet" />
 <link href="/plugins/select2-2/select2.min.css" rel="stylesheet" />
 @{
-    string TenantId = ViewBag.TenantId;
+    string tenantId = ViewBag.TenantId;
     string TenantName = ViewBag.TenantName;
 }
 <div class="col-12 grid-margin">
@@ -21,7 +21,7 @@
                             <label class="col-sm-3 col-form-label">User Name</label>
                             <div class="col-sm-9">
                                 <h4>@TenantName</h4>
-                                <input asp-for="TenantId" type="hidden">
+                                <input value="@tenantId" asp-for="TenantId" type="hidden">
                             </div>
                         </div>
                     </div>

@@ -37,7 +37,7 @@
                     <td>@item.FloorNumber</td>
                     <td>@item.RoomNumber</td>
                     <td>
-                        <a asp-controller="Rent" asp-action="Index" asp-route-id="@item.Id"
+                        <a asp-controller="Rent" asp-action="Index" asp-route-id="@item.TenantId"
                             asp-route-name="@item.TenantName" type="button" class="btn btn-outline-info btn-icon-text">Rent
                             <ion-icon class="text-info" name="create-outline"></ion-icon>
                         </a>

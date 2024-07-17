@@ -8,7 +8,7 @@
 }
 @{
     int mallId = ViewBag.MallId ?? 0;
-    var floors = _context.Floor.Where(f => f.MallId == mallId).ToList();
+    var floors = _context.Floors.Where(f => f.MallId == mallId).ToList();
 }
 <div class="card">
     <div class="card-body">

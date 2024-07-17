@@ -32,19 +32,19 @@ namespace MallMinder.Controllers
             if (currentUser != null)
             {
                 var mallId = _context.MallManagers
-                    .Where(m => m.OwnerId == currentUser.Id) // Adjust this according to your application's ownership logic
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
                     .Select(m => m.MallId)
                     .FirstOrDefault();
 
-                var rooms = _context.Room.Include(x => x.Floor).Where(r => r.Floor.MallId == mallId && r.Status == "free").Select(r => new
+                var rooms = _context.Rooms.Include(x => x.Floor).Where(r => r.Floor.MallId == mallId && r.Status == "free" && r.IsActive == true).Select(r => new
                 {
                     Id = r.Id,
                     textVal = r.RoomNumber + "-" + r.Floor.FloorNumber
                 }).ToList();
 
-                ViewBag.floors = new SelectList(_context.Floor.Where(f => f.MallId == mallId).ToList(), "Id", "FloorNumber");
+                ViewBag.floors = new SelectList(_context.Floors.Where(f => f.MallId == mallId && f.IsActive == true).ToList(), "Id", "FloorNumber");
                 ViewBag.Rooms = new SelectList(rooms, "Id", "textVal");
-                ViewBag.rentTypes = new SelectList(_context.RentType.ToList(), "Id", "Type");
+                ViewBag.rentTypes = new SelectList(_context.RentTypes.ToList(), "Id", "Type");
                 var model = new RentVM();
                 ViewBag.TenantId = id;
                 ViewBag.TenantName = name;
@@ -73,7 +73,7 @@ namespace MallMinder.Controllers
                 // }
 
                 // Fetch room
-                var room = _context.Room.FirstOrDefault(r => r.Id == rentVM.RoomId);
+                var room = _context.Rooms.FirstOrDefault(r => r.Id == rentVM.RoomId);
                 if (room == null)
                 {
                     ModelState.AddModelError("", "Room not found.");
@@ -89,7 +89,7 @@ namespace MallMinder.Controllers
                         Type = rentVM.Other
                     };
 
-                    _context.RentType.Add(otherType);
+                    _context.RentTypes.Add(otherType);
                     _context.SaveChanges();
                     typeId = otherType.Id;
                 }
@@ -107,7 +107,7 @@ namespace MallMinder.Controllers
                 };
 
                 // Add Rent object to DbContext and save changes
-                _context.Rent.Add(rent);
+                _context.Rents.Add(rent);
                 _context.SaveChanges();
 
                 // Update Room status to 'Occupied'

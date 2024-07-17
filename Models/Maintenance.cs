@@ -20,9 +20,11 @@ namespace MallMinder.Models
         public DateTime RequestedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
         public string? Description { get; set; }
-        public int? Cost { get; set; }
+        public double? Cost { get; set; }
+
 
         public virtual Rent Rent { get; set; }
+
         public virtual Mall Mall { get; set; }
         public virtual MaintenanceType MaintenanceType { get; set; }
 

@@ -12,14 +12,14 @@ namespace MallMinder.Models
         public int MaintenanceId { get; set; }
         public DateTime Date { get; set; }
         public String? CreatedBy { get; set; }
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
         public bool IsActive { get; set; } = true;
 
         public virtual Maintenance Maintenance { get; set; }
         [ForeignKey("StatusId")]
-        public virtual MaintenanceStatusType statusId { get; set; }
+        public virtual MaintenanceStatusType MaintenanceStatusType { get; set; }
         [ForeignKey("CreatedBy")]
-        public virtual AppUser createdBy { get; set; }
+        public virtual AppUser AppUser { get; set; }
 
 
     }

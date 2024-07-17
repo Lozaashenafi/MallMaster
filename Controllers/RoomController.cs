@@ -18,7 +18,7 @@ namespace MallMinder.Controllers
         public IActionResult Index()
         {
             var userId = _userManager.GetUserId(User);
-            var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+            var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
 
             if (manager == null)
             {
@@ -37,7 +37,7 @@ namespace MallMinder.Controllers
             {
                 var userId = _userManager.GetUserId(User);
 
-                var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+                var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
                 if (mall == null)
                 {
                     return NotFound(); // Handle if user does not own any mall
@@ -47,14 +47,20 @@ namespace MallMinder.Controllers
                 ViewBag.MallId = mallId;
                 // Create PricePerCare object
 
-                if (pricing.PricePerCare != 0)
+                if (pricing.PricePerCare != 0 && pricing.PricePerCare != null)
                 {
                     // Retrieve existing PricePerCare records with the same FloorId
-                    var existingPricePerCare = _context.PricePerCare.Where(x => x.FloorId == pricing.FloorNumber && x.IsActive == true).FirstOrDefault();
+                    var existingPricePerCare = _context.PricePerCares.Where(x => x.FloorId == pricing.FloorNumber && x.IsActive == true).FirstOrDefault();
 
                     if (existingPricePerCare != null)
                     {
                         existingPricePerCare.IsActive = false;
+                        _context.Update(existingPricePerCare);
+                        _context.SaveChanges();
+                    }
+                    if (pricing.FloorNumber == 0)
+                    {
+                        pricing.FloorNumber = null;
                     }
                     // Add new PricePerCare record
                     var pricePerCare = new PricePerCare
@@ -67,13 +73,14 @@ namespace MallMinder.Controllers
                         IsActive = true,
                     };
 
-                    _context.PricePerCare.Add(pricePerCare);
+                    _context.PricePerCares.Add(pricePerCare);
                     _context.SaveChanges();
                 }
+
                 if (pricing.RoomNumber != 0 && pricing.RoomPrice != 0)
                 {
-                    int roomId = _context.Room.Where(r => r.Floor.MallId == mallId && r.RoomNumber == pricing.RoomNumber).Select(r => r.Id).FirstOrDefault();
-                    var ofpricePerCare = _context.Room.Where(x => x.Id == roomId).FirstOrDefault();
+                    int roomId = _context.Rooms.Where(r => r.Floor.MallId == mallId && r.RoomNumber == pricing.RoomNumber && r.IsActive == true).Select(r => r.Id).FirstOrDefault();
+                    var ofpricePerCare = _context.Rooms.Where(x => x.Id == roomId && x.PricePercareFlag == true).FirstOrDefault();
                     if (ofpricePerCare != null)
                     {
                         ofpricePerCare.PricePercareFlag = false;
@@ -86,7 +93,7 @@ namespace MallMinder.Controllers
                         CreatedDate = DateTime.Now,
                         IsActive = true,
                     };
-                    _context.RoomPrice.Add(roomPrice);
+                    _context.RoomPrices.Add(roomPrice);
                     _context.SaveChanges();
 
                 }
@@ -102,7 +109,7 @@ namespace MallMinder.Controllers
         {
             var userId = _userManager.GetUserId(User);
 
-            var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId);
+            var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
             if (manager == null)
             {
                 return NotFound(); // Handle if user does not own any mall
@@ -134,36 +141,7 @@ namespace MallMinder.Controllers
                 };
 
                 // Add room to DbContext and save changes
-                _context.Room.Add(room);
-                _context.SaveChanges();
-                // Get PricePerCare for the given FloorId
-                var pricePerCareFloor = _context.PricePerCare
-                    .Where(p => p.FloorId == roomVM.FloorId)
-                    .Select(p => p.Price)
-                    .FirstOrDefault();
-                // Get PricePerCare for FloorId == 0 (assuming this is what you intended)
-                var pricePerCareMall = _context.PricePerCare
-                    .Where(p => p.FloorId == null)
-                    .Select(p => p.Price)
-                    .FirstOrDefault();
-                float roomPrice;
-                if (pricePerCareFloor != null)
-                {
-                    roomPrice = roomVM.Care * pricePerCareFloor;
-                }
-                else
-                {
-                    roomPrice = roomVM.Care * pricePerCareMall;
-                }
-                var roomPrice1 = new RoomPrice
-                {
-                    RoomId = room.Id,
-                    Price = roomPrice,
-                    CreatedBy = userId,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true,
-                };
-                _context.RoomPrice.Add(roomPrice1);
+                _context.Rooms.Add(room);
                 _context.SaveChanges();
                 // Add success message to TempData
                 TempData["SuccessMessage"] = "Room added successfully.";

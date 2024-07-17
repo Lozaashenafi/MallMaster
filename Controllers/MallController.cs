@@ -33,7 +33,7 @@ namespace MallMinder.Controllers
                 mall.AddedDate = DateTime.Now;
 
                 // Add mall to DbContext and save changes
-                _context.Mall.Add(mall);
+                _context.Malls.Add(mall);
                 _context.SaveChanges();
 
                 // Create floors based on TotalFloors
@@ -44,7 +44,7 @@ namespace MallMinder.Controllers
                         FloorNumber = $"{i}{GetOrdinalSuffix(i)} Floor",
                         MallId = mall.Id
                     };
-                    _context.Floor.Add(floor);
+                    _context.Floors.Add(floor);
                 }
                 _context.SaveChanges();
 

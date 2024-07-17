@@ -16,6 +16,7 @@ namespace MallMinder.Models
 
         [Required]
         public int MallId { get; set; }
+        public bool IsActive { get; set; } = true;
 
 
         public virtual Mall Mall { get; set; }

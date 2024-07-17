@@ -27,43 +27,51 @@ namespace MallMinder.Controllers
             if (currentUser != null)
             {
                 var mallId = _context.MallManagers
-                    .Where(m => m.OwnerId == currentUser.Id)
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
                     .Select(m => m.MallId)
                     .FirstOrDefault();
 
                 // Step 1: Fetch Occupied Rooms in the Current Mall
-                var occupiedRooms = _context.Room
-                    .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId))
-                    .Where(r => r.Status == "Occupied")
+                var Rooms = _context.Rooms
+                    .Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId) && r.IsActive == true)
                     .ToList();
 
                 // Step 2: Fetch Room IDs
-                var roomIds = occupiedRooms.Select(r => r.Id).ToList();
+                var roomIds = Rooms.Select(r => r.Id).ToList();
                 // Step 3: Fetch Rent Details including Tenant Information
-                var rents = _context.Rent
+                var rents = _context.Rents
                 .Include(r => r.Room)     // Include room details
-                .Where(r => roomIds.Contains(r.RoomId))
+                .Include(r => r.AppUser)
+                .Where(r => roomIds.Contains(r.RoomId) && r.IsActive == true && r.AppUser.Id == r.TenantId)
                 .Select(r => new
                 {
                     RentId = r.Id,
-                    RoomNumber = "Room  - " + " " + r.Room.RoomNumber,
+                    RoomNumber = "Room  - " + " " + r.Room.RoomNumber + " - " + r.AppUser.FirstName,
                 })
                 .ToList();
                 // 'rents' now contains a list of objects with RentId, RoomNumber, and TenantName
 
-                ViewBag.maintenanceType = new SelectList(_context.MaintenanceType.ToList(), "Id", "Type");
+                ViewBag.maintenanceType = new SelectList(_context.MaintenanceTypes.ToList(), "Id", "Type");
                 ViewBag.rents = new SelectList(rents, "RentId", "RoomNumber");
+                var maintenanceData = _context.MaintenanceStatuss
+                        .Include(m => m.Maintenance)
+                        .ThenInclude(m => m.Rent)
+                        .ThenInclude(m => m.Room)
+                        .Include(m => m.Maintenance.MaintenanceType)
+                        .Where(m => m.Maintenance.MallId == mallId && m.MaintenanceStatusType.Id == 2)
+                        .Select(m => new
+                        {
+                            MaintenanceId = m.Maintenance.Id,
+                            RoomNumber = "Room " + m.Maintenance.Rent.Room.RoomNumber + " - " + m.Maintenance.MaintenanceType.Type,
+                        }).ToList();
 
+                ViewBag.maintenanceData = new SelectList(maintenanceData, "MaintenanceId", "RoomNumber");
             }
-            var viewModel = new MaintenanceCombinedVM
-            {
-                RequestVM = new MaintenanceRequestVM(),
-                CompletVM = new MaintenanceCompletVM()
-            };
-            return View(viewModel);
+
+            return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Index(MaintenanceRequestVM model)
+        public async Task<IActionResult> Index(MaintenanceVM model)
         {
             if (ModelState.IsValid)
             {
@@ -73,105 +81,85 @@ namespace MallMinder.Controllers
                 if (currentUser != null)
                 {
                     var mallId = _context.MallManagers
-                    .Where(m => m.OwnerId == currentUser.Id)
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
                     .Select(m => m.MallId)
                     .FirstOrDefault();
-                    int typeId = model.MaintenanceTypeId ?? 0;
 
-                    if (!string.IsNullOrEmpty(model.Other))
+                    if (model.RentId != 0 && model.MaintenanceTypeId != 0)
                     {
-                        var otherType = new MaintenanceType
+                        int typeId = model.MaintenanceTypeId ?? 0;
+                        if (!string.IsNullOrEmpty(model.Other))
                         {
-                            Type = model.Other
+                            var otherType = new MaintenanceType
+                            {
+                                Type = model.Other
+                            };
+                            _context.MaintenanceTypes.Add(otherType);
+                            _context.SaveChanges();
+                            typeId = otherType.Id;
+                        }
+                        var maintenance = new Maintenance
+                        {
+                            RentId = model.RentId,
+                            MaintenanceTypeId = typeId,
+                            RequestedDate = model.RequestedDate,
+                            MallId = mallId,
                         };
-                        _context.MaintenanceType.Add(otherType);
+                        _context.Maintenances.Add(maintenance);
                         _context.SaveChanges();
-                        typeId = otherType.Id;
+                        var maintenanceStatus = new MaintenanceStatus
+                        {
+                            MaintenanceId = maintenance.Id,
+                            StatusId = 2,
+                            Date = maintenance.RequestedDate,
+                            IsActive = true,
+                            CreatedBy = currentUser.Id, // Ensure currentUser.Id is a string
+                        };
+                        var statusesToUpdate = _context.MaintenanceStatuss.Where(m => m.MaintenanceId == maintenance.Id);
+                        // Loop through each record and set IsActive to false
+                        foreach (var status in statusesToUpdate)
+                        {
+                            status.IsActive = false;
+                        }
+                        // Save changes to the database
+                        _context.SaveChanges();
+                        // Add new maintenance status
+                        _context.MaintenanceStatuss.Add(maintenanceStatus);
+                        _context.SaveChanges();
                     }
-                    int Mall = 0;
-                    if (model.RentId == 0)
+                    if (model.Cost != 0 && model.MaintenanceId != 0)
                     {
-                        Mall = mallId;
+                        var maintenance = _context.Maintenances.FirstOrDefault(m => m.Id == model.MaintenanceId);
+
+                        if (maintenance != null)
+                        {
+                            maintenance.Cost = model.Cost;
+                            maintenance.CompletedDate = DateTime.Now;
+                            _context.SaveChanges(); // Save changes to the database
+
+                            var status = _context.MaintenanceStatuss.Where(m => m.MaintenanceId == maintenance.Id && m.IsActive == true).FirstOrDefault();
+                            if (status != null)
+                            {
+                                status.IsActive = false;
+                            }
+                            var newStatus = new MaintenanceStatus
+                            {
+                                MaintenanceId = maintenance.Id,
+                                StatusId = 4,
+                                Date = maintenance.RequestedDate,
+                                IsActive = true,
+                                CreatedBy = currentUser.Id,
+                            };
+                            _context.MaintenanceStatuss.Add(newStatus);
+                            _context.SaveChanges();
+                        }
+
+
                     }
-
-                    var maintenance = new Maintenance
-                    {
-                        RentId = model.RentId,
-                        MaintenanceTypeId = typeId,
-                        RequestedDate = model.RequestedDate,
-                        MallId = Mall,
-                    };
-
-                    _context.Maintenance.Add(maintenance);
-                    _context.SaveChanges();
-
-                    var maintenanceStatus = new MaintenanceStatus
-                    {
-                        MaintenanceId = maintenance.Id,
-                        StatusId = 2,
-                        Date = maintenance.RequestedDate,
-                        // createdBy = currentUser.Id, // Ensure currentUser.Id is a string
-                    };
-
-                    var statusesToUpdate = _context.MaintenanceStatus.Where(m => m.MaintenanceId == maintenance.Id);
-
-                    // Loop through each record and set IsActive to false
-                    foreach (var status in statusesToUpdate)
-                    {
-                        status.IsActive = false;
-                    }
-
-                    // Save changes to the database
-                    _context.SaveChanges();
-
-                    // Add new maintenance status
-                    _context.MaintenanceStatus.Add(maintenanceStatus);
-                    _context.SaveChanges();
                 }
-
                 TempData["SuccessMessage"] = "Approved";
             }
-
             return RedirectToAction("Index", "Maintenance");
         }
-        /*
-        [HttpPost]
-        public async Task<ActionResult> Complite(MaintenanceCompletVM model)
-        {
-            if (ModelState.IsValid)
-            {
-                var currentUser = await _userManager.GetUserAsync(User);
-
-                if (currentUser != null)
-                {
-                  
-                    var mallId = _context.MallManagers
-                                        .Where(m => m.OwnerId == currentUser.Id)
-                                        .Select(m => m.MallId)
-                                        .FirstOrDefault();
-                    var maintenance = _context.Maintenance.Where(x=> x.MallId!=null?x.MallId ==mallId:x.RentId==)
-                    // Step 1: Fetch Occupied Rooms in the Current Mall
-                    var occupiedRooms = _context.Room
-                        .Where(r => _context.Floor.Any(f => f.Id == r.FloorId && f.MallId == mallId) && r.Status == "Occupied")
-                        .ToList();
-                    // Step 2: Fetch Room IDs
-                    var roomIds = occupiedRooms.Select(r => r.Id).ToList();
-                    // Step 3: Fetch Rent Details including Tenant Information
-                    var rents = _context.Rent     // Include room details
-                    .Where(r => roomIds.Contains(r.RoomId))
-                    .Select(r => new
-                    {
-                        RentId = r.Id,
-                    })
-                    .ToList();
-                    var rentIds = rents.Select(r => r.RentId).ToList();
-                    var maintenance = _context.Maintenance
-                        .Where(m => rentIds.Contains(m.RentId))
-                        .ToList();
-
-                }
-            }
-            */
-        // }
     }
 }
