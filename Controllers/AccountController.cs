@@ -1,4 +1,4 @@
-using System;
+
 using MallMinder.Data;
 using MallMinder.Models;
 using MallMinder.Models.ViewModels;
@@ -124,5 +124,41 @@ namespace MallMinder.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home"); // Redirect to sign-in page
         }
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (changePasswordResult.Succeeded)
+                {
+                    // Sign out the user after changing the password to force re-login
+                    await _signInManager.SignOutAsync();
+                    return RedirectToAction("Login", "Account", new { area = "" });
+                }
+                else
+                {
+                    foreach (var error in changePasswordResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+
+            // If ModelState is not valid or password change fails, return to the change password view with errors
+            return View(model);
+        }
+
     }
 }

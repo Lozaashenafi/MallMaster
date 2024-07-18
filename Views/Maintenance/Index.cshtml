@@ -38,12 +38,19 @@
                     <div class="col-md-7">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Maintenance Type</label>
-                            <div class="col-sm-8">
-                                <select asp-for="MaintenanceTypeId"
-                                    class="selection select2 form-control mb-3 custom-select" style="width:  "
-                                    asp-items="ViewBag.maintenanceType" id="freeRoomDropdown">
-                                    <option value="0">maintenance Type</option>
-                                </select>
+                            <div class="col-sm-8 row">
+                                <div class="col-sm-2 flexalignment">
+                                    <span class="menu-icon cu-css-add flexalignment" id="addButton">
+                                        <ion-icon class="text-info" name="add-outline"></ion-icon>
+                                    </span>
+                                </div>
+                                <div class="col-sm-10">
+                                    <select asp-for="MaintenanceTypeId"
+                                        class="selection select2 form-control mb-3 custom-select" style="width:  "
+                                        asp-items="ViewBag.maintenanceType" id="freeRoomDropdown">
+                                        <option value="0">maintenance Type</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -62,9 +69,15 @@
                     <div class="col-md-7">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label"></label>
-                            <div class="col-sm-8">
-                                <input asp-for="Other" type="text" class="form-control" id="otherRentType"
-                                    placeholder="Other">
+                            <div class="col-sm-8" id="otherInputContainer" style="display: none;">
+                                <div class="row">
+                                <div class="col-sm-2">
+                                </div>
+                                <div class="col-sm-10">
+                                    <input asp-for="Other" type="text" class="form-control" id="otherRentType"
+                                        placeholder="Other">
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,6 +151,19 @@
         </div>
     </div>
 </div>
+<style>
+    .cu-css-add {
+        background-color: #2a3038;
+        border-radius: 100px;
+    @*width:5px;*@padding: 8px;
+        margin-top: 2px;
+    }
+
+    .flexalignment {
+        display: flex;
+        align-items: center;
+    }
+</style>
 
 @section scripts {
 
@@ -162,4 +188,16 @@
             $('#successMessage').remove();
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addButton = document.getElementById('addButton');
+            const otherInputContainer = document.getElementById('otherInputContainer');
+
+            addButton.addEventListener('click', function () {
+                // Toggle visibility of the input field
+                otherInputContainer.style.display = otherInputContainer.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
+
 }

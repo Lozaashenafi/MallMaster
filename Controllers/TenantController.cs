@@ -43,6 +43,7 @@ namespace MallMinder.Controllers
                 // Filter users who are in the 'Tenant' role and belong to the current mall
                 var tenants = users.Where(u => _userManager.IsInRoleAsync(u, "Tenant").Result && u.InMall == mallId && u.IsActive == true).ToList();
 
+
                 List<TenantVM> tenantlist = new List<TenantVM>();
                 foreach (var tenant in tenants)
                 {

@@ -37,16 +37,20 @@ namespace MallMinder.Controllers
                 .Select(m => m.MallId)
                 .FirstOrDefault(); // Assuming async usage
             var users = await _userManager.Users.ToListAsync();
-            var tenants = users.Where(u => _userManager.IsInRoleAsync(u, "Tenant").Result && u.InMall == mallId && u.IsActive == true).ToList();
-            List<PaymentVM> paymentlist = new List<PaymentVM>();
-            foreach (var tenant in tenants)
-            {
-                var paymentVM = new PaymentVM();
-                var tenatrent = _context.Rents.Include(x => x.Room).ThenInclude(x => x.Floor).Include(x => x.RentType).Where(r => r.TenantId == tenant.Id).FirstOrDefault();
-                paymentVM.TenantName = tenant.FirstName + " " + tenant.LastName;
-                paymentVM.TenantPhone = tenant.PhoneNumber;
-                paymentlist.Add(paymentVM);
-            };
+            var Rents = _context.Rents
+                    .Include(r => r.Room)
+                    .Include(r => r.AppUser)
+                    .Where(r => r.MallId == mallId && r.IsActive)
+                    .Select(r => new PaymentVM
+                    {
+                        TenantName = r.AppUser.FirstName + " " + r.AppUser.LastName,
+                        TenantPhone = r.AppUser.PhoneNumber
+                    })
+                    .ToList();
+            List<PaymentVM> Rentlist = Rents;
+
+
+
             // Step 1: Fetch Occupied Rooms in the Current Mall
             var Rooms = _context.Rooms
                 .Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId) && r.IsActive == true)
@@ -62,11 +66,11 @@ namespace MallMinder.Controllers
             .Select(r => new
             {
                 RentId = r.Id,
-                RoomNumber = r.AppUser.FirstName + "=  Room  - " + " " + r.Room.RoomNumber,
+                RoomNumber = r.AppUser.FirstName + "  Room  - " + " " + r.Room.RoomNumber,
             })
             .ToList();
             ViewBag.rents = new SelectList(rents, "RentId", "RoomNumber");
-            return View(paymentlist);
+            return View(Rentlist);
         }
     }
 }
