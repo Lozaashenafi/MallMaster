@@ -43,12 +43,15 @@ namespace MallMinder.Controllers
                     var expense = new Expense
                     {
                         MallId = mallId,
-                        ExpenseType = model.ExpenseTypeId ?? 0,
+                        ExpenseTypeId = model.ExpenseTypeId ?? 0,
                         ExpenseAmount = model.ExpenseAmount,
                         ExpenseDate = model.ExpenseDate,
-                        IsActive = true
+                        Description = model.Description,
                     };
+                    _context.Expenses.Add(expense);
+                    _context.SaveChanges();
                 }
+                TempData["SuccessMessage"] = "Added successfully";
             }
             return View();
         }

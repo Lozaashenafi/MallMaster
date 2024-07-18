@@ -9,11 +9,12 @@ namespace MallMinder.Models
     {
         public int Id { get; set; }
         public int MallId { get; set; }
-        public int ExpenseType { get; set; }
+        public int ExpenseTypeId { get; set; }
         public string Description { get; set; }
         public double ExpenseAmount { get; set; }
         public DateTime ExpenseDate { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool? IsAcrive { get; set; } = true;
+        public virtual ExpenseType ExpenseType { get; set; }
 
     }
 }

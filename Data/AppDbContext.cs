@@ -22,6 +22,7 @@ namespace MallMinder.Data
         public DbSet<Maintenance> Maintenances { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
+        public DbSet<TenantPayment> TenantPayments { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }

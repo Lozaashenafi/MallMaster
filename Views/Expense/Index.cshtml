@@ -14,6 +14,18 @@
             <h4 class="card-title">Expense</h4>
             <form class="form-sample" method="Post" asp-action="Index" asp-controller="Expense">
                 <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Expense Type</label>
+                            <div class="col-sm-9">
+                                <select asp-for="ExpenseTypeId"
+                                    class="selection select2 form-control mb-3 custom-select" id="freeRoomDropdown"
+                                    asp-items="ViewBag.ExpenseTypeList">
+                                    <option value="0">maintenance Type</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-5">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Cost</label>
@@ -23,19 +35,17 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-7">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Expense Type</label>
-                            <div class="col-sm-8">
-                                <select asp-for="ExpenseTypeId"
-                                    class="selection select2 form-control mb-3 custom-select" id="freeRoomDropdown">
-                                    <option value="0">maintenance Type</option>
-                                </select>
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <input asp-for="Other" type="text" class="form-control" id="otherRentType"
+                                    placeholder="Other">
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-5">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date</label>
@@ -46,25 +56,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7">
+                </div>
+                <div class="row">
+                    <div class="col-sm-7">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label"></label>
-                            <div class="col-sm-8">
-                                <input asp-for="Other" type="text" class="form-control" id="otherRentType"
-                                    placeholder="Other">
+                            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea asp-for="Description" rows="4" class="form-control" id="Description"
+                                    placeholder="Description"></textarea>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group row">
-                        <div class="col-md-10">
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-primary btn-rounded btn-fw">Approved</button>
-                        </div>
-                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group row">
+                            <div class="col-sm-6 "></div>
+                            <div class="col-sm-6"><button type="submit"
+                                    class="btn btn-primary btn-rounded btn-fw mt-4">Approved</button></div>
 
+                        </div>
+
+                    </div>
                 </div>
             </form>
         </div>
