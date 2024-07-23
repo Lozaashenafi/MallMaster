@@ -31,7 +31,7 @@ namespace MallMinder.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddFloorPrice(PriceVM pricing)
+        public IActionResult Index(PriceVM pricing)
         {
             if (ModelState.IsValid)
             {

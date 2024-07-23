@@ -25,8 +25,6 @@
                 @* <p class="card-description"> Add class <code>.table</code> *@
                 </p>
                 <div class="table-responsive">
-
-
                     <table id="dt-table" class="table table-hover">
                         <thead>
                             <tr>
@@ -99,7 +97,7 @@
                     </h6>
                 </div>
             </div>
-            <form method="post" asp-action="AddFloorPrice" asp-action="Room">
+            <form method="post" asp-action="Index" asp-action="Room">
                 <div>
                     <p class="text-info">Floor Number</p>
                 </div>
@@ -120,17 +118,15 @@
                 <button type="submit" class="btn btn-inverse-info btn-fw mt-4">Save Change</button>
             </form>
         </div>
-        <form method="post" asp-action="AddFloorPrice" asp-action="Room" class="card card-body">
+        <form method="post" asp-action="Index" asp-action="Room" class="card card-body">
             <h4 class="card-title custom-margin-bottom-40">Add Room Price</h4>
             <div class="dropdown custom-margin-bottom-20 ">
                 <div>
                     <p class="text-info">Room Number</p>
                 </div>
                 <div class="number-selector mb-4 mr-sm-2">
-                    <button id="decrease-btn" class="badge badge-info select_button">-</button>
                     <input asp-for="RoomNumber" class="select_input form-control" type="number" id="number-input"
                         value="0" placeholder="Room No">
-                    <button id="increase-btn" class="badge badge-info select_button">+</button>
                 </div>
                 <div class="mt-2">
                     <p class="text-danger">Price</p>
@@ -180,13 +176,11 @@
                     { targets: [3], searchable: false } // Disable search on the 4th column (Price Per Care)
                 ]
             });
-
             // Add search inputs for all columns except "Price Per Care"
             $('#dt-table tfoot th').not(':eq(3)').each(function () {
                 var title = $(this).text();
                 $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
             });
-
             // Apply individual column search functionality
             table.columns().every(function () {
                 var that = this;
@@ -198,25 +192,5 @@
             });
         });
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const decreaseBtn = document.getElementById('decrease-btn');
-            const increaseBtn = document.getElementById('increase-btn');
-            const numberInput = document.getElementById('number-input');
-            decreaseBtn.addEventListener('click', function () {
-                // Get the current value of the input field
-                let currentValue = parseInt(numberInput.value);
-                // Decrease the value by 1 if greater than 0
-                if (currentValue > 0) {
-                    numberInput.value = currentValue - 1;
-                }
-            });
-            increaseBtn.addEventListener('click', function () {
-                // Get the current value of the input field
-                let currentValue = parseInt(numberInput.value);
-                // Increase the value by 1
-                numberInput.value = currentValue + 1;
-            });
-        });
-    </script>
+
 }

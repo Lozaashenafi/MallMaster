@@ -1,6 +1,5 @@
 @using Microsoft.EntityFrameworkCore
 @model List<MallMinder.Models.ViewModels.PaymentVM>
-
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
@@ -11,12 +10,12 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Payment</h4>
-                <form class="forms-sample">
+                <form class="forms-sample" asp-action="Index" asp-controller="Payment" method="Post">
                     <div class="form-group row">
                         <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Tenant</label>
                         <div class="col-sm-9">
-                            <select class="selection select2 form-control mb-3 custom-select" style="width: 100%;"
-                                id="freeRoomDropdown" asp-items="ViewBag.rents">
+                            <select name="RentId" class="selection select2 form-control mb-3 custom-select"
+                                id=" freeRoomDropdown" asp-items="ViewBag.rents">
                                 <option value="0">Room</option>
                             </select>
                         </div>
@@ -24,7 +23,7 @@
                     <div class="form-group row">
                         <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Date</label>
                         <div class="col-sm-9">
-                            <input type="date" class="form-control" data-val="true"
+                            <input name="Date" type="date" class="form-control" data-val="true"
                                 data-val-required="The RentalDate field is required." id="RentalDate"
                                 value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
                         </div>
@@ -32,7 +31,7 @@
                     <div class="form-group row">
                         <label for="exampleInputMobile" class="col-sm-3 col-form-label">R.NO</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="exampleInputMobile"
+                            <input name="ReferenceNumber" type="text" class="form-control" id="exampleInputMobile"
                                 placeholder="Reference Number">
                         </div>
                     </div>
@@ -54,13 +53,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @{
-                            var i = 0;
-                        }
-                        @foreach (var item in Model)
-                        {
-                            i++;
+
+                    @{
+                        var i = 0;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        i++;
+                        <tr>
                             <td>@i</td>
                             <td>@item.TenantName</td>
                             <td>@item.TenantPhone</td>
@@ -70,8 +70,9 @@
                                     <ion-icon class="text-info" name="create-outline"></ion-icon>
                                 </a>
                             </td>
-                        }
-                    </tr>
+                        </tr>
+                    }
+
                 </tbody>
                 <tfoot>
                     <tr>
@@ -84,7 +85,6 @@
             </table>
         </div>
     </div>
-
     @section scripts {
         <script src="/js/datatables.js"></script>
         <script src="/js/dataTables.buttons.min.js"></script>

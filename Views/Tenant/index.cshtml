@@ -19,7 +19,7 @@
                 <th>Rent Type</th>
                 <th>Floor No</th>
                 <th>Room No</th>
-                <th>Payment Status</th>
+                <th>Rental Status</th>
             </tr>
         </thead>
         <tbody>
@@ -37,10 +37,20 @@
                     <td>@item.FloorNumber</td>
                     <td>@item.RoomNumber</td>
                     <td>
-                        <a asp-controller="Rent" asp-action="Index" asp-route-id="@item.TenantId"
-                            asp-route-name="@item.TenantName" type="button" class="btn btn-outline-info btn-icon-text">Rent
-                            <ion-icon class="text-info" name="create-outline"></ion-icon>
-                        </a>
+                        @if (!string.IsNullOrEmpty(item.RentType) && item.RentType != "0")
+                        {
+                            <button type="button" class="btn btn-outline-info btn-icon-text">Tenant
+                                <ion-icon class="text-info" name="create-outline"></ion-icon>
+                            </button>
+                        }
+                        else
+                        {
+                            <a asp-controller="Rent" asp-action="Index" asp-route-id="@item.TenantId"
+                                asp-route-name="@item.TenantName" type="button" class="btn btn-outline-info btn-icon-text">Rent
+                                <ion-icon class="text-info" name="create-outline"></ion-icon>
+                            </a>
+
+                        }
                     </td>
                 </tr>
             }
@@ -53,7 +63,7 @@
                 <th>Rent Type</th>
                 <th>Floor No</th>
                 <th>Room No</th>
-                <th>Payment Status</th>
+                <th>Rental Status</th>
             </tr>
         </tfoot>
     </table>

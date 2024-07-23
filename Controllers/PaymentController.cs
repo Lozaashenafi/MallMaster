@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MallMinder.Controllers
 {
-
     public class PaymentController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -49,13 +48,10 @@ namespace MallMinder.Controllers
                     .ToList();
             List<PaymentVM> Rentlist = Rents;
 
-
-
             // Step 1: Fetch Occupied Rooms in the Current Mall
             var Rooms = _context.Rooms
                 .Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId) && r.IsActive == true)
                 .ToList();
-
             // Step 2: Fetch Room IDs
             var roomIds = Rooms.Select(r => r.Id).ToList();
             // Step 3: Fetch Rent Details including Tenant Information
@@ -71,6 +67,17 @@ namespace MallMinder.Controllers
             .ToList();
             ViewBag.rents = new SelectList(rents, "RentId", "RoomNumber");
             return View(Rentlist);
+
+
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Index(PaymentVM model)
+        {
+            if (ModelState.IsValid)
+            {
+            }
+            return View();
         }
     }
 }
