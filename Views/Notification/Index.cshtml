@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Maintenance Requests";
+}
+@foreach (var item in ViewBag.maintenancerequest)
+{
+    <div class="col-12 grid-margin stretch-card notification">
+        <div class="card corona-gradient-card">
+            <div class="card-body py-0 px-0 px-sm-3 ">
+                <div class="row align-items-center margi">
+                    <div class="col-4 col-sm-4 col-xl-4">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <span>@item.tenantName</span>
+                    </div>
+                    <div class="col-4 col-sm-5 col-xl-5 p-0">
+                        <h4 class="mb-1 mb-sm-0">Maintenance Request</h4>
+                        <p class="mb-0 font-weight-normal d-none d-sm-block">
+                            @item.maintenanceType
+                        </p>
+                    </div>
+                    <div class="col-4 col-sm-3 col-xl-3 pl-0 text-center">
+                        <div class="row">
+                            <span class="col-md-6">
+                                <a target="_blank" class="btn btn-outline-light btn-rounded get-started-btn">Approved</a>
+                            </span>
+                            <span class="col-md-6">
+                                <a target="_blank" class="btn btn-outline-light btn-rounded get-started-btn">Declined</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .notification {
+        height: 60px;
+    }
+
+    .margi {
+        margin-top: 8px;
+    }
+</style>

@@ -1,4 +1,3 @@
-
 using MallMinder.Data;
 using MallMinder.Models;
 using MallMinder.Models.ViewModels;
@@ -6,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace MallMinder.Controllers
 {
@@ -50,7 +48,6 @@ namespace MallMinder.Controllers
                 })
                 .ToList();
                 // 'rents' now contains a list of objects with RentId, RoomNumber, and TenantName
-
                 ViewBag.maintenanceType = new SelectList(_context.MaintenanceTypes.ToList(), "Id", "Type");
                 ViewBag.rents = new SelectList(rents, "RentId", "RoomNumber");
                 var maintenanceData = _context.MaintenanceStatuss
@@ -64,10 +61,8 @@ namespace MallMinder.Controllers
                             MaintenanceId = m.Maintenance.Id,
                             RoomNumber = "Room " + m.Maintenance.Rent.Room.RoomNumber + " - " + m.Maintenance.MaintenanceType.Type,
                         }).ToList();
-
                 ViewBag.maintenanceData = new SelectList(maintenanceData, "MaintenanceId", "RoomNumber");
             }
-
             return View();
         }
         [HttpPost]
@@ -84,7 +79,6 @@ namespace MallMinder.Controllers
                     .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
                     .Select(m => m.MallId)
                     .FirstOrDefault();
-
                     if ((model.RentId != 0 && model.RentId != null) && (model.MaintenanceTypeId != 0 && model.MaintenanceTypeId != null))
                     {
                         int typeId = model.MaintenanceTypeId ?? 0;
@@ -155,14 +149,8 @@ namespace MallMinder.Controllers
                             _context.SaveChanges();
                         }
                         TempData["SuccessMessage"] = "Complited";
-
                     }
                 }
-
-
-
-
-
             }
             return RedirectToAction("Index", "Maintenance");
         }

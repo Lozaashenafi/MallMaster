@@ -58,6 +58,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFsbFxpbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Notification/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Payment/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -96,6 +100,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/System/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3lzdGVtXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/TenantMaintenance/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50TWFpbnRlbmFuY2VcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Tenant/AddTenant.cshtml]

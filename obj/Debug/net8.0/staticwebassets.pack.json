@@ -97,6 +97,10 @@
       "PackagePath": "staticwebassets\\img\\logo3.png"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\user.png",
+      "PackagePath": "staticwebassets\\img\\user.png"
+    },
+    {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\buttons.html5.min.js",
       "PackagePath": "staticwebassets\\js\\buttons.html5.min.js"
     },

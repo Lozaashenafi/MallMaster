@@ -8,7 +8,7 @@ namespace MallMinder.Models.ViewModels
 {
     public class MaintenanceVM
     {
-        public int? RentId { get; set; }
+        public int RentId { get; set; }
         public int? MaintenanceTypeId { get; set; }
         public string? Other { get; set; }
         public DateTime RequestedDate { get; set; }

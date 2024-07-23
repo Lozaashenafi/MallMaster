@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "anz9MpCLCQiH5CpSbyj+wTGjTJa5pcASBN8Z2q+JwiE=",
+  "Hash": "D8/FwwYzaG87u4TGkJDZAf36X7Bfv0r6zdGwscz0ymw=",
   "Source": "MallMinder",
   "BasePath": "_content/MallMinder",
   "Mode": "Default",
@@ -490,6 +490,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\MallImg\\mall1c.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\user.png",
+      "SourceId": "MallMinder",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\",
+      "BasePath": "_content/MallMinder",
+      "RelativePath": "img/user.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\user.png"
     },
     {
       "Identity": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\js\\buttons.html5.min.js",

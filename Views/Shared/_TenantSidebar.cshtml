@@ -37,7 +37,8 @@
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item preview-item text-muted">
+                    <a asp-action="ChangePassword" asp-controller="Account"
+                        class="dropdown-item preview-item text-muted">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
                                 <ion-icon class="text-info" name="lock-closed-outline"></ion-icon>
@@ -74,7 +75,7 @@
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-controller="Tenant" asp-action="Index">Attach
+                        <a class="nav-link text-white">Attach
                             Receipt</a>
                     </li>
                 </ul>
@@ -82,13 +83,13 @@
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a class="nav-link text-white" asp-controller="Tenant" asp-action="AddTenant">Payment Status</a>
+                        <a class="nav-link text-white">Payment Status</a>
                     </li>
                 </ul>
             </div>
         </li>
         <li class="nav-item menu-items nav_active">
-            <a class="nav-link">
+            <a class="nav-link" asp-action="Index" asp-controller="TenantMaintenance">
                 <span class="menu-icon">
                     <ion-icon class="text-warning" name="construct-outline"></ion-icon>
                 </span>

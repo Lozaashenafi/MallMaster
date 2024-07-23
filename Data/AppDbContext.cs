@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using MallMinder.Models;
 using MallMinder.Models.ViewModels;
 
-
 namespace MallMinder.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser>
@@ -23,6 +22,7 @@ namespace MallMinder.Data
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
         public DbSet<TenantPayment> TenantPayments { get; set; }
+        public DbSet<AppUser> Users { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
