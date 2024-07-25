@@ -1,47 +1,10 @@
-@using Microsoft.EntityFrameworkCore
-@model List<MallMinder.Models.ViewModels.PaymentVM>
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
 <link href="/plugins/select2-2/select2.min_2.css" rel="stylesheet" />
 <link href="/plugins/select2-2/select2.min.css" rel="stylesheet" />
 <div class="row">
-    <div class="col-md-5 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Payment</h4>
-                <form class="forms-sample" asp-action="Index" asp-controller="Payment" method="Post">
-                    <div class="form-group row">
-                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Tenant</label>
-                        <div class="col-sm-9">
-                            <select name="RentId" class="selection select2 form-control mb-3 custom-select"
-                                id=" freeRoomDropdown" asp-items="ViewBag.rents">
-                                <option value="0">Room</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Date</label>
-                        <div class="col-sm-9">
-                            <input name="Date" type="date" class="form-control" data-val="true"
-                                data-val-required="The RentalDate field is required." id="RentalDate"
-                                value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="exampleInputMobile" class="col-sm-3 col-form-label">R.NO</label>
-                        <div class="col-sm-9">
-                            <input name="ReferenceNumber" type="text" class="form-control" id="exampleInputMobile"
-                                placeholder="Reference Number">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                    <button class="btn btn-dark">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-7 grid-margin stretch-card">
+    <div class="grid-margin stretch-card">
         <div class="card">
             <table id="dt-table" class="table table-hover">
                 <thead>
@@ -49,110 +12,125 @@
                         <th>#NO</th>
                         <th>Tenant Name</th>
                         <th>Phone Number</th>
-                        <th>Payment Status</th>
+                        <th>RoomNumber</th>
+                        <th>Payment Date</th>
+                        <th>Payment </th>
                     </tr>
                 </thead>
                 <tbody>
 
                     @{
                         var i = 0;
+                        int previousId = 0;
                     }
-                    @foreach (var item in Model)
+                    @foreach (var item in ViewBag.PendingPayments)
                     {
                         i++;
                         <tr>
                             <td>@i</td>
-                            <td>@item.TenantName</td>
-                            <td>@item.TenantPhone</td>
-                            <td>
-                                <a asp-route-id="" asp-route-name="" type="button"
-                                    class="btn btn-outline-info btn-icon-text">paid
-                                    <ion-icon class="text-info" name="create-outline"></ion-icon>
-                                </a>
-                            </td>
+                            <td>@item.Name</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Room</td>
+                            <td>@item.PaymentDate</td>
+                            @if (previousId != item.TenantId)
+                            {
+                                <td>
+                                    <a asp-route-id="@item.TenantId"
+                                        asp-route-paymentDate="@item.PaymentDate.ToString("yyyy-MM-dd")" asp-action="Pay"
+                                        asp-controller="Payment" type="button" class="btn btn-outline-info btn-icon-text">
+                                        pay<ion-icon class="text-info" name="create-outline"></ion-icon>
+                                    </a>
+                                </td>
+                                previousId = item.TenantId;
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
                         </tr>
                     }
-
                 </tbody>
                 <tfoot>
                     <tr>
                         <th>#NO</th>
                         <th>Tenant Name</th>
                         <th>Phone Number</th>
+                        <th>RoomNumber</th>
+                        <th>Payment Date</th>
                         <th>Payment Status</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
-    @section scripts {
-        <script src="/js/datatables.js"></script>
-        <script src="/js/dataTables.buttons.min.js"></script>
-        <script src="/js/jszip.min.js"></script>
-        <script src="/js/buttons.html5.min.js"></script>
-        <script src="/js/buttons.print.min.js"></script>
-        <script src="/js/custom_miscellaneous.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#dt-table tfoot th').each(function () {
-                    var title = $(this).text();
-                    $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
-                });
+</div>
 
-                var table = $('#dt-table').DataTable({
-                    dom: "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>" +
-                        "<'table-responsive'tr>" +
-                        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
-                    buttons: [
+@section scripts {
+    <script src="/js/datatables.js"></script>
+    <script src="/js/dataTables.buttons.min.js"></script>
+    <script src="/js/jszip.min.js"></script>
+    <script src="/js/buttons.html5.min.js"></script>
+    <script src="/js/buttons.print.min.js"></script>
+    <script src="/js/custom_miscellaneous.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dt-table tfoot th').each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+            });
 
-
-                        { extend: 'excel', className: 'btn btn-outline-light ' },
-                        { extend: 'print', className: 'btn btn-outline-light ' }
-                    ],
-                    oLanguage: {
-                        oPaginate: {
-                            sPrevious: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
-                            sNext: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
-                        },
-                        sInfo: "Showing page _PAGE_ of _PAGES_",
-                        sSearch: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
-                        sSearchPlaceholder: "Search...",
-                        sLengthMenu: "Results : _MENU_"
+            var table = $('#dt-table').DataTable({
+                dom: "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>" +
+                    "<'table-responsive'tr>" +
+                    "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                buttons: [
+                    { extend: 'excel', className: 'btn btn-outline-light ' },
+                    { extend: 'print', className: 'btn btn-outline-light ' }
+                ],
+                oLanguage: {
+                    oPaginate: {
+                        sPrevious: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        sNext: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
                     },
-                    stripeClasses: [],
-                    lengthMenu: [7, 10, 20, 50],
-                    pageLength: 7
-                });
-
-                table.columns().every(function () {
-                    var that = this;
-                    $('input', this.footer()).on('keyup change', function () {
-                        if (that.search() !== this.value) {
-                            that.search(this.value).draw();
-                        }
-                    });
-                });
-            });
-        </script>
-        <script src="/plugins/select2-2/select2.min_2.js"></script>
-        <script src="/plugins/select2-2/select2.min.js"></script>
-        <script>
-            $(".selection").select2();
-        </script>
-        <script>
-            // Remove success message after 2 minutes or when new data is input
-            $(document).ready(function () {
-                setTimeout(function () {
-                    $('#successMessage').fadeOut('slow', function () {
-                        $(this).remove();
-                    });
-                }, 900); // 2 minutes
+                    sInfo: "Showing page _PAGE_ of _PAGES_",
+                    sSearch: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    sSearchPlaceholder: "Search...",
+                    sLengthMenu: "Results : _MENU_"
+                },
+                stripeClasses: [],
+                lengthMenu: [7, 10, 20, 50],
+                pageLength: 7
             });
 
-            // Optionally, you can also remove the message when new data is input
-            // Example: when the form is submitted
-            $('form').submit(function () {
-                $('#successMessage').remove();
+            table.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
             });
-        </script>
-    }
+        });
+    </script>
+    <script src="/plugins/select2-2/select2.min_2.js"></script>
+    <script src="/plugins/select2-2/select2.min.js"></script>
+    <script>
+        $(".selection").select2();
+    </script>
+    <script>
+        // Remove success message after 2 minutes or when new data is input
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('#successMessage').fadeOut('slow', function () {
+                    $(this).remove();
+                });
+            }, 900); // 2 minutes
+        });
+
+        // Optionally, you can also remove the message when new data is input
+        // Example: when the form is submitted
+        $('form').submit(function () {
+            $('#successMessage').remove();
+        });
+    </script>
+}

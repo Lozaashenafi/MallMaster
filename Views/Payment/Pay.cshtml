@@ -1,0 +1,50 @@
+@model MallMinder.Models.ViewModels.TenantPaymentVM
+@{
+    ViewData["Title"] = "payment pay Page";
+}
+<div>
+    <div class="col-md-5 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Payment</h4>
+                <form class="forms-sample" asp-action="Index" asp-controller="Payment" method="Post">
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-6 col-form-label">Room Number</label>
+                        <div class="col-sm-6">
+                            @ViewBag.RoomNumber
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-6 col-form-label">Price</label>
+                        <div class="col-sm-6">
+                            @ViewBag.TotalPaymentAmount Birr
+                        </div>
+                        <input asp-for="Price" value="@ViewBag.TotalPaymentAmount" type="hidden" class="form-control"
+                            placeholder="Reference Number">
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Date</label>
+                        <div class="col-sm-9">
+                            <input asp-for="PaidDate" type="date" class="form-control" data-val="true"
+                                data-val-required="The RentalDate field is required." id="RentalDate"
+                                value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputMobile" class="col-sm-3 col-form-label">R.NO</label>
+                        <div class="col-sm-9">
+                            <input asp-for="ReferenceNumber" type="text" class="form-control" id="exampleInputMobile"
+                                placeholder="Reference Number">
+                        </div>
+                    </div>
+                    <input asp-for="RentId" value="@ViewBag.Id" type="hidden" class="form-control"
+                        placeholder="Reference Number">
+                    <input asp-for="PaymentDate" value="@ViewBag.PaymentDate" type="hidden" class="form-control"
+                        placeholder="Reference Number">
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <button class="btn btn-dark">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -50,5 +50,18 @@ namespace MallMinder.Controllers
             }
             return View();
         }
+        public IActionResult Approved(int id)
+        {
+            // Implement your logic here
+            // id parameter will have the value passed from the view
+            return View();
+        }
+
+        public IActionResult Declined(int id)
+        {
+            // Implement your logic here
+            // id parameter will have the value passed from the view
+            return View();
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace MallMinder.Models
 
         public int FloorId { get; set; }
 
-        public int Care { get; set; }
+        public double? Care { get; set; }
         public string? Description { get; set; }
         public string Status { get; set; }
         public bool? IsActive { get; set; } = true;
