@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MallMinder.Data;
 using MallMinder.Models;
 using Microsoft.AspNetCore.Identity;
@@ -38,7 +35,7 @@ namespace MallMinder.Controllers
                     .Include(ms => ms.Maintenance)
                         .ThenInclude(m => m.Rent)
                             .ThenInclude(r => r.Room)
-                    .Where(ms => ms.StatusId == 1 && ms.Maintenance.MallId == mallId)
+                    .Where(ms => ms.StatusId == 1 && ms.IsActive == true && ms.Maintenance.MallId == mallId)
                     .Select(ms => new
                     {
                         Id = ms.Maintenance.Id,
@@ -50,18 +47,51 @@ namespace MallMinder.Controllers
             }
             return View();
         }
-        public IActionResult Approved(int id)
+        public async Task<IActionResult> Approved(int id)
         {
-            // Implement your logic here
-            // id parameter will have the value passed from the view
-            return View();
-        }
+            var currentUser = await _userManager.GetUserAsync(User);
+            var maintenance = _context.MaintenanceStatuss
+                .Where(r => r.MaintenanceId == id && r.IsActive == true)
+                .FirstOrDefault();
+            if (maintenance != null)
+            {
+                var newStatus = new MaintenanceStatus();
+                newStatus.MaintenanceId = maintenance.MaintenanceId;
+                newStatus.Date = DateTime.Now;
+                newStatus.CreatedBy = currentUser.Id;
+                newStatus.StatusId = 2;
+                newStatus.IsActive = true;
+                _context.MaintenanceStatuss.Add(newStatus);
+                _context.SaveChanges(); // Save changes asynchronously
 
-        public IActionResult Declined(int id)
+                maintenance.IsActive = false;
+                _context.Update(maintenance);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index", "Notification");
+        }
+        public async Task<IActionResult> Declined(int id)
         {
-            // Implement your logic here
-            // id parameter will have the value passed from the view
-            return View();
+            var currentUser = await _userManager.GetUserAsync(User);
+            var maintenance = _context.MaintenanceStatuss
+                .FirstOrDefault(r => r.MaintenanceId == id && r.IsActive == true);
+            if (maintenance != null)
+            {
+                var maintenance1 = new MaintenanceStatus
+                {
+                    MaintenanceId = maintenance.MaintenanceId,
+                    StatusId = 3,
+                    Date = DateTime.Now,
+                    CreatedBy = currentUser.Id,
+                    IsActive = true,
+                };
+                _context.MaintenanceStatuss.Add(maintenance1);
+                _context.SaveChanges(); // Save changes asynchronously
+                maintenance.IsActive = false;
+                _context.Update(maintenance);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index", "Notification");
         }
     }
 }

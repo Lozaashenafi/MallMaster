@@ -60,15 +60,15 @@
         <li class="nav-item nav-category">
             <span class="nav-link text-white">Navigation</span>
         </li>
-        <li class="nav-item menu-items nav_active">
+        <li class="nav-item menu-items ">
             <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <span class="menu-icon">
-                    <ion-icon class=" text-info" name="stats-chart-outline"></ion-icon>
+                    <ion-icon class="text-info" name="stats-chart-outline"></ion-icon>
                 </span>
                 <span class="menu-title text-white">Dashboard</span>
             </a>
         </li>
-        <li class="nav-item menu-items nav_active">
+        <li class="nav-item menu-items ">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <ion-icon class="text-warning" name="person-outline"></ion-icon> </span>
@@ -92,7 +92,7 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item menu-items nav_active">
+        <li class="nav-item menu-items ">
             <a class="nav-link" asp-controller="Room" asp-action="AddRoom">
                 <span class="menu-icon">
                     <ion-icon class="text-danger" name="storefront-outline"></ion-icon>
@@ -100,7 +100,7 @@
                 <span class="menu-title text-white">Add Room</span>
             </a>
         </li>
-        <li class="nav-item menu-items nav_active">
+        <li class="nav-item menu-items">
             <a class="nav-link" asp-controller="Room" asp-action="Index">
                 <span class="menu-icon">
                     <ion-icon class="text-danger" name="storefront-outline"></ion-icon>
@@ -108,15 +108,7 @@
                 <span class="menu-title text-white">Room List</span>
             </a>
         </li>
-        @* <li class="nav-item menu-items nav_active">
-        <a class="nav-link" asp-controller="Rent" asp-action="Index">
-        <span class="menu-icon">
-        <ion-icon class="text-info" name="create-outline"></ion-icon>
-        </span>
-        <span class="menu-title text-white">Rent</span>
-        </a>
-        </li> *@
-        <li class="nav-item menu-items nav_active">
+        <li class="nav-item menu-items ">
             <a class="nav-link" asp-controller="Payment" asp-action="Index">
                 <span class="menu-icon">
                     <ion-icon class="text-success" name="cash-outline"></ion-icon>
@@ -124,7 +116,7 @@
                 <span class="menu-title text-white">Payment</span>
             </a>
         </li>
-        <li class="nav-item menu-items nav_active">
+        <li class="nav-item menu-items">
             <a class="nav-link" asp-controller="Maintenance" asp-action="Index">
                 <span class="menu-icon">
                     <ion-icon class="text-warning" name="construct-outline"></ion-icon>
@@ -132,7 +124,7 @@
                 <span class="menu-title text-white">Maintenance</span>
             </a>
         </li>
-        <li class="nav-item menu-items nav_active">
+        <li class="nav-item menu-items">
             <a class="nav-link" asp-controller="Expense" asp-action="Index">
                 <span class="menu-icon">
                     <ion-icon class="text-info" name="trending-up-outline"></ion-icon>
@@ -142,3 +134,4 @@
         </li>
     </ul>
 </nav>
+<script src="/assets/js/misc.js"></script>

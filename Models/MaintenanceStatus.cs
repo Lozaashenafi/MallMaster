@@ -9,11 +9,11 @@ namespace MallMinder.Models
     public class MaintenanceStatus
     {
         public int Id { get; set; }
-        public int MaintenanceId { get; set; }
-        public DateTime Date { get; set; }
+        public int? MaintenanceId { get; set; }
+        public DateTime? Date { get; set; }
         public String? CreatedBy { get; set; }
         public int? StatusId { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool? IsActive { get; set; } = true;
 
         public virtual Maintenance Maintenance { get; set; }
         [ForeignKey("StatusId")]
