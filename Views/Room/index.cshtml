@@ -2,37 +2,35 @@
 @using MallMinder.Models;
 @model MallMinder.Models.ViewModels.PriceVM
 @inject AppDbContext _context
+
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
+
 @{
-    ViewData["Title"] = "room Page";
-    @* Layout = null; *@
-}
-@{
+    ViewData["Title"] = "Room Page";
     int mallId = ViewBag.MallId;
-    @* var rooms = ViewBag.rooms; *@
     var rooms = _context.Rooms
     .Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId))
     .ToList();
     var floors = _context.Floors.Where(f => f.MallId == mallId).ToList();
 }
+
 <div class="row">
-    <div class="col-lg-9 grid-margin stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Rooms Table</h4>
-                @* <p class="card-description"> Add class <code>.table</code> *@
-                </p>
                 <div class="table-responsive">
                     <table id="dt-table" class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Room No</th>
-                                <th> Floor </th>
-                                <th> Care </th>
-                                <th> Price Per Care</th>
-                                <th> Status </th>
+                                <th>Floor</th>
+                                <th>Care</th>
+                                <th>Price Per Care</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,81 +61,77 @@
                                             <label class="badge badge-info">@room.Status</label>
                                         }
                                     </td>
+                                    <td class="text-end">
+                                        <!-- Trigger modal -->
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#editModal-@room.Id">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </a>
+                                        <a href="tables-basic.html#">
+                                            <ion-icon name="trash-outline"></ion-icon>
+                                        </a>
+                                    </td>
                                 </tr>
+                                <!-- Modal Structure -->
+                                <div class="modal fade card card-body" id="editModal-@room.Id" tabindex="-1"
+                                    aria-labelledby="editModalLabel-@room.Id" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel-@room.Id">Edit Room Details</h5>
+                                                <button type="button" data-bs-dismiss="modal" aria-label="Close">
+                                                    <ion-icon name="close-outline"></ion-icon>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form class="forms-sample" method="post" asp-action="EditRoom"
+                                                    asp-controller="Room">
+                                                    <input type="hidden" name="Id" value="@room.Id" />
+                                                    <div class="form-group">
+                                                        <select class="form-control">
+                                                            @foreach (var floor in floors)
+                                                            {
+                                                                <option value="@floor.Id">@floor.FloorNumber</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleInputUsername1">Care</label>
+                                                        <input type="text" class="form-control" id="Care"
+                                                            placeholder="Care">
+                                                    </div>
+                                                    <div class="form-group ">
+                                                        <label class=" col-form-label">Description</label>
+                                                        <div>
+                                                            <textarea rows="4" class="form-control" id="Description"
+                                                                placeholder="Description"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary mr-2">Save changes</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>Room No</th>
-                                <th> Floor </th>
-                                <th> Care </th>
+                                <th>Floor</th>
+                                <th>Care</th>
                                 <th></th>
-                                <th> Status </th>
+                                <th>Status</th>
+                                <th></th>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-lg-3 ">
-        <div style="margin-bottom: 20px;" class="card card-body">
-            <h6>Current Price Per Care</h6>
-            <div class=" card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-9">
-                            <div class="d-flex align-items-center align-self-start">
-                                <h3 class="mb-0">$17.34</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <h6 class="text-muted font-weight-normal text-info">
-                        Current Price
-                    </h6>
-                </div>
-            </div>
-            <form method="post" asp-action="Index" asp-action="Room">
-                <div>
-                    <p class="text-info">Floor Number</p>
-                </div>
-                <select class="form-control" asp-for="FloorNumber">
-                    <option value="0">floor</option>
-                    @foreach (var floor in floors)
-                    {
-                        <option value="@floor.Id">@floor.FloorNumber</option>
-                    }
-                </select>
-                <div class="mt-2">
-                    <p class="text-info">New Price</p>
-                </div>
-                <div class="">
-                    <input asp-for="PricePerCare" class="select_input form-control " type="Number" id="number-input"
-                        id="number-input" value="0" placeholder="Price">
-                </div>
-                <button type="submit" class="btn btn-inverse-info btn-fw mt-4">Save Change</button>
-            </form>
-        </div>
-        <form method="post" asp-action="Index" asp-action="Room" class="card card-body">
-            <h4 class="card-title custom-margin-bottom-40">Add Room Price</h4>
-            <div class="dropdown custom-margin-bottom-20 ">
-                <div>
-                    <p class="text-info">Room Number</p>
-                </div>
-                <div class="number-selector mb-4 mr-sm-2">
-                    <input asp-for="RoomNumber" class="select_input form-control" type="number" id="number-input"
-                        value="0" placeholder="Room No">
-                </div>
-                <div class="mt-2">
-                    <p class="text-danger">Price</p>
-                </div>
-                <div class="">
-                    <input asp-for="RoomPrice" class="select_input form-control " type="text" id="number-input"
-                        placeholder="Price">
-                </div>
-                <div class="mt-4"><button type="submit" class="badge badge-danger">Submit</button></div>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -193,5 +187,7 @@
             });
         });
     </script>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
 
 }

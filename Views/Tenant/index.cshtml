@@ -28,31 +28,36 @@
             }
             @foreach (var item in Model)
             {
-                i++;
-                <tr>
-                    <td>@i</td>
-                    <td>@item.TenantName</td>
-                    <td>@item.TenantPhone</td>
-                    <td>@item.RentType</td>
-                    <td>@item.FloorNumber</td>
-                    <td>@item.RoomNumber</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(item.RentType) && item.RentType != "0")
-                        {
-                            <button type="button" class="btn btn-outline-info btn-icon-text">Tenant
-                                <ion-icon class="text-info" name="create-outline"></ion-icon>
-                            </button>
-                        }
-                        else
-                        {
-                            <a asp-controller="Rent" asp-action="Index" asp-route-id="@item.TenantId"
-                                asp-route-name="@item.TenantName" type="button" class="btn btn-outline-info btn-icon-text">Rent
-                                <ion-icon class="text-info" name="create-outline"></ion-icon>
-                            </a>
+                if (item.IsActive)
+                {
+                    i++;
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.TenantName</td>
+                        <td>@item.TenantPhone</td>
+                        <td>@item.RentType</td>
+                        <td>@item.FloorNumber</td>
+                        <td>@item.RoomNumber</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.RentType) && item.RentType != "0")
+                            {
+                                <a asp-controller="Tenant" asp-action="TenantDetail" asp-route-id="@item.RentId"
+                                    asp-route-name="@item.TenantName" type="button" class="btn btn-outline-info btn-icon-text">
+                                    Tenant
+                                    <ion-icon class="text-info" name="create-outline"></ion-icon>
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Rent" asp-action="Index" asp-route-id="@item.TenantId"
+                                    asp-route-name="@item.TenantName" type="button" class="btn btn-outline-info btn-icon-text">Rent
+                                    <ion-icon class="text-info" name="create-outline"></ion-icon>
+                                </a>
 
-                        }
-                    </td>
-                </tr>
+                            }
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
         <tfoot>

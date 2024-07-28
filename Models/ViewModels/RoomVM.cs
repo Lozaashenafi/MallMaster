@@ -15,6 +15,6 @@ namespace MallMinder.Models.ViewModels
         [Required(ErrorMessage = "RoomNumber is required")]
         public int RoomNumber { get; set; }
         public string? Description { get; set; }
-        public string Status { get; set; }
+
     }
 }

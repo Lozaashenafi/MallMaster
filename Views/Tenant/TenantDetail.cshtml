@@ -1,0 +1,64 @@
+@model MallMinder.Models.ViewModels.TenantDetailVM
+
+<div class="col-md-12 col-xl-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title label-big text-success">Tenant Detail</h4>
+            <div class="list-wrapper">
+                <ul>
+                    <li class="row">
+                        <div class="col-md-4 label-medium text-info">Tenant Name </div>
+                        <span class="col-md-8">@Model.TenantName</span>
+                    </li>
+                    <li class="row">
+
+                        <div class="col-md-4 label-medium text-primary">Room</div>
+                        <span class="col-md-8">@Model.Room - @Model.Floor</span>
+                    </li>
+                    <li class="row">
+                        <div class="col-md-4 label-medium text-warning">Rent Type</div>
+                        <span class="col-md-8">@Model.Type</span>
+                    </li>
+                    <li class="row">
+                        <div class="col-md-4 label-medium text-danger">Rented Date</div>
+                        <span class="col-md-8">@Model.RentedDate.ToShortDateString()</span>
+                    </li>
+                    <li class="row">
+                        <div class="col-md-4 label-medium text-warning">Payment Status</div>
+                        <span class="col-md-8">@Model.PaymentStatus</span>
+                    </li>
+                    <li class="row">
+                        <div class="col-md-4 label-medium text-info">Release</div>
+                        <span class="col-md-8">
+                            <form action="@Url.Action("RemoveRent", "Tenant")" method="post">
+                                <input type="hidden" name="rentId" value="@Model.RentId" />
+                                <a type="submit" class="btn btn-inverse-danger btn-fw">Remove</a>
+                            </form>
+                        </span>
+                    </li>
+                    <li class="row">
+                        <div class="col-md-9 label-medium text-info"></div>
+                        <span class="col-md-3">
+                            <a href="javascript:history.back()" class="badge badge-outline-info">Back</a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .label-big {
+        font-size: 20px;
+    }
+
+    .label-medium {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .gap {
+        gap: 25px;
+    }
+</style>

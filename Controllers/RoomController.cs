@@ -2,6 +2,7 @@ using MallMinder.Data;
 using MallMinder.Models;
 using MallMinder.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 namespace MallMinder.Controllers
 {
@@ -9,13 +10,12 @@ namespace MallMinder.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
-
         public RoomController(UserManager<AppUser> userManager, AppDbContext context)
         {
             _userManager = userManager;
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
             var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
@@ -27,11 +27,24 @@ namespace MallMinder.Controllers
 
             int mallId = manager.MallId;
             ViewBag.MallId = mallId;
-
+            var pricePerCareMall = await _context.PricePerCares
+                    .Where(r => r.MallId == mallId && r.FloorId == null)
+                    .FirstOrDefaultAsync(); // Use FirstOrDefaultAsync to get a single entity
+            if (pricePerCareMall != null)
+            {
+                // Access the Price property from the PricePerCares entity
+                double? currentPrice = pricePerCareMall.Price;
+                ViewBag.currentPrice = currentPrice;
+            }
+            else
+            {
+                double? currentPrice = 0; // Or another appropriate default value
+                ViewBag.currentPrice = currentPrice;
+            }
             return View();
         }
         [HttpPost]
-        public IActionResult Index(PriceVM pricing)
+        public async Task<IActionResult> Index(PriceVM pricing)
         {
             if (ModelState.IsValid)
             {
@@ -42,9 +55,9 @@ namespace MallMinder.Controllers
                 {
                     return NotFound(); // Handle if user does not own any mall
                 }
-
                 int mallId = mall.Id;
                 ViewBag.MallId = mallId;
+
                 // Create PricePerCare object
 
                 if (pricing.PricePerCare != 0 && pricing.PricePerCare != null)
@@ -95,9 +108,7 @@ namespace MallMinder.Controllers
                     };
                     _context.RoomPrices.Add(roomPrice);
                     _context.SaveChanges();
-
                 }
-
                 // Redirect to a success action or view
                 return RedirectToAction("Index", "Home"); // Redirect to home page or another appropriate action
             }
@@ -114,13 +125,11 @@ namespace MallMinder.Controllers
             {
                 return NotFound(); // Handle if user does not own any mall
             }
-
             int mallId = manager.MallId;
             ViewBag.MallId = mallId;
-
-
             return View();
         }
+
         [HttpPost]
         public IActionResult AddRoom(RoomVM roomVM)
         {
@@ -133,23 +142,19 @@ namespace MallMinder.Controllers
                     Care = roomVM.Care,
                     RoomNumber = roomVM.RoomNumber,
                     Description = roomVM.Description,
-                    Status = roomVM.Status,
+                    Status = "free",
                     IsActive = true,
                     PricePercareFlag = true,
                     RoomDeactivateFlag = false,
                     AddedDate = DateTime.Now
                 };
-
                 // Add room to DbContext and save changes
                 _context.Rooms.Add(room);
                 _context.SaveChanges();
                 // Add success message to TempData
                 TempData["SuccessMessage"] = "Room added successfully.";
-
-
                 return RedirectToAction("AddRoom", "Room");
             }
-
             // If model state is not valid, return to the view with validation errors
             return View(roomVM); // Adjust according to your project's view structure
         }

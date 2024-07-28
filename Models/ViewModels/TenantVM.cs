@@ -14,5 +14,6 @@ namespace MallMinder.Models.ViewModels
         public string? FloorNumber { get; set; }
         public string TenantPhone { get; set; }
         public string? RentType { get; set; }
+        public bool IsActive { get; set; }
     }
 }
