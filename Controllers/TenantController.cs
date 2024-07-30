@@ -23,6 +23,7 @@ namespace MallMinder.Controllers
             _roleManager = roleManager;
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             try
@@ -48,14 +49,14 @@ namespace MallMinder.Controllers
                 {
                     var tenantVM = new TenantVM();
                     var tenatrent = _context.Rents.Include(x => x.Room).ThenInclude(x => x.Floor).Include(x => x.RentType).Where(r => r.TenantId == tenant.Id).FirstOrDefault();
-                    tenantVM.RentId = tenatrent.Id;
+                    tenantVM.RentId = tenatrent?.Id;
                     tenantVM.TenantId = tenant.Id;
                     tenantVM.TenantName = tenant.FirstName + " " + tenant.LastName;
                     tenantVM.TenantPhone = tenant.PhoneNumber;
                     tenantVM.RoomNumber = tenatrent?.Room?.RoomNumber;
                     tenantVM.FloorNumber = tenatrent?.Room?.Floor?.FloorNumber;
                     tenantVM.RentType = tenatrent?.RentType?.Type;
-                    tenantVM.IsActive = tenatrent.IsActive;
+                    tenantVM.IsActive = tenatrent?.IsActive;
                     tenantlist.Add(tenantVM);
                 };
 
@@ -136,32 +137,37 @@ namespace MallMinder.Controllers
         {
             if (rentId <= 0)
             {
-                // Handle invalid rentId
                 return BadRequest("Invalid rent ID.");
             }
 
             // Find the rent record by rentId
-            var rent = await _context.Rents.FindAsync(rentId);
+            var rent = await _context.Rents
+                .Include(r => r.Room)
+                .FirstOrDefaultAsync(r => r.Id == rentId);
 
             if (rent == null)
             {
-                // Handle case where the rent record is not found
                 return NotFound("Rent record not found.");
             }
 
             // Set the rent record as inactive
             rent.IsActive = false;
 
+            // Update room status only if it's not already free
+            if (rent.Room != null && rent.Room.Status != "free")
+            {
+                rent.Room.Status = "free";
+            }
+
             // Save changes to the database
             await _context.SaveChangesAsync();
 
             // Redirect or return a view indicating success
-            return RedirectToAction("Index", "Tenant"); // Redirect to a relevant page
+            return RedirectToAction("Index", "Tenant");
         }
         public IActionResult AddTenant()
         {
             return View();
         }
-
     }
 }

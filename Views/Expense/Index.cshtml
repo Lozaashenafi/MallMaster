@@ -1,14 +1,17 @@
 @model MallMinder.Models.ViewModels.ExpenseVM
 <link href="/plugins/select2-2/select2.min_2.css" rel="stylesheet" />
 <link href="/plugins/select2-2/select2.min.css" rel="stylesheet" />
+
+@{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
 <div class="col-12 grid-margin">
-    <div class="col-md-10"> @if (TempData["SuccessMessage"] != null)
-        {
-            <div id="successMessage" class="alert text-success  text-center fs-5" role="alert">
-                @TempData["SuccessMessage"]
-            </div>
-        }
-    </div>
     <div class="card mb-4">
         <div class="card-body">
             <h4 class="card-title">Expense</h4>
@@ -26,7 +29,7 @@
                                 <div class="col-sm-10">
                                     <select asp-for="ExpenseTypeId"
                                         class="selection select2 form-control mb-3 custom-select"
-                                        asp-items="ViewBag.maintenanceType" id="freeRoomDropdown">
+                                        asp-items="ViewBag.ExpenseTypeList" id="freeRoomDropdown">
                                         <option value="0">Expense Type</option>
                                     </select>
                                 </div>
@@ -108,22 +111,6 @@
     <script src="/assets/js/misc.js"></script>
     <script>
         $(".selection").select2();
-    </script>
-    <script>
-        // Remove success message after 2 minutes or when new data is input
-        $(document).ready(function () {
-            setTimeout(function () {
-                $('#successMessage').fadeOut('slow', function () {
-                    $(this).remove();
-                });
-            }, 900); // 2 minutes
-        });
-
-        // Optionally, you can also remove the message when new data is input
-        // Example: when the form is submitted
-        $('form').submit(function () {
-            $('#successMessage').remove();
-        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

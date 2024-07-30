@@ -314,3 +314,4 @@ C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\obj\Debug\net8.0\MallM
 C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\obj\Debug\net8.0\MallMinder.genruntimeconfig.cache
 C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\MallMinder.pdb
 C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\obj\Debug\net8.0\ref\MallMinder.dll
+C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\Newtonsoft.Json.dll

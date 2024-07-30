@@ -30,10 +30,11 @@
                     <li class="row">
                         <div class="col-md-4 label-medium text-info">Release</div>
                         <span class="col-md-8">
-                            <form action="@Url.Action("RemoveRent", "Tenant")" method="post">
+                            <form asp-action="RemoveRent" asp-controller="Tenant" method="post">
                                 <input type="hidden" name="rentId" value="@Model.RentId" />
-                                <a type="submit" class="btn btn-inverse-danger btn-fw">Remove</a>
+                                <button type="submit" class="btn btn-inverse-danger btn-fw">Remove</button>
                             </form>
+
                         </span>
                     </li>
                     <li class="row">

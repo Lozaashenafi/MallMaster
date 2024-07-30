@@ -28,7 +28,8 @@
             }
             @foreach (var item in Model)
             {
-                if (item.IsActive)
+
+                if (item.IsActive == true || item.IsActive == null)
                 {
                     i++;
                     <tr>

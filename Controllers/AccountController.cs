@@ -103,7 +103,7 @@ namespace MallMinder.Controllers
                     // Assign "Tenant" role to the user
                     await _userManager.AddToRoleAsync(user, "Tenant");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Tenant");
                 }
                 else
                 {

@@ -1,12 +1,8 @@
-﻿<link rel="stylesheet" href="/assets/vendors/mdi/css/materialdesignicons.min.css">
-<link rel="stylesheet" href="/assets/vendors/css/vendor.bundle.base.css">
-<link rel="stylesheet" href="/assets/css/style.css">
-<link rel="shortcut icon" href="/assets/images/favicon.png" />
+﻿@using Newtonsoft.Json
+@model MallMinder.Models.ViewModels.RoomStatusVM
 
-@{
-  ViewData["Title"] = "Home Page";
-  @* Layout = null; *@
-}
+
+
 
 <div class="content-wrapper">
   <div class="page-header">
@@ -22,16 +18,16 @@
     <div class="col-lg-6 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Line chart</h4>
-          <canvas id="lineChart" style="height:250px"></canvas>
+          <h4 class="card-title">Room Status</h4>
+          <canvas id="roomStatusChart" style="height:250px !important"></canvas>
         </div>
       </div>
     </div>
-    <div class="col-lg-6 grid-margin stretch-card">
+    <div class=" col-lg-6 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Bar chart</h4>
-          <canvas id="barChart" style="height:230px"></canvas>
+          <h4 class="card-title">Revenue by Year </h4>
+          <canvas id="revenueBarChart" style="height:230px"></canvas>
         </div>
       </div>
     </div>
@@ -40,8 +36,8 @@
     <div class="col-lg-6 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Area chart</h4>
-          <canvas id="areaChart" style="height:250px"></canvas>
+          <h4 class="card-title">Expense by Year</h4>
+          <canvas id="expenseAreaChart" style="height:230px"></canvas>
         </div>
       </div>
     </div>
@@ -54,47 +50,136 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-lg-6 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Pie chart</h4>
-          <canvas id="pieChart" style="height:250px"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-6 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Scatter chart</h4>
-          <canvas id="scatterChart" style="height:250px"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- content-wrapper ends -->
-<!-- partial:../../partials/_footer.html -->
-<footer class="footer">
-  <div class="d-sm-flex justify-content-center justify-content-sm-between">
-    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com
-      2020</span>
-    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
-        href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a>
-      from Bootstrapdash.com</span>
-  </div>
-</footer>
-<script src="/assets/vendors/js/vendor.bundle.base.js"></script>
-<!-- endinject -->
-<!-- Plugin js for this page -->
-<script src="/assets/vendors/chart.js/Chart.min.js"></script>
-<!-- End plugin js for this page -->
-<!-- inject:js -->
-<script src="/assets/js/off-canvas.js"></script>
-<script src="/assets/js/hoverable-collapse.js"></script>
-@* <script src="/assets/js/misc.js"></script> *@
-<script src="/assets/js/settings.js"></script>
-<script src="/assets/js/todolist.js"></script>
-<!-- endinject -->
-<!-- Custom js for this page -->
-<script src="/assets/js/chart.js"></script>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Convert the RoomStatus object to JSON and output it directly into the JavaScript variable
+      var roomStatus = @Html.Raw(JsonConvert.SerializeObject(ViewBag.RoomStatus));
+      console.log('Room status:', roomStatus);
+
+      var doughnutPieData = {
+        datasets: [{
+          data: [roomStatus.Occupied, roomStatus.Free],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(54, 162, 235, 0.5)'
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)'
+          ],
+        }],
+        labels: [
+          'Occupied',
+          'Free'
+        ]
+      };
+
+      var doughnutPieOptions = {
+        responsive: true,
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        }
+      };
+
+      var ctx = document.getElementById('roomStatusChart').getContext('2d');
+      var roomStatusChart = new Chart(ctx, {
+        type: 'pie',
+        data: doughnutPieData,
+        options: doughnutPieOptions
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Debug: Check if the JSON data is being parsed correctly
+      var revenueData = JSON.parse('@Html.Raw(ViewBag.RevenueByYearJson)');
+      console.log('Revenue Data:', revenueData);
+
+      var labels = Object.keys(revenueData);
+      var data = Object.values(revenueData);
+
+      console.log('Labels:', labels);
+      console.log('Data:', data);
+
+      var ctx = document.getElementById('revenueBarChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Revenue',
+            data: data,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: "rgba(204, 204, 204, 0.1)"
+              }
+            },
+            x: {
+              grid: {
+                color: "rgba(204, 204, 204, 0.1)"
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true
+            }
+          }
+        }
+      });
+    });
+    // Expense Area Chart
+    var expenseData = JSON.parse('@Html.Raw(ViewBag.ExpenseByYearJson)');
+    var expenseLabels = Object.keys(expenseData);
+    var expenseValues = Object.values(expenseData);
+
+    var expenseAreaChart = new Chart(document.getElementById('expenseAreaChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: expenseLabels,
+        datasets: [{
+          label: 'Expense',
+          data: expenseValues,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: "rgba(204, 204, 204, 0.1)"
+            }
+          },
+          x: {
+            grid: {
+              color: "rgba(204, 204, 204, 0.1)"
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true
+          }
+        }
+      }
+    });
+  </script>

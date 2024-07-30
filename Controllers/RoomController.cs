@@ -158,5 +158,74 @@ namespace MallMinder.Controllers
             // If model state is not valid, return to the view with validation errors
             return View(roomVM); // Adjust according to your project's view structure
         }
+
+        public async Task<IActionResult> EditRoom(Room room)
+        {
+
+            var userId = _userManager.GetUserId(User);
+            if (userId == null)
+            {
+                // Redirect to a login page or show an error message
+                return RedirectToAction("Login", "Account");
+            }
+
+            var existingRoom = await _context.Rooms.FindAsync(room.Id);
+            if (existingRoom == null)
+            {
+                // Handle the case where the room was not found
+                return NotFound();
+            }
+
+            // Update the existing room properties with the new values
+            existingRoom.FloorId = room.FloorId;
+            existingRoom.Care = room.Care;
+            existingRoom.Description = room.Description;
+            // Add any other properties that need to be updated
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                // Optionally add a success message
+                TempData["SuccessMessage"] = "Room details updated successfully.";
+                return RedirectToAction("Index"); // Redirect to the appropriate page
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and handle it
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the room. Please try again.");
+            }
+
+
+            // If we get here, something went wrong, redisplay the form
+            return View(room);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteRoom(int id)
+        {
+            var room = await _context.Rooms.FindAsync(id);
+            if (room == null)
+            {
+                TempData["SuccessMessage"] = "Room not found.";
+                return RedirectToAction("Index");
+            }
+            // Trim any whitespace from room.Status
+            var status = room.Status.Trim();
+            if (status == "Occupied")
+            {
+                TempData["SuccessMessage"] = "Room is Occupied and cannot be deleted.";
+                return RedirectToAction("Index");
+            }
+
+            // Deactivate the room or remove it based on your requirement
+            room.IsActive = false;
+
+            // Alternatively, if you want to remove the room from the context
+            //_context.Rooms.Remove(room);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Room deleted successfully.";
+            return RedirectToAction("Index");
+        }
+
     }
 }
