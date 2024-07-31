@@ -102,17 +102,20 @@ public class HomeController : Controller
                 .ToDictionary(r => r.Year, r => r.TotalExpense);
 
             ViewBag.MaintenanceByYearJson = Newtonsoft.Json.JsonConvert.SerializeObject(maintenanceByYear);
-            // Maintenance costs and tenant names
-            var maintenanceCostsAndTenants = mallMaintenance
-                .Where(m => m.Rent != null && m.Rent.AppUser != null)
+            // Get the current year
+            // Filter, group by tenant, and order by total cost in descending order, then take the top 4
+            var top4MaintenanceCostsAndTenants = mallMaintenance
+                .Where(m => m.Rent != null && m.Rent.AppUser != null && m.CompletedDate.Value.Year == currentYear)
                 .GroupBy(m => m.Rent.AppUser.UserName)
                 .Select(g => new
                 {
                     TenantName = g.Key,
                     TotalCost = g.Sum(m => m.Cost ?? 0)
                 })
+                .OrderByDescending(g => g.TotalCost)
+                .Take(4)
                 .ToList();
-            ViewBag.MaintenanceCostsAndTenantsJson = Newtonsoft.Json.JsonConvert.SerializeObject(maintenanceCostsAndTenants);
+            ViewBag.MaintenanceCostsAndTenantsJson = Newtonsoft.Json.JsonConvert.SerializeObject(top4MaintenanceCostsAndTenants);
             // Profit calculation
             var profitByYear = new Dictionary<int, double>();
 
