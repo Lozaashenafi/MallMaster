@@ -12,12 +12,12 @@ namespace MallMinder.Models
     public class Maintenance
     {
         public int Id { get; set; }
-        public int MaintenanceTypeId { get; set; }
+        public int? MaintenanceTypeId { get; set; }
 
-        public int RentId { get; set; }
+        public int? RentId { get; set; }
         public int? MallId { get; set; }
 
-        public DateTime RequestedDate { get; set; }
+        public DateTime? RequestedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
         public string? Description { get; set; }
         public double? Cost { get; set; }

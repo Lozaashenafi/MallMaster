@@ -1,9 +1,6 @@
 ﻿@using Newtonsoft.Json
 @model MallMinder.Models.ViewModels.RoomStatusVM
 
-
-
-
 <div class="content-wrapper">
   <div class="page-header">
     <h3 class="page-title"> Chart-js </h3>
@@ -18,8 +15,8 @@
     <div class="col-lg-6 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Room Status</h4>
-          <canvas id="roomStatusChart" style="height:250px !important"></canvas>
+          <h4 class="card-title">Profitability</h4>
+          <canvas id="profitChart" style="height:250px"></canvas>
         </div>
       </div>
     </div>
@@ -44,13 +41,36 @@
     <div class="col-lg-6 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">Doughnut chart</h4>
-          <canvas id="doughnutChart" style="height:250px"></canvas>
+          <h4 class="card-title">Maintenance Cost by Year</h4>
+          <canvas id="maintenanceChart" style="height:250px"></canvas>
         </div>
       </div>
     </div>
   </div>
-
+  <div class="row">
+    <div class="col-lg-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Room Status</h4>
+          <canvas id="roomStatusChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Maintenance</h4>
+          <canvas id="maintenanceCostsChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    .size {
+      height: 230px !important;
+      margin: 0 auto;
+    }
+  </style>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -181,5 +201,111 @@
           }
         }
       }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Get the data from ViewBag
+      var maintenanceByYearJson = '@Html.Raw(ViewBag.maintenanceByYearJson)';
+      var maintenanceByYear = JSON.parse(maintenanceByYearJson);
+
+      // Prepare data for the chart
+      var labels = Object.keys(maintenanceByYear);
+      var data = Object.values(maintenanceByYear);
+
+      // Create the line chart
+      var ctx = document.getElementById('maintenanceChart').getContext('2d');
+      var maintenanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Maintenance Cost',
+            data: data,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var ctx = document.getElementById('profitChart').getContext('2d');
+
+      var profitData = @Html.Raw(ViewBag.ProfitByYearJson);
+
+      var data = {
+        labels: Object.keys(profitData),
+        datasets: [{
+          label: 'Profit',
+          data: Object.values(profitData),
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          fill: false
+        }]
+      };
+
+      var config = {
+        type: 'line',
+        data: data,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      };
+
+      var profitChart = new Chart(ctx, config);
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var maintenanceCostsCtx = document.getElementById('maintenanceCostsChart').getContext('2d');
+
+      var maintenanceData = @Html.Raw(ViewBag.MaintenanceCostsAndTenantsJson);
+
+      var maintenanceChartData = {
+        labels: maintenanceData.map(item => item.TenantName),
+        datasets: [{
+          label: 'Maintenance Cost',
+          data: maintenanceData.map(item => item.TotalCost),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      };
+
+      var maintenanceChartConfig = {
+        type: 'doughnut',
+        data: maintenanceChartData
+      };
+
+      var maintenanceChart = new Chart(maintenanceCostsCtx, maintenanceChartConfig);
     });
   </script>
