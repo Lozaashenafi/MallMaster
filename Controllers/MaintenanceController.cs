@@ -49,13 +49,17 @@ namespace MallMinder.Controllers
                 .ToList();
                 // 'rents' now contains a list of objects with RentId, RoomNumber, and TenantName
                 ViewBag.maintenanceType = new SelectList(_context.MaintenanceTypes.ToList(), "Id", "Type");
+                int? approvedId = _context.MaintenanceStatusTypes
+                            .Where(r => r.SysCode == 2)
+                            .Select(r => r.Id)
+                            .SingleOrDefault();
                 ViewBag.rents = new SelectList(rents, "RentId", "RoomNumber");
                 var maintenanceData = _context.MaintenanceStatuss
                         .Include(m => m.Maintenance)
                         .ThenInclude(m => m.Rent)
                         .ThenInclude(m => m.Room)
                         .Include(m => m.Maintenance.MaintenanceType)
-                        .Where(m => m.Maintenance.MallId == mallId && m.IsActive == true && m.StatusId == 2)
+                        .Where(m => m.Maintenance.MallId == mallId && m.IsActive == true && m.StatusId == approvedId)
                         .Select(m => new
                         {
                             MaintenanceId = m.Maintenance.Id,
@@ -101,10 +105,14 @@ namespace MallMinder.Controllers
                         };
                         _context.Maintenances.Add(maintenance);
                         _context.SaveChanges();
+                        int? approvedId = _context.MaintenanceStatusTypes
+                            .Where(r => r.SysCode == 2)
+                            .Select(r => r.Id)
+                            .SingleOrDefault();
                         var maintenanceStatus = new MaintenanceStatus
                         {
                             MaintenanceId = maintenance.Id,
-                            StatusId = 2,
+                            StatusId = approvedId,
                             Date = maintenance.RequestedDate,
                             IsActive = true,
                             CreatedBy = currentUser.Id, // Ensure currentUser.Id is a string
@@ -137,10 +145,14 @@ namespace MallMinder.Controllers
                             {
                                 status.IsActive = false;
                             }
+                            int? doneId = _context.MaintenanceStatusTypes
+                            .Where(r => r.SysCode == 4)
+                            .Select(r => r.Id)
+                            .SingleOrDefault();
                             var newStatus = new MaintenanceStatus
                             {
                                 MaintenanceId = maintenance.Id,
-                                StatusId = 4,
+                                StatusId = doneId,
                                 Date = maintenance.RequestedDate,
                                 IsActive = true,
                                 CreatedBy = currentUser.Id,

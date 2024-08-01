@@ -14,6 +14,7 @@
     .Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId))
     .ToList();
     var floors = _context.Floors.Where(f => f.MallId == mallId).ToList();
+    var currentPrice = ViewBag.currentPrice;
 }
 @{
     if (TempData["SuccessMessage"] != null)
@@ -24,6 +25,69 @@
         </div>
     }
 }
+<div class=" row">
+    <div class="col-lg-6">
+        <div style="margin-bottom: 20px;" class="card card-body">
+            <h6>Current Price Per Care</h6>
+            <div class=" card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="d-flex align-items-center align-self-start">
+                                <h3 class="mb-0">@currentPrice etb</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-muted font-weight-normal text-info">
+                        Current Price
+                    </h6>
+                </div>
+            </div>
+            <form method="post" asp-action="Index" asp-action="Room">
+                <div>
+                    <p class="text-info">Floor Number</p>
+                </div>
+                <select class="form-control" asp-for="FloorNumber">
+                    <option value="0">floor</option>
+                    @foreach (var floor in floors)
+                    {
+                        <option value="@floor.Id">@floor.FloorNumber</option>
+                    }
+                </select>
+                <div class="mt-2">
+                    <p class="text-info">New Price</p>
+                </div>
+                <div class="">
+                    <input asp-for="PricePerCare" class="select_input form-control " type="Number" id="number-input"
+                        id="number-input" value="0" placeholder="Price">
+                </div>
+                <button type="submit" class="btn btn-inverse-info btn-fw mt-4">Save Change</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <form method="post" asp-action="Index" asp-action="Room" class="card card-body">
+            <h4 class="card-title custom-margin-bottom-40 pb-4">Add Room Price</h4>
+            <div class="dropdown custom-margin-bottom-20 ">
+                <div class="pt-4">
+                    <p class="text-info">Room Number</p>
+                </div>
+                <div class="number-selector mb-4 mr-sm-2">
+                    <input asp-for="RoomNumber" class="select_input form-control" type="number" id="number-input"
+                        value="0" placeholder="Room No">
+                </div>
+                <div class="mt-2">
+                    <p class="text-danger">Price</p>
+                </div>
+                <div class="">
+                    <input asp-for="RoomPrice" class="select_input form-control " type="text" id="number-input"
+                        placeholder="Price">
+                </div>
+                <div class="mt-4"><button type="submit" class="badge badge-danger">Submit</button></div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -165,6 +229,8 @@
         </div>
     </div>
 </div>
+
+
 @section scripts {
     <script src="/js/datatables.js"></script>
     <script src="/js/dataTables.buttons.min.js"></script>

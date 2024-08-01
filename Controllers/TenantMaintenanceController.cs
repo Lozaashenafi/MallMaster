@@ -61,10 +61,14 @@ namespace MallMinder.Controllers
                         };
                         _context.Maintenances.Add(maintenance);
                         _context.SaveChanges();
+                        int? requestId = _context.MaintenanceStatusTypes
+                            .Where(r => r.SysCode == 2)
+                            .Select(r => r.Id)
+                            .SingleOrDefault();
                         var maintenanceStatus = new MaintenanceStatus
                         {
                             MaintenanceId = maintenance.Id,
-                            StatusId = 1,
+                            StatusId = requestId,
                             Date = maintenance.RequestedDate,
                             IsActive = true,
                             CreatedBy = currentUser.Id, // Ensure currentUser.Id is a string

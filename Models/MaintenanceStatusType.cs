@@ -9,6 +9,6 @@ namespace MallMinder.Models
     {
         public int Id { get; set; }
         public string Type { get; set; }
-        public string SysCode { get; set; }
+        public int SysCode { get; set; }
     }
 }

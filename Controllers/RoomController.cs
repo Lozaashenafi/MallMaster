@@ -98,6 +98,19 @@ namespace MallMinder.Controllers
                     {
                         ofpricePerCare.PricePercareFlag = false;
                     }
+                    else
+                    {
+                        var roomPriceold = _context.RoomPrices
+                            .FirstOrDefault(r => r.Id == roomId);
+
+                        if (roomPriceold != null)
+                        {
+                            // Set the IsActive property to false
+                            roomPriceold.IsActive = false;
+                            // Save changes to the database
+                            _context.SaveChanges();
+                        }
+                    }
                     var roomPrice = new RoomPrice
                     {
                         RoomId = roomId,
@@ -194,8 +207,6 @@ namespace MallMinder.Controllers
                 // Log the exception and handle it
                 ModelState.AddModelError(string.Empty, "An error occurred while updating the room. Please try again.");
             }
-
-
             // If we get here, something went wrong, redisplay the form
             return View(room);
         }

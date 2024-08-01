@@ -22,7 +22,6 @@ namespace MallMinder.Models
         public string? Description { get; set; }
         public double? Cost { get; set; }
 
-
         public virtual Rent Rent { get; set; }
 
         public virtual Mall Mall { get; set; }

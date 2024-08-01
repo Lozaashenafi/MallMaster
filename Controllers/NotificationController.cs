@@ -53,13 +53,17 @@ namespace MallMinder.Controllers
             var maintenance = _context.MaintenanceStatuss
                 .Where(r => r.MaintenanceId == id && r.IsActive == true)
                 .FirstOrDefault();
+            int? approvedId = _context.MaintenanceStatusTypes
+                        .Where(r => r.SysCode == 2)
+                        .Select(r => r.Id)
+                        .SingleOrDefault();
             if (maintenance != null)
             {
                 var newStatus = new MaintenanceStatus();
                 newStatus.MaintenanceId = maintenance.MaintenanceId;
                 newStatus.Date = DateTime.Now;
                 newStatus.CreatedBy = currentUser.Id;
-                newStatus.StatusId = 2;
+                newStatus.StatusId = approvedId;
                 newStatus.IsActive = true;
                 _context.MaintenanceStatuss.Add(newStatus);
                 _context.SaveChanges(); // Save changes asynchronously
@@ -77,10 +81,14 @@ namespace MallMinder.Controllers
                 .FirstOrDefault(r => r.MaintenanceId == id && r.IsActive == true);
             if (maintenance != null)
             {
+                int? declineId = _context.MaintenanceStatusTypes
+                            .Where(r => r.SysCode == 2)
+                            .Select(r => r.Id)
+                            .SingleOrDefault();
                 var maintenance1 = new MaintenanceStatus
                 {
                     MaintenanceId = maintenance.MaintenanceId,
-                    StatusId = 3,
+                    StatusId = declineId,
                     Date = DateTime.Now,
                     CreatedBy = currentUser.Id,
                     IsActive = true,

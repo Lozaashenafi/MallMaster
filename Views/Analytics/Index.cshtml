@@ -1,7 +1,30 @@
+<link rel="stylesheet" type="text/css" href="/css/datatables.css">
+<link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
+<link rel="stylesheet" type="text/css" href="/css/demo.css">
+@using MallMinder.Data
+@using MallMinder.Models;
+@model MallMinder.Models.ViewModels.PriceVM
+@inject AppDbContext _context
+
+
+@{
+    var maintenanceOnProgressJson = ViewBag.MaintenanceOnProgressJson as string;
+    var maintenanceOnProgress = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceOnProgressJson);
+    var maintenanceDataComplitedJson = ViewBag.MaintenanceDataComplitedJson as string;
+    var maintenanceDataComplited =
+    Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceDataComplitedJson);
+    var ExpenseProgressJson = ViewBag.ExpenseProgressJson as string;
+    var ExpenseProgress = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(ExpenseProgressJson);
+    var roomDataJson = ViewBag.roomDataJson as string;
+    var roomData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(roomDataJson);
+    var tenantAgingJson = ViewBag.tenantAgingJson as string;
+    var tenantAging = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(tenantAgingJson);
+}
+
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Maintenance Performance</h4>
+            <h4 class="card-title">Maintenance on Progress</h4>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -9,85 +32,281 @@
                             <th>Rank</th>
                             <th>Client Name</th>
                             <th>Requested Date</th>
-                            <th>Complited Date</th>
+                            <th>Days Since Requested</th>
                             <th>Type</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>
-                                <span class="pl-2">Henry Klein</span>
-                            </td>
-                            <td>02312</td>
-                            <td>$14,500</td>
-                            <td>Dashboard</td>
-                            <td>
-                                <div class="badge badge-outline-success">
-                                    Approved
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>2</th>
-                            <td>
-                                <span class="pl-2">Estella Bryan</span>
-                            </td>
-                            <td>02312</td>
-                            <td>$14,500</td>
-                            <td>Website</td>
-                            <td>
-                                <div class="badge badge-outline-warning">
-                                    Pending
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <td>
-                                <span class="pl-2">Lucy Abbott</span>
-                            </td>
-                            <td>02312</td>
-                            <td>$14,500</td>
-                            <td>App design</td>
-                            <td>
-                                <div class="badge badge-outline-danger">
-                                    Rejected
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>4</th>
-                            <td>
-                                <span class="pl-2">Peter Gill</span>
-                            </td>
-                            <td>02312</td>
-                            <td>$14,500</td>
-                            <td>Development</td>
-                            <td>
-                                <div class="badge badge-outline-success">
-                                    Approved
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>5</th>
-                            <td>
-                                <span class="pl-2">Sallie Reyes</span>
-                            </td>
-                            <td>02312</td>
-                            <td>$14,500</td>
-                            <td>Website</td>
-                            <td>
-                                <div class="badge badge-outline-success">
-                                    Approved
-                                </div>
-                            </td>
-                        </tr>
+                        @for (int i = 0; i < maintenanceOnProgress.Count; i++)
+                        {
+                            <tr>
+                                <th>@(i + 1)</th>
+                                <td>
+                                    <span class="pl-2">@maintenanceOnProgress[i].TenantName</span>
+                                </td>
+                                <td>@(maintenanceOnProgress[i].RequestedDate != null ?
+                                        maintenanceOnProgress[i].RequestedDate.ToString("yyyy-MM-dd") : "")</td>
+                                <td>@(maintenanceOnProgress[i].DaysSinceRequested != null ?
+                                        $"{maintenanceOnProgress[i].DaysSinceRequested.Value} days" : "0")</td>
+                                <td>@maintenanceOnProgress[i].MaintenanceType</td>
+                                @if (@maintenanceOnProgress[i].TenantStatus.ToString().Trim() == "Approved")
+                                {
+                                    <td>
+                                        <div class="badge badge-outline-success">
+                                            @maintenanceOnProgress[i].TenantStatus
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <div class="badge badge-outline-danger">
+                                            @maintenanceOnProgress[i].TenantStatus
+                                        </div>
+                                    </td>
+                                }
+
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Complited Maintenance </h4>
+            <div class="table-responsive">
+                <table id="dt-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Client Name</th>
+                            <th>Requested Date</th>
+                            <th>Completed Date</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < maintenanceDataComplited.Count; i++)
+                        {
+                            <tr>
+                                <th>@(i + 1)</th>
+                                <td>@maintenanceDataComplited[i].TenantName</td>
+                                <td>@(maintenanceDataComplited[i].RequestedDate != null ?
+                                        maintenanceDataComplited[i].RequestedDate.ToString("yyyy-MM-dd") : "")</td>
+                                <td>@(maintenanceDataComplited[i].CompletedDate != null ?
+                                        maintenanceDataComplited[i].CompletedDate.ToString("yyyy-MM-dd") : "")</td>
+                                <td>@maintenanceDataComplited[i].MaintenanceType</td>
+                                <td>
+                                    @if (maintenanceDataComplited[i].TenantStatus.ToString().Trim() == "Declined")
+                                    {
+                                        <div class="badge badge-outline-warning">Declined</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="badge badge-outline-success">Done</div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Client Name</th>
+                            <th>Requested Date</th>
+                            <th>Completed Date</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Expense Performance</h4>
+            <div class="table-responsive">
+                <table id="dt-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Expense Type</th>
+                            <th>Expense Date</th>
+                            <th>Description</th>
+                            <th>Expense Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < ExpenseProgress.Count; i++)
+                        {
+                            <tr>
+                                <th>@(i + 1)</th>
+                                <td>@ExpenseProgress[i].ExpenseType</td>
+                                <td>@(ExpenseProgress[i].ExceptionDate != null ?
+                                        ExpenseProgress[i].ExceptionDate.ToString("yyyy-MM-dd") : "")</td>
+                                <td>@ExpenseProgress[i].Description</td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Expense Type</th>
+                            <th>Expense Date</th>
+                            <th>Description</th>
+                            <th>Expense Amount</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Room Performance</h4>
+            <div class="table-responsive">
+                <table id="dt-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Room Number </th>
+                            <th>Floor Number</th>
+                            <th>Room Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < roomData.Count; i++)
+                        {
+                            <tr>
+                                <th>@(i + 1)</th>
+                                <td>@roomData[i].RoomNumber</td>
+                                <td>@roomData[i].FloorNumber</td>
+                                <td>@roomData[i].RoomPrice</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Room Number </th>
+                            <th>Floor Number</th>
+                            <th>Room Price</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Residency Duration</h4>
+            <div class="table-responsive">
+                <table id="dt-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Tenant Name</th>
+                            <th>Phone Number</th>
+                            <th>Rental Period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < tenantAging.Count; i++)
+                        {
+                            <tr>
+                                <th>@(i + 1)</th>
+                                <td>@tenantAging[i].TenantName</td>
+                                <td>@tenantAging[i].TenantPhone</td>
+                                <td>@tenantAging[i].RentalPeriodString</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Tenant Name</th>
+                            <th>Phone Number</th>
+                            <th>Rental Period</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+<style>
+    .table>tbody>tr>td {
+        color: #fff;
+    }
+</style>
+
+@section scripts {
+    <script src="/js/datatables.js"></script>
+    <script src="/js/dataTables.buttons.min.js"></script>
+    <script src="/js/jszip.min.js"></script>
+    <script src="/assets/js/misc.js"></script>
+    <script src="/js/buttons.html5.min.js"></script>
+    <script src="/js/buttons.print.min.js"></script>
+    <script src="/js/custom_miscellaneous.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            var table = $('#dt-table').DataTable({
+                dom: "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>" +
+                    "<'table-responsive'tr>" +
+                    "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                buttons: [
+                    { extend: 'excel', className: 'btn btn-outline-light' },
+                    { extend: 'print', className: 'btn btn-outline-light' }
+                ],
+                oLanguage: {
+                    oPaginate: {
+                        sPrevious: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        sNext: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    sInfo: "Showing page _PAGE_ of _PAGES_",
+                    sSearch: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    sSearchPlaceholder: "Search...",
+                    sLengthMenu: "Results : _MENU_"
+                },
+                stripeClasses: [],
+                lengthMenu: [7, 10, 20, 50],
+                pageLength: 7,
+                columnDefs: [
+                    { targets: [3], searchable: false } // Disable search on the 4th column (Price Per Care)
+                ]
+            });
+            // Add search inputs for all columns except "Price Per Care"
+            $('#dt-table tfoot th').not(':eq(3)').each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+            });
+            // Apply individual column search functionality
+            table.columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that.search(this.value).draw();
+                    }
+                });
+                // Set roomIdToDelete when delete modal is shown
+                $('#deleteModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget); // Button that triggered the modal
+                    var roomId = button.data('room-id'); // Extract info from data-* attributes
+                    var modal = $(this);
+                    modal.find('#roomIdToDelete').val(roomId);
+                });
+            });
+        });
+    </script>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+}
