@@ -63,16 +63,11 @@ namespace MallMinder.Controllers
             {
 
                 var currentUser = _userManager.GetUserAsync(User).Result;
+                var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault();
 
-                // Fetch TenantId from AppUser based on TenantUserName
-                // var tenantUser = _context.Users.FirstOrDefault(u => u.UserName == rentVM.TenantUserName);
-                // if (tenantUser == null)
-                // {
-                //     ModelState.AddModelError("", "Tenant user not found.");
-                //     return View(rentVM);
-                // }
-
-                // Fetch room
                 var room = _context.Rooms.FirstOrDefault(r => r.Id == rentVM.RoomId);
                 if (room == null)
                 {
@@ -103,13 +98,21 @@ namespace MallMinder.Controllers
                     PaymentDuration = rentVM.PaymentDuration, // Default to 0 if PaymentDuration is null
                     AddedDate = DateTime.Now,
                     TypeId = typeId, // Assign RentType Id
-                    CreatedBy = currentUser.Id
+                    CreatedBy = currentUser.Id,
+                    MallId = mallId,
                 };
 
                 // Add Rent object to DbContext and save changes
                 _context.Rents.Add(rent);
                 _context.SaveChanges();
+                var roomOccupancy = new RoomOccupancy
+                {
+                    RoomId = rentVM.RoomId,
+                    OccoupiedDate = rentVM.RentalDate,
 
+                };
+                _context.RoomOccupancys.Add(roomOccupancy);
+                _context.SaveChanges();
                 // Update Room status to 'Occupied'
                 room.Status = "Occupied";
                 _context.SaveChanges();

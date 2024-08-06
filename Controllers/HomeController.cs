@@ -128,8 +128,8 @@ public class HomeController : Controller
                 var profit = revenue - (expense + maintenance);
                 profitByYear[year] = profit;
             }
-
             ViewBag.ProfitByYearJson = Newtonsoft.Json.JsonConvert.SerializeObject(profitByYear);
+
         };
 
         return View();

@@ -2,83 +2,46 @@
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
 
-
 @{
-    var maintenanceOnProgressJson = ViewBag.MaintenanceOnProgressJson as string;
-    var maintenanceOnProgress = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceOnProgressJson);
-
+    var tenantAgingJson = ViewBag.tenantAgingJson as string;
+    var tenantAging = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(tenantAgingJson);
 }
-
-<div class="col-12 grid-margin">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Maintenance on Progress</h4>
-            <div class="table-responsive">
-                <table id="dt-table" class="table table-hover">
-                    <thead>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Residency Duration</h4>
+        <div class="table-responsive">
+            <table id="dt-table" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Tenant Name</th>
+                        <th>Phone Number</th>
+                        <th>Rental Period</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < tenantAging.Count; i++)
+                    {
                         <tr>
-                            <th>no</th>
-                            <th>Client Name</th>
-                            <th>Requested Date</th>
-                            <th>Days </th>
-                            <th>Type</th>
-                            <th>Status</th>
+                            <th>@(i + 1)</th>
+                            <td>@tenantAging[i].TenantName</td>
+                            <td>@tenantAging[i].TenantPhone</td>
+                            <td>@tenantAging[i].RentalPeriodString</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < maintenanceOnProgress.Count; i++)
-                        {
-                            <tr>
-                                <th>@(i + 1)</th>
-                                <td>
-                                    <span class="pl-2">@maintenanceOnProgress[i].TenantName</span>
-                                </td>
-                                <td>@(maintenanceOnProgress[i].RequestedDate != null ?
-                                        maintenanceOnProgress[i].RequestedDate.ToString("yyyy-MM-dd") : "")</td>
-                                <td>@(maintenanceOnProgress[i].DaysSinceRequested != null ?
-                                        $"{maintenanceOnProgress[i].DaysSinceRequested.Value} days" : "0")</td>
-                                <td>@maintenanceOnProgress[i].MaintenanceType</td>
-                                @if (@maintenanceOnProgress[i].TenantStatus.ToString().Trim() == "Approved")
-                                {
-                                    <td>
-                                        <div class="badge badge-outline-success">
-                                            @maintenanceOnProgress[i].TenantStatus
-                                        </div>
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td>
-                                        <div class="badge badge-outline-danger">
-                                            @maintenanceOnProgress[i].TenantStatus
-                                        </div>
-                                    </td>
-                                }
-
-                            </tr>
-                        }
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>no</th>
-                            <th>Client Name</th>
-                            <th>Requested Date</th>
-                            <th>Days </th>
-                            <th>Type</th>
-                            <th>Status</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Tenant Name</th>
+                        <th>Phone Number</th>
+                        <th>Rental Period</th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
-<style>
-    .table>tbody>tr>td {
-        color: #fff;
-    }
-</style>
-
 @section scripts {
     <script src="/js/datatables.js"></script>
     <script src="/js/dataTables.buttons.min.js"></script>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MallMinder.Data;
 using MallMinder.Models;
+using MallMinder.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,21 @@ namespace MallMinder.Controllers
                     .ToList();
 
                 ViewBag.MaintenanceOnProgressJson = Newtonsoft.Json.JsonConvert.SerializeObject(maintenanceDataOnProgress);
+
+            }
+            return View();
+        }
+        public async Task<IActionResult> ComplitedMaintenance()
+        {
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+            if (currentUser != null)
+            {
+                var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault();
+                var now = DateTime.Now;
                 var twelveMonthsAgo = now.AddMonths(-12);
 
                 var maintenanceDataComplited = _context.MaintenanceStatuss
@@ -78,16 +94,20 @@ namespace MallMinder.Controllers
                     .ToList();
 
                 ViewBag.MaintenanceDataComplitedJson = Newtonsoft.Json.JsonConvert.SerializeObject(maintenanceDataComplited);
-                // expense
-                var ExpenseProgress = _context.Expenses.Include(e => e.ExpenseType).Where(e => e.MallId == mallId && e.IsAcrive == true).Where(e => e.ExpenseDate >= twelveMonthsAgo).Select(e => new
-                {
-                    ExpenseType = e.ExpenseType.Type,
-                    Description = e.Description,
-                    ExceptionDate = e.ExpenseDate,
-                    ExpenseAmount = e.ExpenseAmount,
-                }).OrderByDescending(r => r.ExpenseAmount) // Use the correct property name
-                    .ToList();
-                ViewBag.ExpenseProgressJson = Newtonsoft.Json.JsonConvert.SerializeObject(ExpenseProgress);
+            }
+            return View();
+        }
+        public async Task<IActionResult> Room()
+        {
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+            if (currentUser != null)
+            {
+                var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault();
+                var now = DateTime.Now;
                 // room status
                 var PricePerCare = _context.PricePerCares
                         .Where(p => p.IsActive == true && p.FloorId == null && p.MallId == mallId)
@@ -107,9 +127,48 @@ namespace MallMinder.Controllers
                     .OrderByDescending(r => r.RoomPrice) // Sorting by RoomPrice in descending order
                     .ToList();
                 ViewBag.roomDataJson = Newtonsoft.Json.JsonConvert.SerializeObject(roomData);
+            }
+            return View();
+        }
+        public async Task<IActionResult> Expense()
+        {
+            var currentUser = _userManager.GetUserAsync(User).Result;
 
+            if (currentUser != null)
+            {
+                var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault();
+                var now = DateTime.Now;
+                var twelveMonthsAgo = now.AddMonths(-12);
+                // expense
+                var ExpenseProgress = _context.Expenses.Include(e => e.ExpenseType).Where(e => e.MallId == mallId && e.IsAcrive == true).Where(e => e.ExpenseDate >= twelveMonthsAgo).Select(e => new
+                {
+                    ExpenseType = e.ExpenseType.Type,
+                    Description = e.Description,
+                    ExceptionDate = e.ExpenseDate,
+                    ExpenseAmount = e.ExpenseAmount,
+                }).OrderByDescending(r => r.ExpenseAmount) // Use the correct property name
+                    .ToList();
+                ViewBag.ExpenseProgressJson = Newtonsoft.Json.JsonConvert.SerializeObject(ExpenseProgress);
+
+                return View();
+            }
+            return View();
+        }
+        public async Task<IActionResult> Tenant()
+        {
+            var currentUser = _userManager.GetUserAsync(User).Result;
+
+            if (currentUser != null)
+            {
+                var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault();
+                var now = DateTime.Now;
                 // tenant aging 
-
                 var tenantAging = _context.Rents
                     .Include(r => r.AppUser)
                     .Where(r => r.IsActive == true && r.MallId == mallId)
@@ -148,5 +207,106 @@ namespace MallMinder.Controllers
             }
             return View();
         }
+        public async Task<IActionResult> Payment()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (currentUser != null)
+            {
+                var mallId = _context.MallManagers
+                    .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
+                    .Select(m => m.MallId)
+                    .FirstOrDefault();
+                var now = DateTime.Now;
+
+                var tenants = _context.Rents
+                    .Include(r => r.AppUser)
+                    .Include(r => r.Room)
+                    .ThenInclude(r => r.Floor)
+                    .Where(r => r.MallId == mallId && r.IsActive)
+                    .Select(r => new
+                    {
+                        Id = r.Id,
+                        RentalDate = r.RentalDate,
+                        Name = r.AppUser.FirstName + " " + r.AppUser.LastName,
+                        RoomNumber = r.Room.RoomNumber,
+                        FloorId = r.Room.FloorId,
+                        PaymentDuration = r.PaymentDuration,
+                        Care = r.Room.Care,
+                        PricePercareFlag = r.Room.PricePercareFlag,
+                        RoomId = r.Room.Id
+                    })
+                    .ToList();
+
+                var paymentSummaries = new List<PaymentSummery>();
+                var referenceDate = DateTime.Now;
+
+                foreach (var tenant in tenants)
+                {
+                    DateTime? recentPayment = _context.TenantPayments
+                        .Where(tp => tp.RentId == tenant.Id)
+                        .OrderByDescending(tp => tp.PaymentDate)
+                        .Select(tp => tp.PaymentDate)
+                        .FirstOrDefault();
+                    if (recentPayment == DateTime.MinValue)
+                    {
+                        recentPayment = null;
+                    }
+
+                    DateTime paymentDate = recentPayment ?? tenant.RentalDate;
+                    int paymentFrequency = tenant.PaymentDuration; // Using the value from tenant object
+
+                    int monthsDifference = (referenceDate.Year - paymentDate.Year) * 12 + (referenceDate.Month - paymentDate.Month);
+                    int rounds = monthsDifference / paymentFrequency;
+
+                    // Ensure rounds is not less than 0
+                    rounds = Math.Max(rounds, 0);
+
+                    var pricePerCare = _context.PricePerCares
+                        .Where(p => p.FloorId == tenant.FloorId || (p.FloorId == null && p.IsActive == true))
+                        .Select(p => p.Price)
+                        .FirstOrDefault();
+
+                    double? totalPaymentAmount = tenant.PricePercareFlag
+                        ? tenant.PaymentDuration * pricePerCare * tenant.Care * (rounds > 0 ? rounds : 1)
+                        : _context.RoomPrices
+                            .Where(p => p.RoomId == tenant.RoomId)
+                            .Select(p => p.Price)
+                            .FirstOrDefault() * tenant.PaymentDuration * (rounds > 0 ? rounds : 1);
+
+                    string status = "";
+                    if (monthsDifference > paymentFrequency)
+                    {
+                        status = "overdue";
+                    }
+                    else
+                    {
+                        int defferenceDate = (paymentFrequency * 30) - (monthsDifference * 30);
+                        status = defferenceDate > 15 ? "Paid" : "upcoming";
+                    }
+
+                    var paymentSummary = new PaymentSummery
+                    {
+                        TenantName = tenant.Name,
+                        RentalDate = tenant.RentalDate.Date, // Format the date to only include the day
+                        RoomNumber = tenant.RoomNumber,
+                        UnpaidRounds = rounds,
+                        PaymentAmount = totalPaymentAmount,
+                        PaymentStatus = status
+                    };
+
+                    paymentSummaries.Add(paymentSummary);
+                }
+
+                // Sort by UnpaidRounds in descending order
+                paymentSummaries = paymentSummaries.OrderByDescending(p => p.UnpaidRounds).ToList();
+
+                ViewBag.paymentSummariesJson = Newtonsoft.Json.JsonConvert.SerializeObject(paymentSummaries);
+                return View();
+            }
+            return View();
+        }
+
+
     }
 }

@@ -68,37 +68,54 @@
                 <span class="menu-title text-white">Dashboard</span>
             </a>
         </li>
-        <li class="nav-item menu-items ">
-            <a class="nav-link" asp-controller="Analytics" asp-action="Index">
+        <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <ion-icon class="text-danger" name="stats-chart-outline"></ion-icon>
                 </span>
                 <span class="menu-title text-white">Analytics</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a asp-controller="Analytics" asp-action="Index" class="nav-link">Maintenance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Analytics" asp-action="ComplitedMaintenance" class="nav-link">Complited
+                            Maintenance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Analytics" asp-action="Expense" class="nav-link">Expense</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Analytics" asp-action="Room" class="nav-link">Room</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Analytics" asp-action="Tenant" class="nav-link">Tenant</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Analytics" asp-action="Payment" class="nav-link">Payment</a>
+                    </li>
+
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item menu-items ">
+            <a class="nav-link" asp-controller="Tenant" asp-action="Index">
+                <span class="menu-icon">
+                    <ion-icon class="text-warning" name="person-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Tenant List</span>
             </a>
         </li>
         <li class="nav-item menu-items ">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" asp-controller="Tenant" asp-action="AddTenant">
                 <span class="menu-icon">
-                    <ion-icon class="text-warning" name="person-outline"></ion-icon> </span>
-                <span class="menu-title text-white mr-2">Tenant</span>
-                <ion-icon class="text-white" name="caret-down-outline"></ion-icon>
+                    <ion-icon class="text-warning" name="person-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Add Tenant</span>
             </a>
-            <div class="collapse" id="ui-basic">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" asp-controller="Tenant" asp-action="Index">Tenants
-                            List</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="collapse" id="ui-basic">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" asp-controller="Tenant" asp-action="AddTenant">Add
-                            New</a>
-                    </li>
-                </ul>
-            </div>
         </li>
         <li class="nav-item menu-items ">
             <a class="nav-link" asp-controller="Room" asp-action="AddRoom">
@@ -143,3 +160,10 @@
     </ul>
 </nav>
 <script src="/assets/js/misc.js"></script>
+<style>
+    .sidebar .nav .nav-item .nav-link i.menu-arrow:before {
+        content: "\f140";
+        font-size: inherit;
+        color: inherit;
+    }
+</style>

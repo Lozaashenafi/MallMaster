@@ -4,66 +4,57 @@
 
 
 @{
-    var maintenanceOnProgressJson = ViewBag.MaintenanceOnProgressJson as string;
-    var maintenanceOnProgress = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceOnProgressJson);
-
+    var maintenanceDataComplitedJson = ViewBag.MaintenanceDataComplitedJson as string;
+    var maintenanceDataComplited =
+    Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceDataComplitedJson);
 }
 
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Maintenance on Progress</h4>
+            <h4 class="card-title">Complited Maintenance </h4>
             <div class="table-responsive">
                 <table id="dt-table" class="table table-hover">
                     <thead>
                         <tr>
                             <th>no</th>
-                            <th>Client Name</th>
-                            <th>Requested Date</th>
-                            <th>Days </th>
+                            <th>Name</th>
+                            <th>Requested </th>
+                            <th>Completed </th>
                             <th>Type</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @for (int i = 0; i < maintenanceOnProgress.Count; i++)
+                        @for (int i = 0; i < maintenanceDataComplited.Count; i++)
                         {
                             <tr>
                                 <th>@(i + 1)</th>
+                                <td>@maintenanceDataComplited[i].TenantName</td>
+                                <td>@(maintenanceDataComplited[i].RequestedDate != null ?
+                                        maintenanceDataComplited[i].RequestedDate.ToString("yyyy-MM-dd") : "")</td>
+                                <td>@(maintenanceDataComplited[i].CompletedDate != null ?
+                                        maintenanceDataComplited[i].CompletedDate.ToString("yyyy-MM-dd") : "")</td>
+                                <td>@maintenanceDataComplited[i].MaintenanceType</td>
                                 <td>
-                                    <span class="pl-2">@maintenanceOnProgress[i].TenantName</span>
+                                    @if (maintenanceDataComplited[i].TenantStatus.ToString().Trim() == "Declined")
+                                    {
+                                        <div class="badge badge-outline-warning">Declined</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="badge badge-outline-success">Done</div>
+                                    }
                                 </td>
-                                <td>@(maintenanceOnProgress[i].RequestedDate != null ?
-                                        maintenanceOnProgress[i].RequestedDate.ToString("yyyy-MM-dd") : "")</td>
-                                <td>@(maintenanceOnProgress[i].DaysSinceRequested != null ?
-                                        $"{maintenanceOnProgress[i].DaysSinceRequested.Value} days" : "0")</td>
-                                <td>@maintenanceOnProgress[i].MaintenanceType</td>
-                                @if (@maintenanceOnProgress[i].TenantStatus.ToString().Trim() == "Approved")
-                                {
-                                    <td>
-                                        <div class="badge badge-outline-success">
-                                            @maintenanceOnProgress[i].TenantStatus
-                                        </div>
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td>
-                                        <div class="badge badge-outline-danger">
-                                            @maintenanceOnProgress[i].TenantStatus
-                                        </div>
-                                    </td>
-                                }
-
                             </tr>
                         }
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>no</th>
+                            <th>Rank</th>
                             <th>Client Name</th>
                             <th>Requested Date</th>
-                            <th>Days </th>
+                            <th>Completed Date</th>
                             <th>Type</th>
                             <th>Status</th>
                         </tr>
@@ -72,6 +63,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 <style>
     .table>tbody>tr>td {

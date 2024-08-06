@@ -149,6 +149,12 @@ namespace MallMinder.Controllers
             if (ModelState.IsValid)
             {
                 var userId = _userManager.GetUserId(User);
+                var Exist = _context.Rooms.Where(r => r.RoomNumber == roomVM.RoomNumber).Any();
+                if (Exist == true)
+                {
+                    TempData["SuccessMessage"] = "A room with the specified room number already exists";
+                    return RedirectToAction("AddRoom", "Room");
+                }
                 var room = new Room
                 {
                     FloorId = roomVM.FloorId,
@@ -174,7 +180,6 @@ namespace MallMinder.Controllers
 
         public async Task<IActionResult> EditRoom(Room room)
         {
-
             var userId = _userManager.GetUserId(User);
             if (userId == null)
             {

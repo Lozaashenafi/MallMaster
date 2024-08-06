@@ -77,43 +77,42 @@ namespace MallMinder.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
-            if (ModelState.IsValid)
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            var mallId = _context.MallManagers
+           .Where(m => m.OwnerId == currentUser.Id)
+           .Select(m => m.MallId)
+           .FirstOrDefault();
+            var user = new AppUser
             {
-                var currentUser = await _userManager.GetUserAsync(User);
-                var mallId = _context.MallManagers
-               .Where(m => m.OwnerId == currentUser.Id)
-               .Select(m => m.MallId)
-               .FirstOrDefault();
-                var user = new AppUser
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                    IsActive = model.IsActive,
-                    AddedDate = model.AddedDate,
-                    UserName = model.Email,
-                    InMall = mallId,
-                };
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                IsActive = model.IsActive,
+                AddedDate = model.AddedDate,
+                UserName = model.Email,
+                InMall = mallId,
+            };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
-                {
-                    // Assign "Tenant" role to the user
-                    await _userManager.AddToRoleAsync(user, "Tenant");
+            if (result.Succeeded)
+            {
+                // Assign "Tenant" role to the user
+                await _userManager.AddToRoleAsync(user, "Tenant");
 
-                    return RedirectToAction("Index", "Tenant");
-                }
-                else
+                return RedirectToAction("Index", "Tenant");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                        _logger.LogError($"Error creating user: {error.Description}");
-                    }
+                    ModelState.AddModelError(string.Empty, error.Description);
+                    _logger.LogError($"Error creating user: {error.Description}");
                 }
             }
+
 
             // If ModelState is not valid or registration fails, return to the registration view with errors
             return View(model);
