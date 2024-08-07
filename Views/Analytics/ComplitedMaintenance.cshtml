@@ -13,6 +13,33 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Complited Maintenance </h4>
+            <form asp-action="ComplitedMaintenance" asp-controller="Analytics">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">From Date</label>
+                            <div class="col-sm-9">
+                                <input name="FromDate" type="date" class="form-control" data-val="true"
+                                    data-val-required="The RentalDate field is required." id="RentalDate"
+                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">To Date</label>
+                            <div class="col-sm-9">
+                                <input name="ToDate" type="date" class="form-control" data-val="true"
+                                    data-val-required="The RentalDate field is required." id="RentalDate"
+                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="badge badge-danger">Search</button>
+                    </div>
+                </div>
+            </form>
             <div class="table-responsive">
                 <table id="dt-table" class="table table-hover">
                     <thead>

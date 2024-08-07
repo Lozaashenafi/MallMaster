@@ -55,7 +55,6 @@ namespace MallMinder.Controllers
             // Handle case where user is not found or has no associated malls
             return NotFound();
         }
-
         [HttpPost]
         public IActionResult Index(RentVM rentVM)
         {
@@ -105,13 +104,13 @@ namespace MallMinder.Controllers
                 // Add Rent object to DbContext and save changes
                 _context.Rents.Add(rent);
                 _context.SaveChanges();
-                var roomOccupancy = new RoomOccupancy
+                var roomOccupancy = new RoomOccupancies
                 {
                     RoomId = rentVM.RoomId,
-                    OccoupiedDate = rentVM.RentalDate,
+                    OccupiedDate = rentVM.RentalDate,
 
                 };
-                _context.RoomOccupancys.Add(roomOccupancy);
+                _context.RoomOccupancies.Add(roomOccupancy);
                 _context.SaveChanges();
                 // Update Room status to 'Occupied'
                 room.Status = "Occupied";
@@ -121,6 +120,50 @@ namespace MallMinder.Controllers
 
             // If ModelState is not valid or save fails, return to the current view with the RentVM object
             return View(rentVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemoveRent(int rentId)
+        {
+            if (rentId <= 0)
+            {
+                return BadRequest("Invalid rent ID.");
+            }
+
+            // Find the rent record by rentId
+            var rent = await _context.Rents
+                .Include(r => r.Room)
+                .FirstOrDefaultAsync(r => r.Id == rentId);
+
+            if (rent == null)
+            {
+                return NotFound("Rent record not found.");
+            }
+
+            // Set the rent record as inactive
+            rent.IsActive = false;
+
+            // Find the room occupancy record
+            var occupancy = await _context.RoomOccupancies
+                .Where(r => r.RoomId == rent.RoomId)
+                .FirstOrDefaultAsync();
+
+            // If an occupancy record is found, set the ReleasedDate
+            if (occupancy != null)
+            {
+                occupancy.ReleasedDate = DateTime.Now;
+            }
+
+            // Update room status only if it's not already free
+            if (rent.Room != null && rent.Room.Status != "free")
+            {
+                rent.Room.Status = "free";
+            }
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            // Redirect or return a view indicating success
+            return RedirectToAction("Index", "Tenant");
         }
 
 

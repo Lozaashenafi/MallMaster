@@ -6,11 +6,11 @@ using MallMinder.Models;
 
 namespace MallMinder.Models
 {
-    public class RoomOccupancy
+    public class RoomOccupancies
     {
         public int Id { get; set; }
         public int RoomId { get; set; }
-        public DateTime OccoupiedDate { get; set; }
+        public DateTime OccupiedDate { get; set; }
         public DateTime? ReleasedDate { get; set; }
         public virtual Room Room { get; set; }
     }

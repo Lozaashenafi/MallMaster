@@ -8,7 +8,7 @@ namespace MallMinder.Data
     public class AppDbContext : IdentityDbContext<AppUser>
     {
         public DbSet<Mall> Malls { get; set; } // Define DbSet for Mall entity
-        public DbSet<RoomOccupancy> RoomOccupancys { get; set; } // Define DbSet for Mall entity
+        public DbSet<RoomOccupancies> RoomOccupancies { get; set; } // Define DbSet for Mall entity
         public DbSet<MallManagers> MallManagers { get; set; } // Define DbSet for Mall entity
         public DbSet<Floor> Floors { get; set; }
         public DbSet<Room> Rooms { get; set; }

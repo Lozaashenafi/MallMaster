@@ -43,6 +43,24 @@ namespace MallMinder.Controllers
             }
             return View();
         }
+
+        public IActionResult RoomList()
+        {
+            var userId = _userManager.GetUserId(User);
+            var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
+
+            if (manager == null)
+            {
+                return NotFound("Mall Manager not found or inactive."); // Provide a more descriptive message
+            }
+
+            // Ensure mallId is properly assigned
+            int mallId = manager.MallId;
+            ViewBag.MallId = mallId;
+
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Index(PriceVM pricing)
         {

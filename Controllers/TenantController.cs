@@ -65,8 +65,6 @@ namespace MallMinder.Controllers
             }
             catch (Exception ex)
             {
-                // Handle exception as per your application's error handling strategy
-                // Log the exception or redirect to an error page
                 return RedirectToAction("Index", "Home"); // Example redirect to home page
             }
         }
@@ -132,39 +130,6 @@ namespace MallMinder.Controllers
             return View(tenantDetail); // Pass a single TenantDetailVM object
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RemoveRent(int rentId)
-        {
-            if (rentId <= 0)
-            {
-                return BadRequest("Invalid rent ID.");
-            }
-
-            // Find the rent record by rentId
-            var rent = await _context.Rents
-                .Include(r => r.Room)
-                .FirstOrDefaultAsync(r => r.Id == rentId);
-
-            if (rent == null)
-            {
-                return NotFound("Rent record not found.");
-            }
-
-            // Set the rent record as inactive
-            rent.IsActive = false;
-
-            // Update room status only if it's not already free
-            if (rent.Room != null && rent.Room.Status != "free")
-            {
-                rent.Room.Status = "free";
-            }
-
-            // Save changes to the database
-            await _context.SaveChangesAsync();
-
-            // Redirect or return a view indicating success
-            return RedirectToAction("Index", "Tenant");
-        }
         public IActionResult AddTenant()
         {
             return View();

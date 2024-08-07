@@ -1,84 +1,58 @@
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
-@using MallMinder.Data
-@using MallMinder.Models;
-@inject AppDbContext _context
-
-
 @{
-    var ExpenseProgressJson = ViewBag.ExpenseProgressJson as string;
-    var ExpenseProgress = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(ExpenseProgressJson);
+    ViewBag.Title = "Room Occupancy";
+    var roomOccupancyDetails = ViewBag.RoomOccupancyDetails;
 }
+
+
+
+
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Expense Performance</h4>
-        <form asp-action="Expense" asp-controller="Analytics">
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">From Date</label>
-                        <div class="col-sm-9">
-                            <input name="FromDate" type="date" class="form-control" data-val="true"
-                                data-val-required="The RentalDate field is required." id="RentalDate"
-                                value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">To Date</label>
-                        <div class="col-sm-9">
-                            <input name="ToDate" type="date" class="form-control" data-val="true"
-                                data-val-required="The RentalDate field is required." id="RentalDate"
-                                value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="badge badge-danger">Search</button>
-                </div>
-            </div>
-        </form>
+        <h4 class="card-title">Room Performance</h4>
         <div class="table-responsive">
             <table id="dt-table" class="table table-hover">
                 <thead>
                     <tr>
                         <th>Rank</th>
-                        <th>Expense Type</th>
-                        <th>Expense Date</th>
-                        <th>Description</th>
-                        <th>Expense Amount</th>
+                        <th>Room Number </th>
+                        <th>Floor Number</th>
+                        <th>occupide</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < ExpenseProgress.Count; i++)
+                    @for (int i = 0; i < roomOccupancyDetails.Count; i++)
                     {
                         <tr>
                             <th>@(i + 1)</th>
-                            <td>@ExpenseProgress[i].ExpenseType</td>
-                            <td>@(ExpenseProgress[i].ExceptionDate != null ?
-                                    ExpenseProgress[i].ExceptionDate.ToString("yyyy-MM-dd") : "")</td>
-                            <td>@ExpenseProgress[i].Description</td>
-                            <td>@ExpenseProgress[i].ExpenseAmount</td>
+                            <td>@roomOccupancyDetails[i].RoomNumber</td>
+                            <td>@roomOccupancyDetails[i].FloorNumber</td>
+                            <td>@roomOccupancyDetails[i].OccupancyPercentage.ToString("F2")%</td>
                         </tr>
                     }
-
                 </tbody>
                 <tfoot>
                     <tr>
                         <th>Rank</th>
-                        <th>Expense Type</th>
-                        <th>Expense Date</th>
-                        <th>Description</th>
-                        <th>Expense Amount</th>
+                        <th>Room Number </th>
+                        <th>Floor Number</th>
+                        <th>occupide</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
 @section scripts {
     <script src="/js/datatables.js"></script>
     <script src="/js/dataTables.buttons.min.js"></script>
@@ -140,5 +114,4 @@
     </script>
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
 }

@@ -85,11 +85,15 @@
                         <a asp-controller="Analytics" asp-action="ComplitedMaintenance" class="nav-link">Complited
                             Maintenance</a>
                     </li>
+
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="Expense" class="nav-link">Expense</a>
+                        <a asp-controller="Analytics" asp-action="RoomOccupancy" class="nav-link">Room Occupancy</a>
                     </li>
                     <li class="nav-item">
                         <a asp-controller="Analytics" asp-action="Room" class="nav-link">Room</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Analytics" asp-action="Expense" class="nav-link">Expense</a>
                     </li>
                     <li class="nav-item">
                         <a asp-controller="Analytics" asp-action="Tenant" class="nav-link">Tenant</a>
@@ -126,11 +130,19 @@
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" asp-controller="Room" asp-action="Index">
+            <a class="nav-link" asp-controller="Room" asp-action="RoomList">
                 <span class="menu-icon">
                     <ion-icon class="text-primary" name="albums-outline"></ion-icon>
                 </span>
                 <span class="menu-title text-white">Room List</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-controller="Room" asp-action="Index">
+                <span class="menu-icon">
+                    <ion-icon class="text-primary" name="albums-outline"></ion-icon>
+                </span>
+                <span class="menu-title text-white">Room Price</span>
             </a>
         </li>
         <li class="nav-item menu-items ">
