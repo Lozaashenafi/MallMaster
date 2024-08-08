@@ -10,6 +10,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
+    var DateDefault = DateTime.Now.ToString("yyyy-MM-dd");
 }
 <div class="col-12 grid-margin">
     <div class="card mb-4">
@@ -63,8 +64,8 @@
                             <label class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
                                 <input asp-for="ExpenseDate" type="date" class="form-control" data-val="true"
-                                    data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                    data-val-required="The ExpenseDate field is required." id="ExpenseDate"
+                                    value="@DateDefault">
                             </div>
                         </div>
                     </div>
@@ -105,10 +106,8 @@
     }
 </style>
 @section scripts {
-
     <script src="/plugins/select2-2/select2.min_2.js"></script>
     <script src="/plugins/select2-2/select2.min.js"></script>
-    <script src="/assets/js/misc.js"></script>
     <script>
         $(".selection").select2();
     </script>

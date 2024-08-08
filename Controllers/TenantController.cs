@@ -48,7 +48,7 @@ namespace MallMinder.Controllers
                 foreach (var tenant in tenants)
                 {
                     var tenantVM = new TenantVM();
-                    var tenatrent = _context.Rents.Include(x => x.Room).ThenInclude(x => x.Floor).Include(x => x.RentType).Where(r => r.TenantId == tenant.Id).FirstOrDefault();
+                    var tenatrent = _context.Rents.Include(x => x.Room).ThenInclude(x => x.Floor).Include(x => x.RentType).Where(r => r.TenantId == tenant.Id && r.IsActive == true).FirstOrDefault();
                     tenantVM.RentId = tenatrent?.Id;
                     tenantVM.TenantId = tenant.Id;
                     tenantVM.TenantName = tenant.FirstName + " " + tenant.LastName;
@@ -56,7 +56,6 @@ namespace MallMinder.Controllers
                     tenantVM.RoomNumber = tenatrent?.Room?.RoomNumber;
                     tenantVM.FloorNumber = tenatrent?.Room?.Floor?.FloorNumber;
                     tenantVM.RentType = tenatrent?.RentType?.Type;
-                    tenantVM.IsActive = tenatrent?.IsActive;
                     tenantlist.Add(tenantVM);
                 };
 

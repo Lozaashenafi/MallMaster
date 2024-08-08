@@ -68,12 +68,12 @@ namespace MallMinder.Controllers
             {
                 var userId = _userManager.GetUserId(User);
 
-                var mall = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
-                if (mall == null)
+                var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
+                if (manager == null)
                 {
                     return NotFound(); // Handle if user does not own any mall
                 }
-                int mallId = mall.Id;
+                int mallId = manager.MallId;
                 ViewBag.MallId = mallId;
 
                 // Create PricePerCare object
@@ -111,6 +111,11 @@ namespace MallMinder.Controllers
                 if (pricing.RoomNumber != 0 && pricing.RoomPrice != 0)
                 {
                     int roomId = _context.Rooms.Where(r => r.Floor.MallId == mallId && r.RoomNumber == pricing.RoomNumber && r.IsActive == true).Select(r => r.Id).FirstOrDefault();
+                    if (roomId == null || roomId == 0)
+                    {
+                        TempData["SuccessMessage"] = "A room doesn't exists";
+                        return RedirectToAction("Index", "Room");
+                    }
                     var ofpricePerCare = _context.Rooms.Where(x => x.Id == roomId && x.PricePercareFlag == true).FirstOrDefault();
                     if (ofpricePerCare != null)
                     {
@@ -141,7 +146,7 @@ namespace MallMinder.Controllers
                     _context.SaveChanges();
                 }
                 // Redirect to a success action or view
-                return RedirectToAction("Index", "Home"); // Redirect to home page or another appropriate action
+                return RedirectToAction("Index", "Room"); // Redirect to home page or another appropriate action
             }
 
             // If ModelState is not valid, return to the current view with the FloorPriceVM objec
@@ -167,7 +172,9 @@ namespace MallMinder.Controllers
             if (ModelState.IsValid)
             {
                 var userId = _userManager.GetUserId(User);
-                var Exist = _context.Rooms.Where(r => r.RoomNumber == roomVM.RoomNumber).Any();
+                var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
+                int mallId = manager.MallId;
+                var Exist = _context.Rooms.Include(r => r.Floor).Where(r => r.RoomNumber == roomVM.RoomNumber && r.Floor.MallId == mallId).Any();
                 if (Exist == true)
                 {
                     TempData["SuccessMessage"] = "A room with the specified room number already exists";
@@ -223,7 +230,7 @@ namespace MallMinder.Controllers
                 await _context.SaveChangesAsync();
                 // Optionally add a success message
                 TempData["SuccessMessage"] = "Room details updated successfully.";
-                return RedirectToAction("Index"); // Redirect to the appropriate page
+                return RedirectToAction("RoomList"); // Redirect to the appropriate page
             }
             catch (Exception ex)
             {

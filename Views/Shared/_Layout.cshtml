@@ -19,8 +19,10 @@
     <link rel="stylesheet" href="~/MallMinder.styles.css" asp-append-version="true" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/additional-methods.min.js"></script>
 </head>
 
 <body>
@@ -169,6 +171,7 @@
                 <div class="content-wrapper">
                     <main role="main" class="pb-3">
                         @RenderBody()
+                        <partial name="_ValidationScriptsPartial" />
                     </main>
                 </div>
             </div>

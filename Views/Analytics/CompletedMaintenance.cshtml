@@ -8,20 +8,25 @@
     var maintenanceDataComplited =
     Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceDataComplitedJson);
 }
+@{
+    var fromDateDefault = new DateTime(DateTime.Now.Year, 1, 1).ToString("yyyy-MM-dd");
+    var toDateDefault = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
 
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Complited Maintenance </h4>
-            <form asp-action="ComplitedMaintenance" asp-controller="Analytics">
+            <form asp-action="CompletedMaintenance" asp-controller="Analytics">
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">From Date</label>
                             <div class="col-sm-9">
                                 <input name="FromDate" type="date" class="form-control" data-val="true"
-                                    data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                    data-val-required="The FromDate field is required." id="FromDate"
+                                    value="@fromDateDefault">
                             </div>
                         </div>
                     </div>
@@ -30,8 +35,8 @@
                             <label class="col-sm-3 col-form-label">To Date</label>
                             <div class="col-sm-9">
                                 <input name="ToDate" type="date" class="form-control" data-val="true"
-                                    data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                    data-val-required="The ToDate field is required." id="ToDate"
+                                    value="@toDateDefault">
                             </div>
                         </div>
                     </div>

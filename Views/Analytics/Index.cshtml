@@ -6,8 +6,12 @@
 @{
     var maintenanceOnProgressJson = ViewBag.MaintenanceOnProgressJson as string;
     var maintenanceOnProgress = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceOnProgressJson);
-
 }
+@{
+    var fromDateDefault = new DateTime(DateTime.Now.Year, 1, 1).ToString("yyyy-MM-dd");
+    var toDateDefault = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
 
 <div class="col-12 grid-margin">
     <div class="card">
@@ -21,7 +25,7 @@
                             <div class="col-sm-9">
                                 <input name="FromDate" type="date" class="form-control" data-val="true"
                                     data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="@fromDateDefault">
                             </div>
                         </div>
                     </div>
@@ -31,7 +35,7 @@
                             <div class="col-sm-9">
                                 <input name="ToDate" type="date" class="form-control" data-val="true"
                                     data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="@toDateDefault">
                             </div>
                         </div>
                     </div>
@@ -110,7 +114,6 @@
     <script src="/js/datatables.js"></script>
     <script src="/js/dataTables.buttons.min.js"></script>
     <script src="/js/jszip.min.js"></script>
-    <script src="/assets/js/misc.js"></script>
     <script src="/js/buttons.html5.min.js"></script>
     <script src="/js/buttons.print.min.js"></script>
     <script src="/js/custom_miscellaneous.js"></script>

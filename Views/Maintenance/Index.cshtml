@@ -7,6 +7,7 @@
 @{
     ViewData["Title"] = "Maintenance";
     // Assuming you have a shared layout for your application
+    var DateDefault = DateTime.Now.ToString("yyyy-MM-dd");
 }
 <link href="/plugins/select2-2/select2.min_2.css" rel="stylesheet" />
 <link href="/plugins/select2-2/select2.min.css" rel="stylesheet" />
@@ -62,7 +63,7 @@
                             <div class="col-sm-9">
                                 <input asp-for="RequestedDate" type="date" class="form-control" data-val="true"
                                     data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                    value="@DateDefault">
                             </div>
                         </div>
                     </div>
@@ -90,7 +91,6 @@
                             <button type="submit" class="btn btn-primary btn-rounded btn-fw">Approved</button>
                         </div>
                     </div>
-
                 </div>
             </form>
         </div>
@@ -117,7 +117,7 @@
                             <label class="col-sm-4 col-form-label">Cost</label>
                             <div class="col-sm-8">
                                 <input asp-for="Cost" type="text" class="form-control" id="otherRentType"
-                                    placeholder="Other">
+                                    placeholder="cost">
                             </div>
                         </div>
                     </div>
@@ -128,8 +128,8 @@
                             <label class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
                                 <input asp-for="CompletedDate" type="date" class="form-control" data-val="true"
-                                    data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                    data-val-required="The CompletedDate field is required." id="CompletedDate"
+                                    value="@DateDefault">
                             </div>
                         </div>
                     </div>
@@ -168,7 +168,6 @@
 @section scripts {
 
     <script src="/plugins/select2-2/select2.min_2.js"></script>
-    <script src="/assets/js/misc.js"></script>
     <script src="/plugins/select2-2/select2.min.js"></script>
     <script>
         $(".selection").select2();

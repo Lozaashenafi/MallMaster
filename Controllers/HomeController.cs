@@ -32,8 +32,8 @@ public class HomeController : Controller
                 .FirstOrDefault();
 
             // Room status
-            var occupiedCount = _context.Rooms.Count(r => r.Status == "Occupied");
-            var freeCount = _context.Rooms.Count(r => r.Status == "Free");
+            var occupiedCount = _context.Rooms.Include(r => r.Floor).Where(r => r.Floor.MallId == mallId).Count(r => r.Status == "Occupied");
+            var freeCount = _context.Rooms.Include(r => r.Floor).Where(r => r.Floor.MallId == mallId).Count(r => r.Status == "Free");
 
             var roomStatus = new RoomStatusVM
             {

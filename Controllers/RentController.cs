@@ -165,7 +165,5 @@ namespace MallMinder.Controllers
             // Redirect or return a view indicating success
             return RedirectToAction("Index", "Tenant");
         }
-
-
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MallMinder.Models;
 using MallMinder.Data;
 using MallMinder.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MallMinder.Controllers
 {
@@ -21,6 +22,13 @@ namespace MallMinder.Controllers
 
         public IActionResult Index()
         {
+            var malls = _context.Malls.ToList(); // Assuming _context is your database context and Malls is your DbSet<Mall>
+            ViewBag.Malls = malls.Select(mall => new SelectListItem
+            {
+                Value = mall.Id.ToString(),
+                Text = mall.Name
+            }).ToList();
+
             return View();
         }
 

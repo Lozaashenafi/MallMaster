@@ -61,7 +61,7 @@ namespace MallMinder.Controllers
             }
             return View();
         }
-        public async Task<IActionResult> ComplitedMaintenance(DateTime? FromDate, DateTime? ToDate)
+        public async Task<IActionResult> CompletedMaintenance(DateTime? FromDate, DateTime? ToDate)
         {
             var currentUser = _userManager.GetUserAsync(User).Result;
 
@@ -99,7 +99,7 @@ namespace MallMinder.Controllers
         }
         public async Task<IActionResult> Room()
         {
-            var currentUser = _userManager.GetUserAsync(User).Result;
+            var currentUser = await _userManager.GetUserAsync(User);
 
             if (currentUser != null)
             {
@@ -107,29 +107,39 @@ namespace MallMinder.Controllers
                     .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
                     .Select(m => m.MallId)
                     .FirstOrDefault();
-                var now = DateTime.Now;
-                // room status
-                var PricePerCare = _context.PricePerCares
+
+                if (mallId != null)
+                {
+                    var now = DateTime.Now;
+
+                    // room status
+                    var pricePerCare = _context.PricePerCares
                         .Where(p => p.IsActive == true && p.FloorId == null && p.MallId == mallId)
+                        .FirstOrDefault();
+
+                    var roomData = _context.Rooms
+                        .Include(r => r.Floor)
+                        .Where(r => r.Floor != null && r.Floor.MallId == mallId && r.IsActive == true && r.RoomDeactivateFlag == false && r.Status.ToString().Trim() == "Occupied")
+                        .ToList() // Fetch data from the database and then apply further logic in-memory
+                        .Select(r => new
+                        {
+                            RoomNumber = r.RoomNumber,
+                            FloorNumber = r.Floor.FloorNumber,
+                            RoomPrice = r.PricePercareFlag == false
+                                ? _context.RoomPrices.Where(R => R.IsActive == true && R.RoomId == r.Id).Select(R => R.Price).FirstOrDefault()
+                                : (pricePerCare?.Price ?? 0) * r.Care
+                        })
+                        .OrderByDescending(r => r.RoomPrice) // Sorting by RoomPrice in descending order
                         .ToList();
 
-                var roomData = _context.Rooms
-                    .Include(r => r.Floor)
-                    .Where(r => r.Floor.MallId == mallId && r.IsActive == true && r.RoomDeactivateFlag == false && r.Status.ToString().Trim() == "Occupied")
-                    .Select(r => new
-                    {
-                        RoomNumber = r.RoomNumber,
-                        FloorNumber = r.Floor.FloorNumber,
-                        RoomPrice = r.PricePercareFlag == false
-                            ? _context.RoomPrices.Where(R => R.IsActive == true && R.RoomId == r.Id).Select(R => R.Price).FirstOrDefault()
-                            : r.Care * PricePerCare.FirstOrDefault().Price
-                    })
-                    .OrderByDescending(r => r.RoomPrice) // Sorting by RoomPrice in descending order
-                    .ToList();
-                ViewBag.roomDataJson = Newtonsoft.Json.JsonConvert.SerializeObject(roomData);
+                    ViewBag.roomDataJson = Newtonsoft.Json.JsonConvert.SerializeObject(roomData);
+                }
             }
+
             return View();
         }
+
+
         public async Task<IActionResult> Expense(DateTime? FromDate, DateTime? ToDate)
         {
             var currentUser = _userManager.GetUserAsync(User).Result;
@@ -307,7 +317,7 @@ namespace MallMinder.Controllers
             }
             return View();
         }
-        public async Task<IActionResult> RoomOccupancy()
+        public async Task<IActionResult> RoomOccupancy(DateTime? FromDate, DateTime? ToDate)
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
@@ -317,30 +327,34 @@ namespace MallMinder.Controllers
                     .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
                     .Select(m => m.MallId)
                     .FirstOrDefault();
-                var fromDate = new DateTime(2024, 1, 1);
-                var toDate = DateTime.Now;
-                var rooms = _context.Rooms.Include(r => r.Floor).ToList();
-                var roomOccupancies = _context.RoomOccupancies.ToList();
-
+                if (FromDate == null && ToDate == null)
+                {
+                    FromDate = new DateTime(2024, 1, 1);
+                    ToDate = DateTime.Now;
+                }
+                var rooms = _context.Rooms.Include(r => r.Floor).Where(r => r.Floor.MallId == mallId).ToList();
+                var roomOccupancies = _context.RoomOccupancies.Include(r => r.Room).ThenInclude(r => r.Floor).Where(r => r.Room.Floor.MallId == mallId).ToList();
                 if (rooms == null || roomOccupancies == null)
                 {
                     ViewBag.ErrorMessage = "Could not retrieve room or room occupancy data.";
                     return View();
                 }
 
-                var totalDays = (toDate - fromDate).TotalDays + 1; // Including both from and to dates
+                TimeSpan? timeSpan = ToDate - FromDate;
+
+                var totalDays = timeSpan.HasValue ? timeSpan.Value.TotalDays + 1 : 0;
 
                 var roomOccupancyDetails = rooms.Select(room =>
                 {
                     if (room == null) return null;
 
                     var occupancies = roomOccupancies
-                        .Where(ro => ro.RoomId == room.Id && ro.OccupiedDate <= toDate && (ro.ReleasedDate == null || ro.ReleasedDate >= fromDate))
+                        .Where(ro => ro.RoomId == room.Id && ro.OccupiedDate <= ToDate && (ro.ReleasedDate == null || ro.ReleasedDate >= FromDate))
                         .Select(ro =>
                         {
-                            var startDate = ro.OccupiedDate < fromDate ? fromDate : ro.OccupiedDate;
-                            var endDate = ro.ReleasedDate == null || ro.ReleasedDate > toDate ? toDate : ro.ReleasedDate.Value;
-                            return (endDate - startDate).TotalDays + 1; // Including both start and end dates
+                            var startDate = ro.OccupiedDate < FromDate ? FromDate : ro.OccupiedDate;
+                            var endDate = ro.ReleasedDate == null || ro.ReleasedDate > ToDate ? ToDate : ro.ReleasedDate.Value;
+                            return (endDate - startDate)?.TotalDays + 1 ?? 0;
                         })
                         .Sum();
 
@@ -363,6 +377,7 @@ namespace MallMinder.Controllers
             }
             return View();
         }
+
 
     }
 }
