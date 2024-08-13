@@ -9,20 +9,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MallMinder</title>
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/css/materialdesignicons.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/jvectormap/jquery-jvectormap.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/css/flag-icon.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MallMinder.styles.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/assets/vendors/css/vendor.bundle.base.css"> *@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="~/assets/vendors/owl-carousel-2/owl.carousel.min.css" />
+    <link rel="stylesheet" href="~/assets/vendors/owl-carousel-2/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="~/assets/vendors/css/vendor.bundle.base.css" />
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/additional-methods.min.js"></script>
 </head>
 
 <body>
@@ -177,6 +176,8 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/additional-methods.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -187,11 +188,19 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/vendor.bundle.base.js" asp-append-version="true"></script>
     <script src="~/js/dashboard.js" asp-append-version="true"></script>
+    <script src="~/assets/js/chart.js"></script>
+    <script src="~/assets/vendors/chart.js/Chart.min.js"></script>
+    <script src="~/assets/js/todolist.js"></script>
+    <script src="~/assets/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="~/assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="~/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+    <script src="~/assets/js/off-canvas.js"></script>
+    <script src="~/assets/js/hoverable-collapse.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('myLink').addEventListener('click', function (event) {
-                event.preventDefault();; // Prevents the default link behavior (reloading the page)
-                // You can add your own custom logic here
+                event.preventDefault();
                 console.log('Link clicked without reloading the page');
             });
         });

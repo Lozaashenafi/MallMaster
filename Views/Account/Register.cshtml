@@ -1,5 +1,5 @@
 @model MallMinder.Models.ViewModels.RegisterVM
-<form method="post" asp-controller="Account" asp-action="Register" class="form-sample">
+<form method="post" asp-controller="Account" asp-action="Register" class="form-sample" id="registerForm">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group row">
@@ -65,9 +65,14 @@
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 </div>
                 <div class="col-sm-3 ">
-                    <button class="btn btn-dark">Cancel</button>
+                    <button class="btn btn-dark" id="cancelButton">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
+<script>
+    $('#cancelButton').on('click', function () {
+        $('#registerForm')[0].reset();
+    });
+</script>

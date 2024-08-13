@@ -1,7 +1,9 @@
 @model MallMinder.Models.ViewModels.TenantMaintenanceRequestVM
 <link href="/plugins/select2-2/select2.min_2.css" rel="stylesheet" />
 <link href="/plugins/select2-2/select2.min.css" rel="stylesheet" />
-
+@{
+    var DateDefault = DateTime.Now.ToString("yyyy-MM-dd");
+}
 <div class="card mb-4">
     <div class="col-md-10"> @if (TempData["SuccessMessage"] != null)
         {
@@ -38,7 +40,7 @@
                         <div class="col-sm-9">
                             <input asp-for="Date" type="date" class="form-control" data-val="true"
                                 data-val-required="The RentalDate field is required." id="RentalDate"
-                                value="0001-01-01"><input name="__Invariant" type="hidden" value="RentalDate">
+                                value="@DateDefault"><input name="__Invariant" type="hidden" value="RentalDate">
                         </div>
                     </div>
                 </div>

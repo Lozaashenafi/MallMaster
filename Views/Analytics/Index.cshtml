@@ -12,7 +12,6 @@
     var toDateDefault = DateTime.Now.ToString("yyyy-MM-dd");
 }
 
-
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
@@ -25,7 +24,7 @@
                             <div class="col-sm-9">
                                 <input name="FromDate" type="date" class="form-control" data-val="true"
                                     data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="@fromDateDefault">
+                                    value="@fromDateDefault"><input name="__Invariant" type="hidden">
                             </div>
                         </div>
                     </div>
@@ -35,7 +34,7 @@
                             <div class="col-sm-9">
                                 <input name="ToDate" type="date" class="form-control" data-val="true"
                                     data-val-required="The RentalDate field is required." id="RentalDate"
-                                    value="0001-01-01"><input name="__Invariant" type="hidden" value="@toDateDefault">
+                                    value="@toDateDefault"><input name="__Invariant" type="hidden">
                             </div>
                         </div>
                     </div>
@@ -48,12 +47,12 @@
                 <table id="dt-table" class="table table-hover">
                     <thead>
                         <tr>
-                            <th>no</th>
-                            <th>Client Name</th>
-                            <th>Requested Date</th>
-                            <th>Days </th>
-                            <th>Type</th>
-                            <th>Status</th>
+                            <th class="text-dark">no</th>
+                            <th class="text-dark">Client Name</th>
+                            <th class="text-dark">Requested Date</th>
+                            <th class="text-dark">Days </th>
+                            <th class="text-dark">Type</th>
+                            <th class="text-dark">Status</th>
                         </tr>
                     </thead>
                     <tbody>
