@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-lg-9 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Tenant Payment</h4>
+                <canvas id="profitChart" style="height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('profitChart').getContext('2d');
+
+        var paymentData = @Html.Raw(ViewBag.PaymentDataJson);
+        var paidData = @Html.Raw(ViewBag.PaidDataJson);
+
+        var data = {
+            labels: [...new Set([...Object.keys(paymentData), ...Object.keys(paidData)])],
+            datasets: [
+                {
+                    label: 'Payment Date Prices',
+                    data: Object.keys(paymentData).map(date => paymentData[date] || 0),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                },
+                {
+                    label: 'Paid Date Prices',
+                    data: Object.keys(paidData).map(date => paidData[date] || 0),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }
+            ]
+        };
+
+        var config = {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        var profitChart = new Chart(ctx, config);
+    });
+</script>

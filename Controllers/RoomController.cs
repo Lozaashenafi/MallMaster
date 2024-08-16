@@ -176,7 +176,7 @@ public class RoomController : Controller
             var userId = _userManager.GetUserId(User);
             var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
             int mallId = manager.MallId;
-            var Exist = _context.Rooms.Include(r => r.Floor).Where(r => r.RoomNumber == roomVM.RoomNumber && r.Floor.MallId == mallId).Any();
+            var Exist = _context.Rooms.Include(r => r.Floor).Where(r => r.RoomNumber == roomVM.RoomNumber && r.FloorId == roomVM.FloorId && r.Floor.MallId == mallId).Any();
             if (Exist == true)
             {
                 TempData["SuccessMessage"] = "A room with the specified room number already exists";

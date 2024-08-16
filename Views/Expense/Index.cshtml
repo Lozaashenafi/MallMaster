@@ -12,6 +12,7 @@
     }
     var DateDefault = DateTime.Now.ToString("yyyy-MM-dd");
 }
+
 <div class="col-12 grid-margin">
     <div class="card mb-4">
         <div class="card-body">
@@ -33,6 +34,7 @@
                                         asp-items="ViewBag.ExpenseTypeList" id="freeRoomDropdown">
                                         <option value="0">Expense Type</option>
                                     </select>
+                                    <span asp-validation-for="ExpenseTypeId" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -41,12 +43,14 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Cost</label>
                             <div class="col-sm-9">
-                                <input asp-for="ExpenseAmount" type="Number" class="form-control" id="expensecost"
+                                <input asp-for="ExpenseAmount" type="number" class="form-control" id="expensecost"
                                     placeholder="Cost">
+                                <span asp-validation-for="ExpenseAmount" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-7">
                         <div class="form-group" id="otherInputContainer" style="display: none;">
@@ -63,13 +67,14 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date</label>
                             <div class="col-sm-9">
-                                <input asp-for="ExpenseDate" type="date" class="form-control" data-val="true"
-                                    data-val-required="The ExpenseDate field is required." id="ExpenseDate"
+                                <input asp-for="ExpenseDate" type="date" class="form-control" id="ExpenseDate"
                                     value="@DateDefault">
+                                <span asp-validation-for="ExpenseDate" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-sm-7">
                         <div class="form-group row">
@@ -92,11 +97,12 @@
         </div>
     </div>
 </div>
+
 <style>
     .cu-css-add {
         background-color: #2a3038;
         border-radius: 100px;
-    @*width:5px;*@padding: 8px;
+        padding: 8px;
         margin-top: 2px;
     }
 
@@ -105,6 +111,7 @@
         align-items: center;
     }
 </style>
+
 @section scripts {
     <script src="/plugins/select2-2/select2.min_2.js"></script>
     <script src="/plugins/select2-2/select2.min.js"></script>

@@ -84,7 +84,7 @@ public class NotificationController : Controller
         if (maintenance != null)
         {
             int? declineId = _context.MaintenanceStatusTypes
-                        .Where(r => r.SysCode == 2)
+                        .Where(r => r.SysCode == 3)
                         .Select(r => r.Id)
                         .SingleOrDefault();
             var maintenance1 = new MaintenanceStatus

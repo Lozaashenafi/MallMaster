@@ -14,7 +14,7 @@ build_property.EnableComHosting =
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
-build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = C:\Users\loza\Desktop\MallManagementAppProject\MallMaster
 build_property._RazorSourceGeneratorDebug = 
 
@@ -136,6 +136,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/System/index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3lzdGVtXGluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/TenantDashbord/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50RGFzaGJvcmRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/TenantMaintenance/Index.cshtml]

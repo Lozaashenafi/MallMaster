@@ -50,7 +50,7 @@ namespace MallMinder.Controllers
                         }
                         else if (roles.Contains("Tenant"))
                         {
-                            return RedirectToAction("Index", "System");
+                            return RedirectToAction("Index", "TenantDashbord");
                         }
                         else
                         {
@@ -77,6 +77,13 @@ namespace MallMinder.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
+            // Check if the email already exists
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+            {
+                TempData["ErrorMessage"] = "The email address is already in use.";
+                return View();
+            }
 
             var currentUser = await _userManager.GetUserAsync(User);
             var mallId = _context.MallManagers

@@ -69,10 +69,12 @@ public class MallController : Controller
         switch (number % 10)
         {
             case 1:
-                return "st";
+                return "Ground";
             case 2:
-                return "nd";
+                return "st";
             case 3:
+                return "nd";
+            case 4:
                 return "rd";
             default:
                 return "th";

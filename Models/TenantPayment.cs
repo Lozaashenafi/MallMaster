@@ -14,7 +14,7 @@ namespace MallMinder.Models
         public bool IsActive { get; set; }
         public DateTime PaymentDate { get; set; }
         public DateTime PaidDate { get; set; }
-        public double ReferenceNumber { get; set; }
+        public double? ReferenceNumber { get; set; }
         public virtual Rent Rent { get; set; }
 
     }

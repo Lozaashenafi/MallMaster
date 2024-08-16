@@ -8,9 +8,13 @@ namespace MallMinder.Models.ViewModels
         [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
-        [Required(ErrorMessage = "Email Address is required")]
+
+        [Required(ErrorMessage = "Phone Number is required")]
+        [Phone(ErrorMessage = "Invalid Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
 
@@ -18,12 +22,10 @@ namespace MallMinder.Models.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Compare("Password", ErrorMessage = "Passwords don't match. ")]
+        [Required(ErrorMessage = "Confirm Password is required")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
-
-        [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
-
         public DateTime AddedDate { get; set; } // AddedDate property of type DateTime
 
         // Constructor to set default values

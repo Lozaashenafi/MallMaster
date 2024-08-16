@@ -25,6 +25,7 @@ public class ExpenseController : Controller
             .Select(x => new { Type = x.Type, Id = x.Id })
             .ToList();
         ViewBag.ExpenseTypeList = new SelectList(expenseTypes, "Id", "Type");
+
         return View();
     }
     [HttpPost]
@@ -55,6 +56,10 @@ public class ExpenseController : Controller
             }
             TempData["SuccessMessage"] = "Added successfully";
         }
+        var expenseTypes = _context.ExpenseTypes
+        .Select(x => new { Type = x.Type, Id = x.Id })
+        .ToList();
+        ViewBag.ExpenseTypeList = new SelectList(expenseTypes, "Id", "Type");
         return View();
     }
 }

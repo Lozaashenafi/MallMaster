@@ -1,4 +1,11 @@
 @model MallMinder.Models.ViewModels.RegisterVM
+<div class="col-md-10"> @if (TempData["ErrorMessage"] != null)
+    {
+        <div id="ErrorMessage" class="alert text-danger  text-center fs-5" role="alert">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+</div>
 <form method="post" asp-controller="Account" asp-action="Register" class="form-sample" id="registerForm">
     <div class="row">
         <div class="col-md-6">
@@ -6,6 +13,7 @@
                 <label class="col-sm-3 col-form-label">First Name</label>
                 <div class="col-sm-9">
                     <input type="text" asp-for="FirstName" class="form-control">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -14,6 +22,7 @@
                 <label class="col-sm-4 col-form-label">Last Name</label>
                 <div class="col-sm-8">
                     <input type="text" asp-for="LastName" class="form-control">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -24,6 +33,7 @@
                 <label class="col-sm-3 col-form-label">Phone No</label>
                 <div class="col-sm-9">
                     <input type="number" asp-for="PhoneNumber" class="form-control">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -32,6 +42,7 @@
                 <label class="col-sm-4 col-form-label">Email</label>
                 <div class="col-sm-8">
                     <input type="text" asp-for="Email" class="form-control">
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -44,6 +55,7 @@
                     <input type="password" asp-for="Password" class="form-control" id="password">
                     <a id="togglePassword"><ion-icon class="eye" name="eye-outline"></ion-icon></a>
                 </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
@@ -53,26 +65,37 @@
                     <input type="password" class="form-control" asp-for="ConfirmPassword" id="confirmPassword">
                     <a id="toggleConfirmPassword"><ion-icon class="eye" name="eye-outline"></ion-icon></a>
                 </div>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-        </div>
+        <div class="col-md-6"></div>
         <div class="col-md-6">
             <div class="row">
-                <div class="col-sm-3 ">
+                <div class="col-sm-3">
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                 </div>
-                <div class="col-sm-3 ">
-                    <button class="btn btn-dark" id="cancelButton">Cancel</button>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-dark" id="cancelButton">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
-<script>
-    $('#cancelButton').on('click', function () {
-        $('#registerForm')[0].reset();
-    });
-</script>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        $('#cancelButton').on('click', function () {
+            // Reset the form fields
+            $('#registerForm')[0].reset();
+
+            // Clear validation messages
+            $('#registerForm').find('.text-danger').text('');
+            $('#registerForm').find('.input-validation-error').removeClass('input-validation-error');
+            $('#registerForm').find('.field-validation-error').removeClass('field-validation-error').addClass('field-validation-valid');
+        });
+    </script>
+}

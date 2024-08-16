@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace MallMaster.Controllers;
-// [Authorize(Roles = "SystemAdmin")]
+namespace MallMinder.Controllers;
+[Authorize(Roles = "SystemAdmin")]
 
 // [Authorize(Roles = "SystemAdmin")]
 public class SystemController : Controller
