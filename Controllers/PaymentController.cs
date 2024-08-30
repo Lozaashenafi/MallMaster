@@ -26,7 +26,7 @@ public class PaymentController : Controller
         _roleManager = roleManager;
         _context = context;
     }
-    public async Task<IActionResult> IndexAsync()
+    public async Task<IActionResult> PaymentList()
     {
         var currentUser = await _userManager.GetUserAsync(User);
         if (currentUser == null)
@@ -98,7 +98,7 @@ public class PaymentController : Controller
         return View();
     }
     [HttpPost]
-    public async Task<IActionResult> Index(TenantPaymentVM model)
+    public async Task<IActionResult> PaymentList(TenantPaymentVM model)
     {
         if (ModelState.IsValid)
         {

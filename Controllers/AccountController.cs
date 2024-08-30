@@ -1,4 +1,5 @@
 
+using MallMaster.Models.ViewModels;
 using MallMinder.Data;
 using MallMinder.Models;
 using MallMinder.Models.ViewModels;
@@ -165,6 +166,86 @@ namespace MallMinder.Controllers
             // If ModelState is not valid or password change fails, return to the change password view with errors
             return View(model);
         }
+        public async Task<IActionResult> Profile()
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            var model = new ProfileVM
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ImageUrl = user.ImageUrl ?? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp", // Fallback image URL
+                PhoneNumber = user.PhoneNumber,
+                IsActive = user.IsActive,
+                MallName = user.Mall?.Name // Assuming Mall has a Name property
+            };
+            return View(model);
+        }
+        public async Task<IActionResult> ChangeProfile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                // Handle the error, maybe redirect to an error page or show a message
+                return NotFound();
+            }
+
+            var model = new ProfileVM
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ImageUrl = user.ImageUrl ?? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp", // Fallback image URL
+                PhoneNumber = user.PhoneNumber,
+                IsActive = user.IsActive,
+                MallName = user.Mall?.Name // Assuming Mall has a Name property
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeProfile(ProfileVM model, IFormFile ProfileImage)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ChangeProfile", model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+
+            if (ProfileImage != null && ProfileImage.Length > 0)
+            {
+                // Handle image upload and update user.ImageUrl
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ProfileImage.CopyToAsync(stream);
+                }
+                user.ImageUrl = "/uploads/" + ProfileImage.FileName;
+            }
+
+            // Update user in the database
+            await _userManager.UpdateAsync(user);
+
+            // Optionally redirect or return to profile page
+            return RedirectToAction("Profile");
+        }
+
 
     }
 }

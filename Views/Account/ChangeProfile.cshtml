@@ -1,0 +1,51 @@
+@model MallMaster.Models.ViewModels.ProfileVM
+
+<div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col col-md-9 col-lg-7 col-xl-5">
+        <div class="card" style="border-radius: 15px; background-color: #93e2bb;">
+            <div class="card-body p-4 text-black">
+                <h5 class="mb-4">Change Profile</h5>
+
+                <form asp-action="ChangeProfile" method="post" enctype="multipart/form-data">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <img alt="Profile Image" class="img-fluid rounded-circle border border-dark border-3"
+                                style="width: 70px;">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="mb-2">
+                                <label for="ProfileImage" class="form-label">Profile Image</label>
+                                <input type="file" id="ProfileImage" name="ProfileImage" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-rounded btn-block btn-lg">
+                        <i class="far fa-save me-2"></i>Save Changes
+                    </button>
+                </form>
+
+                <hr>
+
+                <a href="@Url.Action("Profile", "Account")" class="btn btn-secondary btn-rounded btn-block btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

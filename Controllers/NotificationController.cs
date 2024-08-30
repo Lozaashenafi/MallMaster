@@ -1,4 +1,5 @@
 using System.Linq;
+using MallMinder.Models.ViewModels;
 using MallMinder.Data;
 using MallMinder.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,7 @@ public class NotificationController : Controller
                 .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
                 .Select(m => m.MallId)
                 .FirstOrDefault();
+
             var maintenance = _context.MaintenanceStatuss
                 .Include(ms => ms.Maintenance)
                     .ThenInclude(m => m.MaintenanceType)
@@ -38,17 +40,19 @@ public class NotificationController : Controller
                     .ThenInclude(m => m.Rent)
                         .ThenInclude(r => r.Room)
                 .Where(ms => ms.StatusId == 1 && ms.IsActive == true && ms.Maintenance.MallId == mallId)
-                .Select(ms => new
+                .Select(ms => new MaintenanceRequestVM
                 {
                     Id = ms.Maintenance.Id,
-                    tenantName = ms.Maintenance.Rent.AppUser.FirstName + " - Room " + ms.Maintenance.Rent.Room.RoomNumber,
-                    maintenanceType = ms.Maintenance.MaintenanceType.Type
+                    TenantName = ms.Maintenance.Rent.AppUser.FirstName + " - Room " + ms.Maintenance.Rent.Room.RoomNumber,
+                    MaintenanceType = ms.Maintenance.MaintenanceType.Type
                 })
                 .ToList();
-            ViewBag.maintenancerequest = maintenance;
+
+            return View(maintenance);
         }
-        return View();
+        return View(new List<MaintenanceRequestVM>());
     }
+
     public async Task<IActionResult> Approved(int id)
     {
         var currentUser = await _userManager.GetUserAsync(User);

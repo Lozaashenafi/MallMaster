@@ -22,44 +22,52 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Account/ChangeProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDaGFuZ2VQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/CompletedMaintenance.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXENvbXBsZXRlZE1haW50ZW5hbmNlLmNzaHRtbA==
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/CompletedMaintenanceAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXENvbXBsZXRlZE1haW50ZW5hbmNlQW5hbHl0aWNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/Expense.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXEV4cGVuc2UuY3NodG1s
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/ExpenseAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXEV4cGVuc2VBbmFseXRpY3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXEluZGV4LmNzaHRtbA==
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/MaintenanceAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXE1haW50ZW5hbmNlQW5hbHl0aWNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/Payment.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFBheW1lbnQuY3NodG1s
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/PaymentAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFBheW1lbnRBbmFseXRpY3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/Room.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFJvb20uY3NodG1s
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/RoomAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFJvb21BbmFseXRpY3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/RoomOccupancy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFJvb21PY2N1cGFuY3kuY3NodG1s
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/RoomOccupancyAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFJvb21PY2N1cGFuY3lBbmFseXRpY3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/Tenant.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFRlbmFudC5jc2h0bWw=
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Analytics/TenantAnalytics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5hbHl0aWNzXFRlbmFudEFuYWx5dGljcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Expense/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwZW5zZVxJbmRleC5jc2h0bWw=
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Expense/AddExpense.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwZW5zZVxBZGRFeHBlbnNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Home/Index.cshtml]
@@ -70,8 +78,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Maintenance/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFpbnRlbmFuY2VcSW5kZXguY3NodG1s
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Maintenance/AddMaintenance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFpbnRlbmFuY2VcQWRkTWFpbnRlbmFuY2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/MallManager/Index.cshtml]
@@ -90,12 +98,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Payment/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Payment/Pay.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxQYXkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Payment/PaymentList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxQYXltZW50TGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Rent/Index.cshtml]
@@ -150,12 +158,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50XEFkZFRlbmFudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Tenant/index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50XGluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Tenant/TenantDetail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50XFRlbmFudERldGFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/Tenant/TenantList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVuYW50XFRlbmFudExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/loza/Desktop/MallManagementAppProject/MallMaster/Views/_ViewImports.cshtml]

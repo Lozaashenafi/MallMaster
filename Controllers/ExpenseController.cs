@@ -19,7 +19,7 @@ public class ExpenseController : Controller
         _userManager = userManager;
         _context = context;
     }
-    public IActionResult Index()
+    public IActionResult AddExpense()
     {
         var expenseTypes = _context.ExpenseTypes
             .Select(x => new { Type = x.Type, Id = x.Id })
@@ -29,7 +29,7 @@ public class ExpenseController : Controller
         return View();
     }
     [HttpPost]
-    public async Task<IActionResult> Index(ExpenseVM model)
+    public async Task<IActionResult> AddExpense(ExpenseVM model)
     {
         if (ModelState.IsValid)
         {
@@ -39,7 +39,7 @@ public class ExpenseController : Controller
             if (currentUser != null)
             {
                 var mallId = _context.MallManagers
-                .Where(m => m.OwnerId == currentUser.Id && m.IsActive)
+                .Where(m => m.OwnerId == currentUser.Id && m.IsActive == true)
                 .Select(m => m.MallId)
                 .FirstOrDefault();
 

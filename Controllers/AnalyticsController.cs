@@ -24,7 +24,7 @@ public class AnalyticsController : Controller
         _userManager = userManager;
         _context = context;
     }
-    public async Task<IActionResult> Index(DateTime? FromDate, DateTime? ToDate)
+    public async Task<IActionResult> MaintenanceAnalytics(DateTime? FromDate, DateTime? ToDate)
     {
         var currentUser = _userManager.GetUserAsync(User).Result;
 
@@ -63,7 +63,7 @@ public class AnalyticsController : Controller
         }
         return View();
     }
-    public async Task<IActionResult> CompletedMaintenance(DateTime? FromDate, DateTime? ToDate)
+    public async Task<IActionResult> CompletedMaintenanceAnalytics(DateTime? FromDate, DateTime? ToDate)
     {
         var currentUser = _userManager.GetUserAsync(User).Result;
 
@@ -99,7 +99,7 @@ public class AnalyticsController : Controller
         }
         return View();
     }
-    public async Task<IActionResult> Room()
+    public async Task<IActionResult> RoomAnalytics()
     {
         var currentUser = await _userManager.GetUserAsync(User);
 
@@ -142,7 +142,7 @@ public class AnalyticsController : Controller
     }
 
 
-    public async Task<IActionResult> Expense(DateTime? FromDate, DateTime? ToDate)
+    public async Task<IActionResult> ExpenseAnalytics(DateTime? FromDate, DateTime? ToDate)
     {
         var currentUser = _userManager.GetUserAsync(User).Result;
 
@@ -169,7 +169,7 @@ public class AnalyticsController : Controller
         }
         return View();
     }
-    public async Task<IActionResult> Tenant()
+    public async Task<IActionResult> TenantAnalytics()
     {
         var currentUser = _userManager.GetUserAsync(User).Result;
 
@@ -219,7 +219,7 @@ public class AnalyticsController : Controller
         }
         return View();
     }
-    public async Task<IActionResult> Payment()
+    public async Task<IActionResult> PaymentAnalytics()
     {
         var currentUser = await _userManager.GetUserAsync(User);
 
@@ -319,7 +319,7 @@ public class AnalyticsController : Controller
         }
         return View();
     }
-    public async Task<IActionResult> RoomOccupancy(DateTime? FromDate, DateTime? ToDate)
+    public async Task<IActionResult> RoomOccupancyAnalytics(DateTime? FromDate, DateTime? ToDate)
     {
         var currentUser = await _userManager.GetUserAsync(User);
 

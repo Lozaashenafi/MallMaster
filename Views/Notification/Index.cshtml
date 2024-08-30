@@ -1,8 +1,12 @@
+@* @model IEnumerable<MaintenanceRequestVM> *@
+@model IEnumerable<MallMinder.Models.ViewModels.MaintenanceRequestVM>
+
+@* @model MallMinder.Models.ViewModels.MaintenanceRequestVM *@
 @{
     ViewData["Title"] = "Maintenance Requests";
 }
 
-@foreach (var item in ViewBag.maintenancerequest)
+@foreach (var item in Model)
 {
     <div class="col-12 grid-margin stretch-card notification">
         <div class="card corona-gradient-card">
@@ -10,12 +14,12 @@
                 <div class="row align-items-center margi">
                     <div class="col-4 col-sm-4 col-xl-4">
                         <ion-icon name="person-outline"></ion-icon>
-                        <span>@item.tenantName</span>
+                        <span>@item.TenantName</span>
                     </div>
                     <div class="col-4 col-sm-5 col-xl-5 p-0">
                         <h4 class="mb-1 mb-sm-0">Maintenance Request</h4>
                         <p class="mb-0 font-weight-normal d-none d-sm-block">
-                            @item.maintenanceType
+                            @item.MaintenanceType
                         </p>
                     </div>
                     <div class="col-4 col-sm-3 col-xl-3 pl-0 text-center">
@@ -35,6 +39,7 @@
         </div>
     </div>
 }
+
 
 <style>
     .notification {

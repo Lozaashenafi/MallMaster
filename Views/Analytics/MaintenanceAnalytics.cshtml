@@ -1,8 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/css/datatables.css">
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
-
-
 @{
     var maintenanceOnProgressJson = ViewBag.MaintenanceOnProgressJson as string;
     var maintenanceOnProgress = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(maintenanceOnProgressJson);
@@ -116,6 +114,7 @@
     <script src="/js/buttons.html5.min.js"></script>
     <script src="/js/buttons.print.min.js"></script>
     <script src="/js/custom_miscellaneous.js"></script>
+    <script src="/assets/js/misc.js"></script>
     <script>
         $(document).ready(function () {
             // Initialize DataTable

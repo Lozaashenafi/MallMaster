@@ -106,7 +106,7 @@ public class HomeController : Controller
             // Filter, group by tenant, and order by total cost in descending order, then take the top 4
             var top4MaintenanceCostsAndTenants = mallMaintenance
                 .Where(m => m.Rent != null && m.Rent.AppUser != null && m.CompletedDate.Value.Year == currentYear)
-                .GroupBy(m => m.Rent.AppUser.UserName)
+                .GroupBy(m => m.Rent.AppUser.FirstName + " " + m.Rent.AppUser.LastName)
                 .Select(g => new
                 {
                     TenantName = g.Key,
@@ -129,21 +129,51 @@ public class HomeController : Controller
                 profitByYear[year] = profit;
             }
             ViewBag.ProfitByYearJson = Newtonsoft.Json.JsonConvert.SerializeObject(profitByYear);
+            // Revenue analysis
+            var paymentsThisYear = await _context.TenantPayments
+                .Include(p => p.Rent)
+                .ThenInclude(r => r.Mall)
+                .Where(p => p.Rent.MallId == mallId && p.PaidDate.Year == currentYear)
+                .ToListAsync();
 
+            double totalRevenue = paymentsThisYear.Sum(p => p.Price ?? 0);
+            ViewBag.TotalRevenue = totalRevenue;
+
+            // Expense analysis
+            var thisMallExpensesThisYear = await _context.Expenses
+                .Include(x => x.Mall)
+                .Where(x => x.MallId == mallId && x.ExpenseDate.Value.Year == currentYear)
+                .ToListAsync();
+
+            double totalExpense = thisMallExpensesThisYear.Sum(p => p.ExpenseAmount ?? 0);
+            ViewBag.TotalExpense = totalExpense;
+
+            // Maintenance cost
+            var mallMaintenanceThisYear = await _context.Maintenances
+                .Include(m => m.Rent)
+                .ThenInclude(r => r.AppUser)
+                .Where(m => m.MallId == mallId && m.CompletedDate.HasValue && m.CompletedDate.Value.Year == currentYear)
+                .ToListAsync();
+            double totalMaintenance = mallMaintenanceThisYear.Sum(p => p.Cost ?? 0);
+            ViewBag.TotalMaintenance = totalMaintenance;
+
+            var currentMonth = DateTime.Now.Month;
+
+            // Sum of revenue for the current month
+            var revenueForCurrentMonth = payments
+                .Where(p => p.PaidDate.Year == currentYear && p.PaidDate.Month == currentMonth)
+                .Sum(p => p.Price ?? 0);
+            ViewBag.revenueForCurrentMonth = revenueForCurrentMonth;
+            // Profit calculation
+            double profitThisYear = totalRevenue - (totalExpense + totalMaintenance);
+            ViewBag.TotalProfit = profitThisYear;
         };
 
         return View();
     }
-
-
     public IActionResult Privacy()
     {
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
 }

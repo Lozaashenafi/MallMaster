@@ -2,16 +2,22 @@
 @using System.Security.Claims
 @inject SignInManager<AppUser> SignInManager
 
+
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a asp-area="" asp-controller="Home" asp-action="Index">
-            <img src="/img/logo3.png" alt="" style="width: 200px;">
-        </a>
+        <a class="sidebar-brand brand-logo" asp-action="Index" asp-controller="Home"><img src="~/assets/images/logo.svg"
+                alt="logo" /></a>
+        <a class="sidebar-brand brand-logo-mini" asp-action="Index" asp-controller="Home"><img
+                src="~/assets/images/logo-mini.svg" alt="logo" /></a>
     </div>
     <ul class="nav">
         <li class="nav-item profile">
             <div class="profile-desc">
                 <div class="profile-pic">
+                    <div class="count-indicator">
+                        <img class="img-xs rounded-circle" src="~/assets/images/faces/face15.jpg" alt="" />
+                        <span class="count bg-success"></span>
+                    </div>
                     <div class="profile-name">
                         @if (SignInManager.IsSignedIn(User))
                         {
@@ -22,154 +28,157 @@
                         }
                     </div>
                 </div>
-                <a href="#" class="text-muted" id="profile-dropdown" data-toggle="dropdown">
-                    <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-                </a>
+                <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
                 <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
                     aria-labelledby="profile-dropdown">
-                    <a href="#" class="dropdown-item preview-item text-muted">
+                    <a href="#" class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
-                                <ion-icon class="text-danger" name="settings-outline"></ion-icon>
+                                <i class="mdi mdi-settings text-primary"></i>
                             </div>
                         </div>
                         <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1 text-small text-white">
+                            <p class="preview-subject ellipsis mb-1 text-small">
                                 Account settings
                             </p>
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a asp-action="ChangePassword" asp-controller="Account"
-                        class="dropdown-item preview-item text-muted">
+                    <a asp-action="ChangePassword" asp-controller="Account" class="dropdown-item preview-item">
                         <div class="preview-thumbnail">
                             <div class="preview-icon bg-dark rounded-circle">
-                                <ion-icon class="text-info" name="lock-closed-outline"></ion-icon>
+                                <i class="mdi mdi-onepassword text-info"></i>
                             </div>
                         </div>
                         <div class="preview-item-content">
-                            <p class="preview-subject ellipsis mb-1 text-small text-white">
+                            <p class="preview-subject ellipsis mb-1 text-small">
                                 Change Password
                             </p>
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item preview-item">
+                        <div class="preview-thumbnail">
+                            <div class="preview-icon bg-dark rounded-circle">
+                                <i class="mdi mdi-calendar-today text-success"></i>
+                            </div>
+                        </div>
+                        <div class="preview-item-content">
+                            <p class="preview-subject ellipsis mb-1 text-small">
+                                To-do list
+                            </p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </li>
         <li class="nav-item nav-category">
-            <span class="nav-link text-white">Navigation</span>
+            <span class="nav-link">Navigation</span>
         </li>
-        <li class="nav-item menu-items ">
-            <a class="nav-link" asp-controller="Home" asp-action="Index">
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Home">
                 <span class="menu-icon">
-                    <ion-icon class="text-info" name="bar-chart-outline"></ion-icon>
+                    <i class="mdi mdi-speedometer"></i>
                 </span>
-                <span class="menu-title text-white">Dashboard</span>
+                <span class="menu-title">Dashboard</span>
             </a>
         </li>
         <li class="nav-item menu-items">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
-                    <ion-icon class="text-danger" name="stats-chart-outline"></ion-icon>
+                    <i class="mdi mdi-chart-bar"></i>
                 </span>
-                <span class="menu-title text-white">Analytics</span>
+                <span class="menu-title">Analytics</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="Index" class="nav-link">Maintenance</a>
+                        <a class="nav-link" asp-action="Index" asp-controller="Analytics">Maintenance</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="CompletedMaintenance" class="nav-link">Completed
+                        <a class="nav-link" asp-action="CompletedMaintenance" asp-controller="Analytics">Complete
                             Maintenance</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="RoomOccupancy" class="nav-link">Room Occupancy</a>
+                        <a class="nav-link" asp-action="RoomOccupancy" asp-controller="Analytics">Room
+                            Occupancy</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="Room" class="nav-link">Room</a>
+                        <a class="nav-link" asp-action="Room" asp-controller="Analytics">Room</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="Expense" class="nav-link">Expense</a>
+                        <a class="nav-link" asp-action="Expense" asp-controller="Analytics">Expense</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="Tenant" class="nav-link">Tenant</a>
+                        <a class="nav-link" asp-action="Tenant" asp-controller="Analytics">Tenant</a>
                     </li>
                     <li class="nav-item">
-                        <a asp-controller="Analytics" asp-action="Payment" class="nav-link">Payment</a>
+                        <a class="nav-link" asp-action="Payment" asp-controller="Analytics">Payment</a>
                     </li>
-
                 </ul>
             </div>
         </li>
-        <li class="nav-item menu-items ">
-            <a class="nav-link" asp-controller="Tenant" asp-action="Index">
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="AddTenant" asp-controller="Tenant">
                 <span class="menu-icon">
-                    <ion-icon class="text-warning" name="person-outline"></ion-icon>
+                    <i class="mdi mdi-account-multiple"></i>
                 </span>
-                <span class="menu-title text-white">Tenant List</span>
-            </a>
-        </li>
-        <li class="nav-item menu-items ">
-            <a class="nav-link" asp-controller="Tenant" asp-action="AddTenant">
-                <span class="menu-icon">
-                    <ion-icon class="text-warning" name="person-outline"></ion-icon>
-                </span>
-                <span class="menu-title text-white">Add Tenant</span>
-            </a>
-        </li>
-        <li class="nav-item menu-items ">
-            <a class="nav-link" asp-controller="Room" asp-action="AddRoom">
-                <span class="menu-icon">
-                    <ion-icon class="text-danger" name="storefront-outline"></ion-icon>
-                </span>
-                <span class="menu-title text-white">Add Room</span>
+                <span class="menu-title">Add Tenant</span>
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" asp-controller="Room" asp-action="RoomList">
+            <a class="nav-link" asp-action="TenantList" asp-controller="Tenant">
                 <span class="menu-icon">
-                    <ion-icon class="text-primary" name="albums-outline"></ion-icon>
+                    <i class="mdi mdi-table-large"></i>
                 </span>
-                <span class="menu-title text-white">Room List</span>
+                <span class="menu-title">Tenant List</span>
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" asp-controller="Room" asp-action="Index">
+            <a class="nav-link" asp-action="AddRoom" asp-controller="Room">
                 <span class="menu-icon">
-                    <ion-icon class="text-primary" name="albums-outline"></ion-icon>
+                    <i class="mdi mdi-home-outline"></i>
                 </span>
-                <span class="menu-title text-white">Room Price</span>
+                <span class="menu-title">Add Room</span>
             </a>
         </li>
-        <li class="nav-item menu-items ">
-            <a class="nav-link" asp-controller="Payment" asp-action="Index">
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="RoomList" asp-controller="Room">
+                <span class="menu-icon">
+                    <i class="mdi mdi-table"></i>
+                </span>
+                <span class="menu-title">Room List</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link" asp-action="Index" asp-controller="Payment">
                 <span class="menu-icon">
                     <ion-icon class="text-success" name="cash-outline"></ion-icon>
                 </span>
-                <span class="menu-title text-white">Payment</span>
+                <span class="menu-title">Payment</span>
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" asp-controller="Maintenance" asp-action="Index">
+            <a class="nav-link" asp-action="Index" asp-controller="Maintenance">
                 <span class="menu-icon">
                     <ion-icon class="text-warning" name="construct-outline"></ion-icon>
                 </span>
-                <span class="menu-title text-white">Maintenance</span>
+                <span class="menu-title">Maintenance</span>
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" asp-controller="Expense" asp-action="Index">
+            <a class="nav-link" asp-action="Index" asp-controller="Expense">
                 <span class="menu-icon">
                     <ion-icon class="text-info" name="trending-up-outline"></ion-icon>
                 </span>
-                <span class="menu-title text-white">Expenses</span>
+                <span class="menu-title">Expense</span>
             </a>
         </li>
     </ul>
 </nav>
+
+@* <script src="/assets/js/misc.js"></script> *@
 <style>
     .sidebar .nav .nav-item .nav-link i.menu-arrow:before {
         content: "\f140";

@@ -619,5 +619,5 @@ C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\Micro
 C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation.dll
 C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\Microsoft.CodeAnalysis.Razor.dll
-C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\System.Text.Json.dll
 C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\obj\Debug\net8.0\MallMinder.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\loza\Desktop\MallManagementAppProject\MallMaster\bin\Debug\net8.0\refs\System.Text.Json.dll

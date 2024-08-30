@@ -20,7 +20,7 @@ public class MaintenanceController : Controller
         _userManager = userManager;
         _context = context;
     }
-    public IActionResult Index()
+    public IActionResult AddMaintenance()
     {
         var currentUser = _userManager.GetUserAsync(User).Result;
 
@@ -72,7 +72,7 @@ public class MaintenanceController : Controller
         return View();
     }
     [HttpPost]
-    public async Task<IActionResult> Index(MaintenanceVM model)
+    public async Task<IActionResult> AddMaintenance(MaintenanceVM model)
     {
         if (ModelState.IsValid)
         {

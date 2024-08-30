@@ -2,51 +2,40 @@
 <link rel="stylesheet" type="text/css" href="/css/dt-global_style.css">
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
 
-
 @{
-    var paymentSummariesJson = ViewBag.paymentSummariesJson as string;
-    var paymentSummaries = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(paymentSummariesJson);
+    var tenantAgingJson = ViewBag.tenantAgingJson as string;
+    var tenantAging = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dynamic>>(tenantAgingJson);
 }
-
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Payment</h4>
+        <h4 class="card-title">Residency Duration</h4>
         <div class="table-responsive">
             <table id="dt-table" class="table table-hover">
                 <thead>
                     <tr>
-                        <th class="text-dark">No</th>
-                        <th class="text-dark">Name</th>
-                        <th class="text-dark">R.No</th>
-                        <th class="text-dark">Renatal Date</th>
-                        <th class="text-dark">Payment Status</th>
-                        <th class="text-dark">Rounds</th>
-                        <th class="text-dark">Payment Amount</th>
+                        <th class="text-dark">Rank</th>
+                        <th class="text-dark">Tenant Name</th>
+                        <th class="text-dark">Phone Number</th>
+                        <th class="text-dark">Rental Period</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < paymentSummaries.Count; i++)
+                    @for (int i = 0; i < tenantAging.Count; i++)
                     {
                         <tr>
                             <th>@(i + 1)</th>
-                            <td>@paymentSummaries[i].TenantName</td>
-                            <td>@paymentSummaries[i].RoomNumber</td>
-                            <td>@paymentSummaries[i].RentalDate.ToString("dd/MM/yyyy")</td>
-                            <td>@paymentSummaries[i].PaymentStatus</td>
-                            <td>@paymentSummaries[i].UnpaidRounds</td>
-                            <td>@paymentSummaries[i].PaymentAmount</td>
+                            <td>@tenantAging[i].TenantName</td>
+                            <td>@tenantAging[i].TenantPhone</td>
+                            <td>@tenantAging[i].RentalPeriodString</td>
                         </tr>
                     }
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>R.No</th>
-                        <th>Renatal Date</th>
-                        <th>Payment Status</th>
-                        <th>Rounds</th>
-                        <th>Payment Amount</th>
+                        <th>Rank</th>
+                        <th>Tenant Name</th>
+                        <th>Phone Number</th>
+                        <th>Rental Period</th>
                     </tr>
                 </tfoot>
             </table>
@@ -59,6 +48,7 @@
     <script src="/js/jszip.min.js"></script>
     <script src="/js/buttons.html5.min.js"></script>
     <script src="/js/buttons.print.min.js"></script>
+    <script src="/assets/js/misc.js"></script>
     <script src="/js/custom_miscellaneous.js"></script>
     <script>
         $(document).ready(function () {
@@ -113,4 +103,5 @@
     </script>
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
 }
