@@ -166,6 +166,6 @@ public class MaintenanceController : Controller
                 }
             }
         }
-        return RedirectToAction("Index", "Maintenance");
+        return RedirectToAction("AddMaintenance", "Maintenance");
     }
 }

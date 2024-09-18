@@ -1,8 +1,12 @@
 using MallMinder.Data;
 using MallMinder.Models;
+using MallMinder.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Diagnostics;
 
 namespace MallMinder.Controllers;
 [Authorize(Roles = "SystemAdmin")]
@@ -10,10 +14,12 @@ namespace MallMinder.Controllers;
 public class MallController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
 
-    public MallController(AppDbContext context)
+    public MallController(AppDbContext context, UserManager<AppUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public IActionResult Index()

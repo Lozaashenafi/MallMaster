@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
-@inject SignInManager<AppUser> SignInManager
+@inject SignInManager<AppUser> SignInManager;
 <!DOCTYPE html>
 <html lang="en">
 
@@ -175,6 +175,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="RoomList" asp-controller="Room">Room
                                             List</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Price" asp-controller="Room">Room Price</a>
                                     </li>
                                 </ul>
                             </div>

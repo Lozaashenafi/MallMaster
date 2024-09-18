@@ -114,7 +114,7 @@ public class PaymentController : Controller
             };
             _context.Add(tenantPayment);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Payment");
+            return RedirectToAction("PaymentList", "Payment");
         }
         return View(model);
     }

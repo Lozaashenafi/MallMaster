@@ -17,7 +17,7 @@ public class RoomController : Controller
         _userManager = userManager;
         _context = context;
     }
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Price()
     {
         var userId = _userManager.GetUserId(User);
         var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
@@ -49,7 +49,7 @@ public class RoomController : Controller
     public IActionResult RoomList()
     {
         var userId = _userManager.GetUserId(User);
-        var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive);
+        var manager = _context.MallManagers.FirstOrDefault(m => m.OwnerId == userId && m.IsActive == true);
 
         if (manager == null)
         {
@@ -64,7 +64,7 @@ public class RoomController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Index(PriceVM pricing)
+    public async Task<IActionResult> Price(PriceVM pricing)
     {
         if (ModelState.IsValid)
         {
@@ -148,8 +148,9 @@ public class RoomController : Controller
                 _context.RoomPrices.Add(roomPrice);
                 _context.SaveChanges();
             }
+            TempData["SuccessMessage"] = "Successful";
             // Redirect to a success action or view
-            return RedirectToAction("Index", "Room"); // Redirect to home page or another appropriate action
+            return RedirectToAction("Price", "Room"); // Redirect to home page or another appropriate action
         }
         // If ModelState is not valid, return to the current view with the FloorPriceVM objec
         return View();
@@ -267,7 +268,7 @@ public class RoomController : Controller
         await _context.SaveChangesAsync();
 
         TempData["SuccessMessage"] = "Room deleted successfully.";
-        return RedirectToAction("Index");
+        return RedirectToAction("RoomList");
     }
 
 }

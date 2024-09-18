@@ -13,6 +13,7 @@ namespace MallMinder.Models.ViewModels
         [Required(ErrorMessage = "Phone Number is required")]
         [Phone(ErrorMessage = "Invalid Phone Number")]
         public string PhoneNumber { get; set; }
+        public string? FullName { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
@@ -26,6 +27,7 @@ namespace MallMinder.Models.ViewModels
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
+        public string? Mall { get; set; }
         public DateTime AddedDate { get; set; } // AddedDate property of type DateTime
 
         // Constructor to set default values

@@ -117,7 +117,7 @@ public class RentController : Controller
             // Update Room status to 'Occupied'
             room.Status = "Occupied";
             _context.SaveChanges();
-            return RedirectToAction("Index", "Tenant");
+            return RedirectToAction("TenantList", "Tenant");
         }
 
         // If ModelState is not valid or save fails, return to the current view with the RentVM object
@@ -165,6 +165,6 @@ public class RentController : Controller
         await _context.SaveChangesAsync();
 
         // Redirect or return a view indicating success
-        return RedirectToAction("Index", "Tenant");
+        return RedirectToAction("TenantList", "Tenant");
     }
 }

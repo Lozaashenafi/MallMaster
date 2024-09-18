@@ -7,11 +7,10 @@
 <link rel="stylesheet" type="text/css" href="/css/demo.css">
 @{
     ViewData["Title"] = "Room list";
-
     int mallId = ViewBag.MallId != null ? (int)ViewBag.MallId : 0;
-
     var rooms = mallId > 0
-    ? _context.Rooms.Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId)).ToList()
+    ? _context.Rooms.Where(r => _context.Floors.Any(f => f.Id == r.FloorId && f.MallId == mallId) && r.IsActive ==
+    true).ToList()
     : new List<Room>();
 
     var floors = mallId > 0 ? _context.Floors.Where(f => f.MallId == mallId).ToList() : new List<Floor>();
@@ -79,6 +78,7 @@
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                             data-room-id="@room.Id">
                                             <ion-icon name="trash-outline"></ion-icon>
+                                        </a>
                                     </td>
                                 </tr>
                                 <!-- Modal Structure -->
