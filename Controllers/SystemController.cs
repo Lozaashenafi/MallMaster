@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 namespace MallMinder.Controllers;
 [Authorize(Roles = "SystemAdmin")]
 
-// [Authorize(Roles = "SystemAdmin")]
 public class SystemController : Controller
 {
     private readonly ILogger<SystemController> _logger;

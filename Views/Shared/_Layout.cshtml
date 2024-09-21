@@ -30,9 +30,9 @@
                 <nav class="sidebar sidebar-offcanvas" id="sidebar">
                     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
                         <a class="sidebar-brand brand-logo" asp-action="Index" asp-controller="Home"><img
-                                src="~/assets/images/logo.svg" alt="logo" /></a>
+                                src="~/img/logo1-13.svg" alt="logo" /></a>
                         <a class="sidebar-brand brand-logo-mini" asp-action="Index" asp-controller="Home"><img
-                                src="~/assets/images/logo-mini.svg" alt="logo" /></a>
+                                src="~/img/logo1-12.svg" alt="logo" /></a>
                     </div>
                     <ul class="nav">
                         <li class="nav-item profile">
@@ -542,7 +542,13 @@
                                 <div class="navbar-profile">
                                     <img class="img-xs rounded-circle" src="~/assets/images/faces/face15.jpg" alt="" />
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">
-                                        Henry Klein
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            string email = @User.Identity!.Name;
+                                            string[] parts = email.Split('@');
+                                            string username = parts[0];
+                                        <h5 class="mb-0 font-weight-normal">@username</h5>
+                                        }
                                     </p>
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>

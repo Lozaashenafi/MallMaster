@@ -347,31 +347,41 @@ public class AnalyticsController : Controller
             var totalDays = timeSpan.HasValue ? timeSpan.Value.TotalDays + 1 : 0;
 
             var roomOccupancyDetails = rooms.Select(room =>
-            {
-                if (room == null) return null;
+ {
+     if (room == null) return null;
 
-                var occupancies = roomOccupancies
-                    .Where(ro => ro.RoomId == room.Id && ro.OccupiedDate <= ToDate && (ro.ReleasedDate == null || ro.ReleasedDate >= FromDate))
-                    .Select(ro =>
-                    {
-                        var startDate = ro.OccupiedDate < FromDate ? FromDate : ro.OccupiedDate;
-                        var endDate = ro.ReleasedDate == null || ro.ReleasedDate > ToDate ? ToDate : ro.ReleasedDate.Value;
-                        return (endDate - startDate)?.TotalDays + 1 ?? 0;
-                    })
-                    .Sum();
+     // Use a HashSet to track unique occupied days
+     var occupiedDays = new HashSet<DateTime>();
 
-                var occupancyPercentage = totalDays > 0 ? (occupancies / totalDays) * 100 : 0;
+     var occupancies = roomOccupancies
+         .Where(ro => ro.RoomId == room.Id && ro.OccupiedDate <= ToDate && (ro.ReleasedDate == null || ro.ReleasedDate >= FromDate))
+         .ToList();
 
-                return new RoomOccupancyDetail
-                {
-                    RoomNumber = room.RoomNumber,
-                    FloorNumber = room.Floor.FloorNumber, // Assuming FloorId represents Floor Number
-                    OccupancyPercentage = occupancyPercentage
-                };
-            })
-            .Where(detail => detail != null) // Filter out null entries
-            .OrderByDescending(detail => detail.OccupancyPercentage)
-            .ToList();
+     foreach (var occupancy in occupancies)
+     {
+         var startDate = occupancy.OccupiedDate < FromDate ? FromDate.Value : occupancy.OccupiedDate;
+         var endDate = occupancy.ReleasedDate == null || occupancy.ReleasedDate > ToDate ? ToDate.Value : occupancy.ReleasedDate.Value;
+
+         for (var date = startDate; date <= endDate; date = date.AddDays(1))
+         {
+             occupiedDays.Add(date);
+         }
+     }
+
+     // Calculate total occupancy days and percentage
+     var occupancyPercentage = totalDays > 0 ? (occupiedDays.Count / totalDays) * 100 : 0;
+
+     return new RoomOccupancyDetail
+     {
+         RoomNumber = room.RoomNumber,
+         FloorNumber = room.Floor.FloorNumber,
+         OccupancyPercentage = occupancyPercentage
+     };
+ })
+ .Where(detail => detail != null) // Filter out null entries
+ .OrderByDescending(detail => detail.OccupancyPercentage)
+ .ToList();
+
 
             ViewBag.RoomOccupancyDetails = roomOccupancyDetails;
 
