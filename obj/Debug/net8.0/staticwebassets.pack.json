@@ -3673,6 +3673,14 @@
       "PackagePath": "staticwebassets\\img\\logo.png"
     },
     {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\logo1-12.svg",
+      "PackagePath": "staticwebassets\\img\\logo1-12.svg"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\logo1-13.svg",
+      "PackagePath": "staticwebassets\\img\\logo1-13.svg"
+    },
+    {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\logo2.png",
       "PackagePath": "staticwebassets\\img\\logo2.png"
     },
@@ -4011,6 +4019,10 @@
     {
       "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\plugins\\select2\\select2x2.png",
       "PackagePath": "staticwebassets\\plugins\\select2\\select2x2.png"
+    },
+    {
+      "Id": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\uploads\\AdobeStock_604155685_Preview.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\AdobeStock_604155685_Preview.jpeg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MallMinder.Microsoft.AspNetCore.StaticWebAssets.props",

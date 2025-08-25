@@ -212,40 +212,55 @@ namespace MallMinder.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeProfile(ProfileVM model, IFormFile ProfileImage)
         {
-            if (!ModelState.IsValid)
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.PhoneNumber;
+
+                if (ProfileImage != null && ProfileImage.Length > 0)
+                {
+                    // Define the upload folder path
+                    var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+
+                    // Create the upload folder if it doesn't exist
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    // Create a unique file path to avoid overwriting existing files
+                    var fileName = Path.GetFileName(ProfileImage.FileName);
+                    var filePath = Path.Combine(uploadFolder, fileName);
+
+                    // Save the file to the upload folder
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ProfileImage.CopyToAsync(stream);
+                    }
+
+                    // Update the user's ImageUrl to point to the uploaded file
+                    user.ImageUrl = "/uploads/" + fileName;
+                }
+
+                // Update the user in the database
+                await _userManager.UpdateAsync(user);
+
+                // Optionally redirect or return to the profile page
+                return RedirectToAction("Profile");
+            }
+            catch
             {
                 return View("ChangeProfile", model);
             }
-
-            var user = await _userManager.GetUserAsync(User);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.PhoneNumber = model.PhoneNumber;
-
-            if (ProfileImage != null && ProfileImage.Length > 0)
-            {
-                // Handle image upload and update user.ImageUrl
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await ProfileImage.CopyToAsync(stream);
-                }
-                user.ImageUrl = "/uploads/" + ProfileImage.FileName;
-            }
-
-            // Update user in the database
-            await _userManager.UpdateAsync(user);
-
-            // Optionally redirect or return to profile page
-            return RedirectToAction("Profile");
         }
-
 
     }
 }

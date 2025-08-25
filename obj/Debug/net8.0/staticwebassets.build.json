@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Knyk6A7NGpnjfGF88yiYZXU3cV0iu3JtOOXRzez/zxc=",
+  "Hash": "fKFT4i5inI7l83s9DLzEUk038Dk9CmzoxiqtTAcETtY=",
   "Source": "MallMinder",
   "BasePath": "_content/MallMinder",
   "Mode": "Default",
@@ -17421,6 +17421,44 @@
       "OriginalItemSpec": "wwwroot\\img\\logo.png"
     },
     {
+      "Identity": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\logo1-12.svg",
+      "SourceId": "MallMinder",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\",
+      "BasePath": "_content/MallMinder",
+      "RelativePath": "img/logo1-12.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\logo1-12.svg"
+    },
+    {
+      "Identity": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\logo1-13.svg",
+      "SourceId": "MallMinder",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\",
+      "BasePath": "_content/MallMinder",
+      "RelativePath": "img/logo1-13.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\logo1-13.svg"
+    },
+    {
       "Identity": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\img\\logo2.png",
       "SourceId": "MallMinder",
       "SourceType": "Discovered",
@@ -19091,6 +19129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\plugins\\select2\\select2x2.png"
+    },
+    {
+      "Identity": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\uploads\\AdobeStock_604155685_Preview.jpeg",
+      "SourceId": "MallMinder",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\loza\\Desktop\\MallManagementAppProject\\MallMaster\\wwwroot\\",
+      "BasePath": "_content/MallMinder",
+      "RelativePath": "uploads/AdobeStock_604155685_Preview.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\AdobeStock_604155685_Preview.jpeg"
     }
   ]
 }
